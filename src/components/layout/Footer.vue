@@ -1,0 +1,149 @@
+<script setup>
+const contacts = [
+  { id: 1, icon: '📞', text: '02-7755-6688' },
+  { id: 2, icon: '✉️', text: 'hello@moritravel.com.tw' },
+  { id: 3, icon: '🕐', text: '週一至週五 09:30 - 18:30' },
+  { id: 4, icon: '📍', text: '台北市中山區南京東路二段 88 號 6 樓' },
+]
+
+const socials = [
+  { id: 1, icon: '📘' },
+  { id: 2, icon: '📷' },
+  { id: 3, icon: '💬' },
+]
+</script>
+
+<template>
+  <footer class="footer">
+    <div class="top">
+      <div class="brand">
+        <h2 class="logo">MORI <span>TRAVEL</span></h2>
+        <p class="desc">專為喜愛探索世界的你,打造剛剛好的旅行體驗。</p>
+
+        <div class="contacts">
+          <p v-for="c in contacts" :key="c.id" class="contact-item">{{ c.icon }} {{ c.text }}</p>
+        </div>
+      </div>
+
+      <div class="subscribe">
+        <h3 class="sub-title">訂閱旅遊靈感電子報</h3>
+        <p class="sub-desc">掌握最新優惠與旅遊靈感,每月精選直送你的信箱!</p>
+
+        <div class="sub-form">
+          <input type="email" placeholder="輸入你的 Email" />
+          <button>訂閱</button>
+        </div>
+
+        <div class="socials">
+          <span v-for="s in socials" :key="s.id" class="social-icon">{{ s.icon }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <p>© 2025 MORI TRAVEL. All rights reserved.</p>
+    </div>
+  </footer>
+</template>
+
+<style scoped>
+.footer {
+  background: var(--color-primary);
+  color: white;
+  padding: 48px 40px 24px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.brand {
+  flex: 1;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.logo span {
+  font-weight: 400;
+}
+
+.desc {
+  font-size: 14px;
+  color: #cfe0df;
+  margin-bottom: 20px;
+}
+
+.contact-item {
+  font-size: 14px;
+  color: #cfe0df;
+  margin-bottom: 10px;
+}
+
+.subscribe {
+  flex: 1;
+  max-width: 400px;
+}
+
+.sub-title {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.sub-desc {
+  font-size: 13px;
+  color: #cfe0df;
+  margin-bottom: 16px;
+}
+
+.sub-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sub-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
+
+.sub-form button {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #4a7472;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom {
+  border-top: 1px solid #2a5654;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #9fc0be;
+}
+</style>

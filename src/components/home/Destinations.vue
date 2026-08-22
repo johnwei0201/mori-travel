@@ -42,6 +42,7 @@ const destinations = [
 }
 .list {
   display: flex;
+  justify-content: center;
   gap: 24px;
 }
 </style>

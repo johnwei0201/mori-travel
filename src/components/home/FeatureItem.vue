@@ -1,0 +1,46 @@
+<script setup>
+defineProps({
+  icon: String,
+  title: String,
+  desc: String,
+})
+</script>
+
+<template>
+  <div class="feature-item">
+    <span class="icon">{{ icon }}</span>
+    <div class="text">
+      <h3 class="title">{{ title }}</h3>
+      <p class="desc">{{ desc }}</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.title {
+  font-size: 15px;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.desc {
+  font-size: 13px;
+  color: #777;
+}
+</style>
