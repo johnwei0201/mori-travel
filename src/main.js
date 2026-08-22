@@ -1,11 +1,11 @@
 import './styles/reset.css'
 import './styles/variables.css'
 import { createApp } from 'vue'
-import App from './App.vue'
+import MoriTravelApp from './App.vue'
 import router from './router'
 
-const app = createApp(App)
+const moriTravelApp = createApp(MoriTravelApp)
 
-app.use(router)
+moriTravelApp.use(router)
 
-app.mount('#app')
+moriTravelApp.mount('#mori-travel-app')
