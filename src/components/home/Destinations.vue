@@ -43,6 +43,6 @@ const destinations = [
 .list {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 35px;
 }
 </style>

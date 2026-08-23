@@ -20,8 +20,8 @@ defineProps({
   gap: 8px;
 }
 .photo {
-  width: 100px;
-  height: 100px;
+  width: 154px;
+  height: 154px;
   border-radius: 50%;
   object-fit: cover;
 }

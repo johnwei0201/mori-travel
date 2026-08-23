@@ -44,6 +44,11 @@
   text-decoration: none;
   color: #333;
   font-size: 15px;
+  transition: color 0.15s ease;
+}
+.nav a:hover {
+  font-weight: 700;
+  color: #c2410c;
 }
 
 .actions {
