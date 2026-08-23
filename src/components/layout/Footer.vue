@@ -146,4 +146,26 @@ const socials = [
   font-size: 13px;
   color: #9fc0be;
 }
+
+@media (max-width: 1024px) {
+  .footer {
+    padding: 40px 24px 20px;
+  }
+  .top {
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding: 32px 16px 20px;
+  }
+  .top {
+    flex-direction: column;
+    gap: 28px;
+  }
+  .subscribe {
+    max-width: none;
+  }
+}
 </style>

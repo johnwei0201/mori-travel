@@ -7,6 +7,7 @@ import italyImg from '../../assets/images/trip-italy-classic.png'
 const trips = [
   {
     id: 1,
+    slug: 'tokyo',
     tag: '人氣推薦',
     img: tokyoImg,
     title: '東京賞楓 5 日',
@@ -17,6 +18,7 @@ const trips = [
   },
   {
     id: 2,
+    slug: 'hokkaido',
     tag: '熱銷中',
     img: hokkaidoImg,
     title: '北海道雪祭 6 日',
@@ -27,6 +29,7 @@ const trips = [
   },
   {
     id: 3,
+    slug: 'italy',
     tag: '經典首選',
     img: italyImg,
     title: '義大利經典 10 日',
@@ -42,17 +45,24 @@ const trips = [
   <section class="trips">
     <h2 class="title">精選國外行程</h2>
     <div class="list">
-      <TripCard
+      <RouterLink
         v-for="trip in trips"
         :key="trip.id"
-        :tag="trip.tag"
-        :img="trip.img"
-        :title="trip.title"
-        :date="trip.date"
-        :duration="trip.duration"
-        :features="trip.features"
-        :price="trip.price"
-      />
+        :to="`/trips/${trip.slug}`"
+        target="_blank"
+        rel="noopener"
+        class="link"
+      >
+        <TripCard
+          :tag="trip.tag"
+          :img="trip.img"
+          :title="trip.title"
+          :date="trip.date"
+          :duration="trip.duration"
+          :features="trip.features"
+          :price="trip.price"
+        />
+      </RouterLink>
     </div>
   </section>
 </template>
@@ -70,5 +80,27 @@ const trips = [
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 1024px) {
+  .trips {
+    padding: 32px 24px;
+  }
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .trips {
+    padding: 24px 16px;
+  }
+  .list {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

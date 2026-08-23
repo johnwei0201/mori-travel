@@ -95,4 +95,48 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   cursor: pointer;
   white-space: nowrap;
 }
+
+@media (max-width: 1024px) {
+  .hero-image {
+    height: 400px;
+  }
+  .search-card {
+    width: min(600px, 92%);
+    padding: 24px;
+  }
+  .search-form {
+    flex-wrap: wrap;
+  }
+  .search-field {
+    min-width: 45%;
+  }
+  .search-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-image {
+    height: 620px;
+  }
+  .search-card {
+    width: 92%;
+    padding: 18px;
+  }
+  .search-title {
+    font-size: 17px;
+    margin-bottom: 14px;
+  }
+  .search-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .search-field {
+    min-width: 0;
+  }
+  .search-btn {
+    grid-column: 1 / -1;
+  }
+}
 </style>

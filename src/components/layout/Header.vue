@@ -2,11 +2,11 @@
 
 <template>
   <header class="header">
-    <div class="logo">MORI <span>TRAVEL</span></div>
+    <RouterLink to="/" class="logo">MORI <span>TRAVEL</span></RouterLink>
 
     <nav class="nav">
-      <a href="#">國外跟團</a>
-      <a href="#">自由行</a>
+      <a href="#">國內旅遊</a>
+      <a href="#">國外旅遊</a>
       <a href="#">機票訂房</a>
       <a href="#">旅遊指南</a>
     </nav>
@@ -31,6 +31,7 @@
   font-size: 22px;
   font-weight: 700;
   color: var(--color-primary);
+  text-decoration: none;
 }
 .logo span {
   font-weight: 400;
@@ -41,14 +42,15 @@
   gap: 32px;
 }
 .nav a {
+  display: inline-block;
   text-decoration: none;
   color: #333;
-  font-size: 15px;
+  font-size: 17px;
   transition: color 0.15s ease;
 }
 .nav a:hover {
-  font-weight: 700;
   color: #c2410c;
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
 }
 
 .actions {
@@ -72,5 +74,30 @@
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 14px 24px;
+  }
+  .nav {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 12px 16px;
+  }
+  .nav {
+    display: none;
+  }
+  .logo {
+    font-size: 19px;
+  }
+  .cta-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
 }
 </style>

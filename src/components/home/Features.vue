@@ -29,4 +29,21 @@ const features = [
   background: #faf5ec;
   border-radius: 16px;
 }
+
+@media (max-width: 1024px) {
+  .features {
+    margin: 0 24px 32px;
+    padding: 24px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .features {
+    flex-direction: column;
+    margin: 0 16px 24px;
+    padding: 20px;
+    gap: 20px;
+  }
+}
 </style>
