@@ -11,15 +11,15 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
 
       <div class="search-form">
         <div class="search-field">
-          <label>想去哪裡</label>
+          <label>DESTINATION</label>
           <input type="text" placeholder="輸入國家、城市或景點" />
         </div>
         <div class="search-field">
-          <label>出發月份</label>
+          <label>DEPARTURE MONTH</label>
           <input type="text" placeholder="選擇出發月份" />
         </div>
         <div class="search-field">
-          <label>旅遊天數</label>
+          <label>DURATION</label>
           <input type="text" placeholder="選擇天數" />
         </div>
         <button class="search-btn">搜尋行程</button>
