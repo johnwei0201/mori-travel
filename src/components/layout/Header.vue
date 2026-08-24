@@ -5,10 +5,10 @@
     <RouterLink to="/" class="logo">MORI <span>TRAVEL</span></RouterLink>
 
     <nav class="nav">
-      <a href="#">國內旅遊</a>
-      <a href="#">國外旅遊</a>
-      <a href="#">機票訂房</a>
-      <a href="#">旅遊指南</a>
+      <RouterLink to="/domestic">國內旅遊</RouterLink>
+      <RouterLink to="/international">國外旅遊</RouterLink>
+      <RouterLink to="/booking">機票訂房</RouterLink>
+      <RouterLink to="/guide">旅遊指南</RouterLink>
     </nav>
 
     <div class="actions">
