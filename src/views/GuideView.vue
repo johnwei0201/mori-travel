@@ -28,6 +28,33 @@ const articles = [
 ]
 
 const categories = ['🎒 行前準備', '🚄 交通指南', '🍜 美食推薦', '🏨 住宿攻略']
+
+const checklist = [
+  {
+    id: 1,
+    icon: '🛂',
+    title: '證件財務',
+    items: ['護照(效期 6 個月以上)', '簽證 / 電子許可', '機票與訂房確認單', '信用卡・現金・當地貨幣'],
+  },
+  {
+    id: 2,
+    icon: '🧳',
+    title: '衣物穿搭',
+    items: ['換洗衣物', '保暖外套 / 雨具', '舒適好走的鞋款', '睡衣'],
+  },
+  {
+    id: 3,
+    icon: '🪥',
+    title: '個人清潔',
+    items: ['牙刷、牙膏', '毛巾、盥洗用品', '防曬乳、個人保養品', '常備藥品'],
+  },
+  {
+    id: 4,
+    icon: '🔌',
+    title: '3C 用品',
+    items: ['手機、充電器', '轉接頭、行動電源', '相機、記憶卡', '耳機'],
+  },
+]
 </script>
 
 <template>
@@ -38,6 +65,20 @@ const categories = ['🎒 行前準備', '🚄 交通指南', '🍜 美食推薦
     <div class="guide-search">
       <input type="text" placeholder="搜尋文章,例如:東京、賞楓、簽證" />
       <button>搜尋</button>
+    </div>
+  </section>
+
+  <section class="checklist-section">
+    <div class="section-label">BEFORE YOU GO</div>
+    <h2>行前必備清單</h2>
+    <div class="checklist-grid">
+      <div class="checklist-card" v-for="c in checklist" :key="c.id">
+        <div class="checklist-icon">{{ c.icon }}</div>
+        <h3>{{ c.title }}</h3>
+        <ul>
+          <li v-for="item in c.items" :key="item">{{ item }}</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -124,6 +165,63 @@ const categories = ['🎒 行前準備', '🚄 交通指南', '🍜 美食推薦
   color: var(--color-accent);
   font-weight: 700;
   margin-bottom: 8px;
+}
+
+.checklist-section {
+  padding: 56px 40px 0;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.checklist-section h2 {
+  font-size: 26px;
+  color: var(--color-primary);
+  margin: 0 0 28px;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.checklist-card {
+  background: #ffffff;
+  border: 1px solid #e7e0d6;
+  border-radius: 16px;
+  padding: 24px 20px;
+}
+.checklist-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fdf1e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.checklist-card h3 {
+  font-size: 15px;
+  margin: 0 0 12px;
+  color: #2b2420;
+}
+.checklist-card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checklist-card li {
+  font-size: 12.5px;
+  color: #6b6259;
+  padding: 4px 0 4px 20px;
+  position: relative;
+  line-height: 1.5;
+}
+.checklist-card li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
 .articles-section {
@@ -222,8 +320,18 @@ const categories = ['🎒 行前準備', '🚄 交通指南', '🍜 美食推薦
   cursor: pointer;
 }
 
+@media (max-width: 1024px) {
+  .checklist-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @media (max-width: 860px) {
   .article-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .checklist-grid {
     grid-template-columns: 1fr;
   }
 }

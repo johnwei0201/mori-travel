@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import destJapan from '../assets/images/destination-japan.png'
 import destKorea from '../assets/images/destination-korea.png'
 import destEurope from '../assets/images/destination-europe.png'
@@ -15,6 +16,8 @@ const stays = [
   { id: 2, name: '韓國住宿', img: destKorea, price: 1900 },
   { id: 3, name: '歐洲住宿', img: destEurope, price: 3600 },
 ]
+
+const activeTab = ref('flight')
 </script>
 
 <template>
@@ -25,14 +28,27 @@ const stays = [
 
     <div class="booking-widget">
       <div class="tabs">
-        <div class="tab active">✈️ 機票</div>
-        <div class="tab">🏨 訂房</div>
+        <div class="tab" :class="{ active: activeTab === 'flight' }" @click="activeTab = 'flight'">
+          ✈️ 機票
+        </div>
+        <div class="tab" :class="{ active: activeTab === 'hotel' }" @click="activeTab = 'hotel'">
+          🏨 訂房
+        </div>
       </div>
-      <div class="widget-form">
+
+      <div class="widget-form" v-if="activeTab === 'flight'">
         <div class="widget-field"><label>出發地</label><div class="val">台北 TPE</div></div>
         <div class="widget-field"><label>目的地</label><div class="val">東京 NRT</div></div>
         <div class="widget-field"><label>出發日期</label><div class="val">2025/11/12</div></div>
         <div class="widget-field"><label>旅客人數</label><div class="val">2 位成人</div></div>
+        <button class="widget-search-btn">搜尋</button>
+      </div>
+
+      <div class="widget-form" v-else>
+        <div class="widget-field"><label>目的地 / 飯店</label><div class="val">東京都</div></div>
+        <div class="widget-field"><label>入住日期</label><div class="val">2025/11/12</div></div>
+        <div class="widget-field"><label>退房日期</label><div class="val">2025/11/16</div></div>
+        <div class="widget-field"><label>房客與房間</label><div class="val">2 位成人・1 間房</div></div>
         <button class="widget-search-btn">搜尋</button>
       </div>
     </div>
@@ -115,6 +131,8 @@ const stays = [
   font-weight: 700;
   color: #6b6259;
   background: var(--color-bg);
+  cursor: pointer;
+  user-select: none;
 }
 .tab.active {
   color: var(--color-primary);
