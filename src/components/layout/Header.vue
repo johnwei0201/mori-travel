@@ -45,7 +45,7 @@
   display: inline-block;
   text-decoration: none;
   color: #333;
-  font-size: 17px;
+  font-size: 19px;
   transition: color 0.15s ease;
 }
 .nav a:hover {
