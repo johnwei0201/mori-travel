@@ -13,7 +13,7 @@
 
     <div class="actions">
       <button class="icon-btn">👤</button>
-      <button class="cta-btn">開始找旅行</button>
+      <RouterLink to="/plan" class="cta-btn">開始找旅行</RouterLink>
     </div>
   </header>
 </template>
@@ -74,6 +74,12 @@
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.15s ease;
+}
+.cta-btn:hover {
+  background: #d4551f;
 }
 
 @media (max-width: 1024px) {

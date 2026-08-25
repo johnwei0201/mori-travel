@@ -6,6 +6,7 @@ import DomesticView from '../views/DomesticView.vue'
 import InternationalView from '../views/InternationalView.vue'
 import BookingView from '../views/BookingView.vue'
 import GuideView from '../views/GuideView.vue'
+import PlanTripView from '../views/PlanTripView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: '/international', component: InternationalView },
     { path: '/booking', component: BookingView },
     { path: '/guide', component: GuideView },
+    { path: '/plan', component: PlanTripView },
   ],
   scrollBehavior() {
     return { top: 0 }
