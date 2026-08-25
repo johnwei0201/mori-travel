@@ -148,9 +148,8 @@ const whyItems = [
 }
 .region-card:hover {
   box-shadow: 0 12px 26px rgba(43, 36, 32, 0.2);
-}
-.region-card:hover .label {
-  color: #ffc4a3;
+  outline: 2.5px solid var(--color-accent);
+  outline-offset: -2.5px;
 }
 .region-card img {
   width: 100%;
@@ -167,7 +166,6 @@ const whyItems = [
   color: #fff;
   font-size: 17px;
   font-weight: 700;
-  transition: color 0.2s ease;
 }
 
 .why-section {

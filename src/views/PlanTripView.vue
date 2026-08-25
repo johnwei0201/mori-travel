@@ -418,6 +418,8 @@ const tripList = computed(() =>
 .style:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
+  outline: 2.5px solid var(--color-accent);
+  outline-offset: -2.5px;
 }
 .style-body {
   display: block;
