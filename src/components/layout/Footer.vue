@@ -113,6 +113,12 @@ const socials = [
   border-radius: 6px;
   border: none;
   font-size: 14px;
+  background: #ffffff;
+  color: #2b2420;
+}
+
+.sub-form input::placeholder {
+  color: #8b8178;
 }
 
 .sub-form button {
