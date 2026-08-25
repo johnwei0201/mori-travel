@@ -50,7 +50,9 @@
 }
 .nav a:hover {
   color: #c2410c;
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
+  text-shadow:
+    0 0 0.6px currentColor,
+    0 0 0.6px currentColor;
 }
 
 .actions {

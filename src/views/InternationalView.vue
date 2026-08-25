@@ -8,12 +8,12 @@ import destAmerica from '../assets/images/destination-america.png'
 import destOceania from '../assets/images/destination-oceania.png'
 
 const regions = [
-  { id: 1, name: '日本', img: destJapan },
-  { id: 2, name: '韓國', img: destKorea },
-  { id: 3, name: '東南亞', img: destSea },
-  { id: 4, name: '歐洲', img: destEurope },
-  { id: 5, name: '美加', img: destAmerica },
-  { id: 6, name: '紐澳', img: destOceania },
+  { id: 1, name: '日本', img: destJapan, slug: 'japan' },
+  { id: 2, name: '韓國', img: destKorea, slug: 'korea' },
+  { id: 3, name: '東南亞', img: destSea, slug: 'southeast-asia' },
+  { id: 4, name: '歐洲', img: destEurope, slug: 'europe' },
+  { id: 5, name: '美加', img: destAmerica, slug: 'america' },
+  { id: 6, name: '紐澳', img: destOceania, slug: 'oceania' },
 ]
 
 const whyItems = [
@@ -38,10 +38,17 @@ const whyItems = [
     <div class="section-label">DESTINATIONS</div>
     <h2>熱門地區</h2>
     <div class="region-grid">
-      <div class="region-card" v-for="r in regions" :key="r.id">
+      <RouterLink
+        class="region-card"
+        v-for="r in regions"
+        :key="r.id"
+        :to="`/destinations/${r.slug}`"
+        target="_blank"
+        rel="noopener"
+      >
         <img :src="r.img" :alt="r.name" />
         <div class="label">{{ r.name }}</div>
-      </div>
+      </RouterLink>
     </div>
   </section>
 
@@ -131,9 +138,19 @@ const whyItems = [
 }
 .region-card {
   position: relative;
+  display: block;
   border-radius: 16px;
   overflow: hidden;
   height: 200px;
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+.region-card:hover {
+  box-shadow: 0 12px 26px rgba(43, 36, 32, 0.2);
+}
+.region-card:hover .label {
+  color: #ffc4a3;
 }
 .region-card img {
   width: 100%;
@@ -150,6 +167,7 @@ const whyItems = [
   color: #fff;
   font-size: 17px;
   font-weight: 700;
+  transition: color 0.2s ease;
 }
 
 .why-section {
