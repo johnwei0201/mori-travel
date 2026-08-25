@@ -11,12 +11,14 @@ import promoImg from '../../assets/images/promo-autumn-lake.png'
 <style scoped>
 .promo {
   margin: 0 40px 40px;
-  border-radius: 16px;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
 .banner {
-  width: 100%;
+  width: 80%;
+  height: auto;
   display: block;
+  border-radius: 16px;
 }
 </style>
