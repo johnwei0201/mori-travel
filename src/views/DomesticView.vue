@@ -1,58 +1,65 @@
 <script setup>
-const categories = [
-  { id: 1, icon: '🏔️', title: '山林秘境', desc: '太魯閣、阿里山、合歡山的壯闊景色' },
-  { id: 2, icon: '🌊', title: '海島假期', desc: '澎湖、綠島、蘭嶼的湛藍海岸' },
-  { id: 3, icon: '🏙️', title: '城市小旅行', desc: '台北、台中、台南的人文步調' },
-  { id: 4, icon: '♨️', title: '溫泉療癒', desc: '北投、礁溪、關子嶺的放鬆時光' },
+// 圖片待補:之後把 import 解除註解,並把下面對應的 img 從 null 換成變數即可,
+// 版面與樣式都不用再改。
+// import heroTaiwan from '../assets/images/hero-taiwan.png'
+// import destNorth from '../assets/images/destination-north.png'
+// ...
+
+const heroImg = null
+
+const regions = [
+  { id: 1, name: '台北・北海岸', img: null },
+  { id: 2, name: '宜蘭・花蓮', img: null },
+  { id: 3, name: '台中・南投', img: null },
+  { id: 4, name: '台南・高雄', img: null },
+  { id: 5, name: '墾丁・屏東', img: null },
+  { id: 6, name: '澎湖・離島', img: null },
 ]
 
-const trips = [
-  { id: 1, gradient: 'linear-gradient(135deg,#3d8a86,#0a5f61)', title: '花蓮太魯閣三日遊', desc: '峽谷步道・清水斷崖', price: 8900 },
-  { id: 2, gradient: 'linear-gradient(135deg,#4fa8c9,#0a5f61)', title: '墾丁陽光假期', desc: '沙灘海景・南國度假', price: 6500 },
-  { id: 3, gradient: 'linear-gradient(135deg,#e8622c,#c2410c)', title: '台南美食巡禮', desc: '古都散策・在地小吃', price: 4900 },
+const whyItems = [
+  { id: 1, icon: '🚐', title: '專車接送', desc: '定點集合出發,免自行開車' },
+  { id: 2, icon: '🎧', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
+  { id: 3, icon: '📋', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
 ]
 </script>
 
 <template>
-  <section class="hero-illust">
-    <svg class="illust-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice">
-      <rect width="1200" height="380" fill="#fdf1e0" />
-      <circle cx="980" cy="80" r="46" fill="#e8622c" opacity="0.85" />
-      <polygon points="0,380 220,170 400,300 580,130 780,300 980,190 1200,380" fill="#0a5f61" opacity="0.22" />
-      <polygon points="0,380 160,250 360,360 540,210 740,360 920,250 1200,380" fill="#0a5f61" opacity="0.4" />
-      <polygon points="0,380 280,300 480,370 660,290 860,370 1200,300 1200,380" fill="#0a5f61" />
-    </svg>
-    <div class="hero-illust-text">
+  <section class="hero-photo">
+    <img v-if="heroImg" :src="heroImg" alt="國內旅遊" class="hero-img" />
+    <div v-else class="hero-img hero-placeholder">
+      <span class="ph-mark">🖼</span>
+      <span class="ph-text">主視覺待補</span>
+    </div>
+    <div class="hero-scrim" :class="{ 'scrim-light': !heroImg }"></div>
+    <div class="hero-text" :class="{ 'text-dark': !heroImg }">
       <div class="eyebrow">DOMESTIC TRAVEL</div>
       <h1>國內旅遊</h1>
       <p>從城市到山海,發現台灣的美好日常</p>
     </div>
   </section>
 
-  <section class="category-section wrap">
-    <div class="section-label">EXPLORE</div>
-    <h2>熱門主題</h2>
-    <div class="category-grid">
-      <div class="category-card" v-for="c in categories" :key="c.id">
-        <div class="cat-icon">{{ c.icon }}</div>
-        <h3>{{ c.title }}</h3>
-        <p>{{ c.desc }}</p>
+  <section class="region-section">
+    <div class="section-label">DESTINATIONS</div>
+    <h2>熱門地區</h2>
+    <div class="region-grid">
+      <div class="region-card" v-for="r in regions" :key="r.id">
+        <img v-if="r.img" :src="r.img" :alt="r.name" />
+        <div v-else class="card-placeholder">
+          <span class="ph-mark">🖼</span>
+          <span class="ph-text">圖片待補</span>
+        </div>
+        <div class="label" :class="{ 'label-dark': !r.img }">{{ r.name }}</div>
       </div>
     </div>
   </section>
 
-  <section class="trips-section">
-    <div class="inner">
-      <div class="section-label">POPULAR</div>
-      <h2>熱門行程</h2>
-      <div class="trip-grid">
-        <div class="trip-card-mock" v-for="t in trips" :key="t.id">
-          <div class="mock-photo" :style="{ background: t.gradient }"></div>
-          <div class="trip-info">
-            <h3>{{ t.title }}</h3>
-            <p>{{ t.desc }}</p>
-            <div class="price">NT${{ t.price.toLocaleString() }} 起</div>
-          </div>
+  <section class="why-section">
+    <div class="why-inner">
+      <div class="why-item" v-for="w in whyItems" :key="w.id">
+        <span class="icon">{{ w.icon }}</span>
+        <div>
+          <h3>{{ w.title }}</h3>
+          <p>{{ w.desc }}</p>
         </div>
       </div>
     </div>
@@ -66,48 +73,94 @@ const trips = [
 </template>
 
 <style scoped>
-.hero-illust {
+.hero-photo {
   position: relative;
-  overflow: hidden;
 }
-.illust-svg {
+.hero-img {
   width: 100%;
-  height: 380px;
+  height: 420px;
+  object-fit: cover;
   display: block;
 }
-.hero-illust-text {
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 32, 31, 0.05), rgba(6, 32, 31, 0.65));
+}
+.hero-text {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 60px;
   text-align: center;
+  color: #fff;
 }
 .eyebrow {
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--color-primary);
-  opacity: 0.75;
+  opacity: 0.85;
   margin-bottom: 10px;
 }
-.hero-illust-text h1 {
+.hero-text h1 {
   font-weight: 700;
   font-size: clamp(36px, 6vw, 56px);
-  color: var(--color-primary);
   margin: 0 0 10px;
 }
-.hero-illust-text p {
+.hero-text p {
   font-size: 16px;
-  color: #6b6259;
+  opacity: 0.9;
   margin: 0;
 }
 
-.wrap {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 40px;
+/* 圖片待補時的佔位樣式 —— 補上真實圖片後這些規則就不會生效 */
+.hero-placeholder,
+.card-placeholder {
+  background: repeating-linear-gradient(
+    45deg,
+    #f3ece1,
+    #f3ece1 14px,
+    #efe6d8 14px,
+    #efe6d8 28px
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #a89c8e;
 }
+.card-placeholder {
+  width: 100%;
+  height: 100%;
+}
+/* 主視覺的標示往上靠,避免和置底的標題文字重疊 */
+.hero-placeholder {
+  justify-content: flex-start;
+  padding-top: 48px;
+}
+.ph-mark {
+  font-size: 26px;
+  opacity: 0.7;
+}
+.ph-text {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.scrim-light {
+  background: linear-gradient(180deg, rgba(6, 32, 31, 0), rgba(6, 32, 31, 0.06));
+}
+.text-dark {
+  color: var(--color-primary);
+}
+.text-dark .eyebrow {
+  opacity: 0.7;
+}
+.text-dark p {
+  color: #6b6259;
+  opacity: 1;
+}
+
 .section-label {
   font-size: 12.5px;
   letter-spacing: 2px;
@@ -117,92 +170,93 @@ const trips = [
   margin-bottom: 8px;
 }
 
-.category-section {
+.region-section {
   padding: 64px 40px;
-}
-.category-section h2 {
-  font-size: 26px;
-  color: var(--color-primary);
-  margin: 0 0 32px;
-}
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-}
-.category-card {
-  background: #ffffff;
-  border: 1px solid #e7e0d6;
-  border-radius: 16px;
-  padding: 28px 22px;
-  text-align: center;
-}
-.cat-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #fdf1e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin: 0 auto 16px;
-}
-.category-card h3 {
-  font-size: 16px;
-  margin: 0 0 8px;
-}
-.category-card p {
-  font-size: 13px;
-  color: #6b6259;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.trips-section {
-  background: #fdf1e0;
-  padding: 60px 40px;
-}
-.trips-section .inner {
   max-width: 1120px;
   margin: 0 auto;
 }
-.trips-section h2 {
+.region-section h2 {
   font-size: 26px;
   color: var(--color-primary);
   margin: 0 0 32px;
 }
-.trip-grid {
+.region-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-.trip-card-mock {
-  background: #ffffff;
+.region-card {
+  position: relative;
+  display: block;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(43, 36, 32, 0.08);
+  height: 200px;
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
 }
-.mock-photo {
-  height: 180px;
+.region-card:hover {
+  box-shadow: 0 12px 26px rgba(43, 36, 32, 0.2);
+  outline: 2.5px solid var(--color-accent);
+  outline-offset: -2.5px;
 }
-.trip-info {
-  padding: 18px 20px;
+.region-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.trip-info h3 {
-  font-size: 16px;
-  margin: 0 0 6px;
-  color: #2b2420;
-}
-.trip-info p {
-  font-size: 13px;
-  color: #6b6259;
-  margin: 0 0 12px;
-}
-.trip-info .price {
+.region-card .label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16px;
+  background: linear-gradient(180deg, transparent, rgba(6, 32, 31, 0.7));
+  color: #fff;
   font-size: 17px;
   font-weight: 700;
-  color: var(--color-accent);
+}
+.region-card .label-dark {
+  background: none;
+  color: var(--color-primary);
+}
+
+.why-section {
+  background: #fdf1e0;
+  padding: 56px 40px;
+}
+.why-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+}
+.why-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.why-item .icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.why-item h3 {
+  font-size: 15px;
+  margin: 0 0 4px;
+  color: var(--color-primary);
+}
+.why-item p {
+  font-size: 12.5px;
+  color: #6b6259;
+  margin: 0;
 }
 
 .cta-banner {
@@ -235,13 +289,17 @@ const trips = [
 }
 
 @media (max-width: 1024px) {
-  .category-grid {
+  .hero-img {
+    height: 340px;
+  }
+  .region-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 640px) {
-  .trip-grid {
-    grid-template-columns: 1fr;
+  .why-inner {
+    flex-direction: column;
+    gap: 20px;
   }
 }
 </style>
