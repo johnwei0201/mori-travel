@@ -3,16 +3,86 @@ import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import heroFuji from '../assets/images/hero-japan-fuji.png'
 import { travelStyles, months, hotSearches, otherPaths } from '../data/planTrip.js'
-import { trips } from '../data/trips.js'
+import { tripCatalog, durationOptions, budgetOptions } from '../data/tripCatalog.js'
 
-const selectedStyle = ref('autumn')
-const selectedMonth = ref(11)
+// 篩選條件:全部都是空字串 / null = 不限
+const keyword = ref('')
+const selectedMonth = ref(null)
+const selectedDuration = ref('')
+const selectedBudget = ref('')
+const selectedStyle = ref(null)
 
-const styleName = computed(() => travelStyles.find((s) => s.id === selectedStyle.value).name)
-
-const tripList = computed(() =>
-  Object.entries(trips).map(([slug, trip]) => ({ slug, ...trip })),
+const styleName = computed(
+  () => travelStyles.find((s) => s.id === selectedStyle.value)?.name ?? '不限風格',
 )
+const monthName = computed(() => (selectedMonth.value ? `${selectedMonth.value} 月` : '不限月份'))
+
+// 已套用的條件,用來顯示標籤列與判斷要不要顯示「清除」
+const activeFilters = computed(() => {
+  const list = []
+  if (keyword.value.trim()) list.push({ key: 'keyword', text: `關鍵字:${keyword.value.trim()}` })
+  if (selectedStyle.value) list.push({ key: 'style', text: styleName.value })
+  if (selectedMonth.value) list.push({ key: 'month', text: `${selectedMonth.value} 月出發` })
+  if (selectedDuration.value) list.push({ key: 'duration', text: selectedDuration.value })
+  if (selectedBudget.value) list.push({ key: 'budget', text: selectedBudget.value })
+  return list
+})
+
+const results = computed(() =>
+  tripCatalog.filter((t) => {
+    // 關鍵字:比對標題、地區與 keywords 陣列
+    const kw = keyword.value.trim().toLowerCase()
+    if (kw) {
+      const haystack = [t.title, t.region, ...(t.keywords ?? [])].join(' ').toLowerCase()
+      if (!haystack.includes(kw)) return false
+    }
+    if (selectedMonth.value && t.month !== selectedMonth.value) return false
+    if (selectedStyle.value && !t.styles.includes(selectedStyle.value)) return false
+
+    if (selectedDuration.value) {
+      const d = durationOptions.find((o) => o.label === selectedDuration.value)
+      if (d && (t.days < d.min || t.days > d.max)) return false
+    }
+    if (selectedBudget.value) {
+      const b = budgetOptions.find((o) => o.label === selectedBudget.value)
+      if (b && (t.price < b.min || t.price > b.max)) return false
+    }
+    return true
+  }),
+)
+
+// 依出發日期由近至遠
+const sortedResults = computed(() =>
+  [...results.value].sort((a, b) => a.date.localeCompare(b.date)),
+)
+
+function removeFilter(key) {
+  if (key === 'keyword') keyword.value = ''
+  if (key === 'style') selectedStyle.value = null
+  if (key === 'month') selectedMonth.value = null
+  if (key === 'duration') selectedDuration.value = ''
+  if (key === 'budget') selectedBudget.value = ''
+}
+
+function clearAll() {
+  keyword.value = ''
+  selectedStyle.value = null
+  selectedMonth.value = null
+  selectedDuration.value = ''
+  selectedBudget.value = ''
+}
+
+// 再點一次同一個選項 = 取消選取,方便把條件放寬
+function pickStyle(id) {
+  selectedStyle.value = selectedStyle.value === id ? null : id
+}
+function pickMonth(m) {
+  selectedMonth.value = selectedMonth.value === m ? null : m
+}
+
+function scrollToResults() {
+  document.getElementById('results')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 </script>
 
 <template>
@@ -33,31 +103,49 @@ const tripList = computed(() =>
         <span class="hint">全部選填,填越多找得越準</span>
       </div>
 
-      <div class="fields">
+      <form class="fields" @submit.prevent="scrollToResults">
         <div class="field">
-          <label>DESTINATION</label>
-          <div class="value placeholder">輸入國家、城市或景點</div>
+          <label for="f-keyword">DESTINATION</label>
+          <input
+            id="f-keyword"
+            v-model="keyword"
+            type="search"
+            placeholder="輸入國家、城市或景點"
+          />
         </div>
         <div class="field">
-          <label>DEPARTURE MONTH</label>
-          <div class="value">
-            <span>2025 年 {{ selectedMonth }} 月</span><span class="caret">▾</span>
-          </div>
+          <label for="f-month">DEPARTURE MONTH</label>
+          <select id="f-month" v-model="selectedMonth">
+            <option :value="null">不限月份</option>
+            <option v-for="mo in months" :key="mo.m" :value="mo.m">{{ mo.m }} 月</option>
+          </select>
         </div>
         <div class="field">
-          <label>DURATION</label>
-          <div class="value"><span>5–7 天</span><span class="caret">▾</span></div>
+          <label for="f-days">DURATION</label>
+          <select id="f-days" v-model="selectedDuration">
+            <option value="">不限天數</option>
+            <option v-for="d in durationOptions" :key="d.label" :value="d.label">
+              {{ d.label }}
+            </option>
+          </select>
         </div>
         <div class="field">
-          <label>BUDGET</label>
-          <div class="value"><span>NT$3 萬以下</span><span class="caret">▾</span></div>
+          <label for="f-budget">BUDGET</label>
+          <select id="f-budget" v-model="selectedBudget">
+            <option value="">不限預算</option>
+            <option v-for="b in budgetOptions" :key="b.label" :value="b.label">
+              {{ b.label }}
+            </option>
+          </select>
         </div>
-        <button class="search-btn">搜尋行程</button>
-      </div>
+        <button type="submit" class="search-btn">搜尋行程</button>
+      </form>
 
       <div class="quick">
         <span>熱門搜尋</span>
-        <a v-for="q in hotSearches" :key="q" href="#">{{ q }}</a>
+        <button v-for="q in hotSearches" :key="q" type="button" @click="keyword = q">
+          {{ q }}
+        </button>
       </div>
     </div>
   </div>
@@ -68,7 +156,7 @@ const tripList = computed(() =>
       <div class="step-title">
         <div class="eyebrow">TRAVEL STYLE</div>
         <h2>你想要什麼樣的旅行?</h2>
-        <p>先從感覺開始挑。選一個最貼近你這趟想要的氛圍,我們會依此篩掉不合適的行程。</p>
+        <p>先從感覺開始挑。選一個最貼近你這趟想要的氛圍,再點一次可以取消選取。</p>
       </div>
     </div>
 
@@ -79,7 +167,7 @@ const tripList = computed(() =>
         class="style"
         :class="{ active: selectedStyle === s.id }"
         :aria-pressed="selectedStyle === s.id"
-        @click="selectedStyle = s.id"
+        @click="pickStyle(s.id)"
       >
         <img :src="s.img" :alt="s.name" />
         <span class="style-mark">✓</span>
@@ -108,7 +196,7 @@ const tripList = computed(() =>
         class="month"
         :class="{ active: selectedMonth === mo.m }"
         :aria-pressed="selectedMonth === mo.m"
-        @click="selectedMonth = mo.m"
+        @click="pickMonth(mo.m)"
       >
         <span class="month-num">{{ String(mo.m).padStart(2, '0') }}<em>月</em></span>
         <span class="month-season">{{ mo.season }}</span>
@@ -118,27 +206,40 @@ const tripList = computed(() =>
     <p class="months-note">※ 花期與雪況每年略有差異,實際出發日期以行程頁面公告為準。</p>
   </section>
 
-  <section class="step wrap tight">
+  <section id="results" class="step wrap tight">
     <div class="step-head">
       <div class="step-num">03</div>
       <div class="step-title">
         <div class="eyebrow">YOUR MATCHES</div>
         <h2>剛剛好的行程</h2>
         <p>
-          依照你選的「{{ styleName }} × {{ selectedMonth }} 月出發」,我們挑出這幾趟。點進去可以看完整每日行程與費用說明。
+          目前條件是「{{ styleName }} × {{ monthName }}」。上面任何一個欄位改動,這裡都會即時跟著變。
         </p>
       </div>
     </div>
 
     <div class="result-bar">
-      <span>符合條件的行程 <b>{{ tripList.length }}</b> 筆</span>
-      <span class="sort">排序:出發日期由近至遠</span>
+      <span>符合條件的行程 <b>{{ sortedResults.length }}</b> 筆</span>
+      <div v-if="activeFilters.length" class="filter-tags">
+        <button
+          v-for="f in activeFilters"
+          :key="f.key"
+          class="filter-tag"
+          @click="removeFilter(f.key)"
+        >
+          {{ f.text }} <span aria-hidden="true">×</span>
+          <span class="sr-only">移除此條件</span>
+        </button>
+        <button class="clear-all" @click="clearAll">清除全部</button>
+      </div>
+      <span v-else class="sort">排序:出發日期由近至遠</span>
     </div>
 
-    <div class="trips">
-      <article v-for="trip in tripList" :key="trip.slug" class="trip">
+    <div v-if="sortedResults.length" class="trips">
+      <article v-for="trip in sortedResults" :key="trip.id" class="trip">
         <div class="trip-media">
-          <img :src="trip.heroImg" :alt="trip.title" />
+          <img v-if="trip.img" :src="trip.img" :alt="trip.title" />
+          <div v-else class="trip-placeholder">圖片待補</div>
           <span class="trip-tag">{{ trip.tag }}</span>
         </div>
         <div class="trip-body">
@@ -152,10 +253,24 @@ const tripList = computed(() =>
           </div>
           <div class="trip-foot">
             <span class="price">NT${{ trip.price.toLocaleString() }}<small>/人</small></span>
-            <RouterLink :to="`/trips/${trip.slug}`">查看行程</RouterLink>
+            <RouterLink v-if="trip.detailSlug" :to="`/trips/${trip.detailSlug}`">
+              查看行程
+            </RouterLink>
+            <RouterLink v-else :to="{ path: '/consult', query: { topic: trip.region } }">
+              諮詢這條路線
+            </RouterLink>
           </div>
         </div>
       </article>
+    </div>
+
+    <div v-else class="no-result">
+      <p class="no-result-lead">目前沒有行程同時符合這些條件。</p>
+      <p class="no-result-hint">可以移除其中一兩個條件再看看,或直接讓顧問幫你找。</p>
+      <div class="no-result-actions">
+        <button class="reset-btn" @click="clearAll">清除全部條件</button>
+        <RouterLink to="/consult" class="ask-link">請顧問幫我找 →</RouterLink>
+      </div>
     </div>
   </section>
 
@@ -296,20 +411,30 @@ const tripList = computed(() =>
   line-height: 1;
   margin-bottom: 6px;
 }
-.field .value {
+.field input,
+.field select {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
   font-size: 14.5px;
   color: #2b2420;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  padding: 0;
+  cursor: pointer;
 }
-.field .value.placeholder {
+.field input {
+  cursor: text;
+}
+.field input:focus,
+.field select:focus {
+  outline: none;
+}
+.field:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
+}
+.field input::placeholder {
   color: #a89c8e;
-}
-.field .caret {
-  color: #b5a898;
-  font-size: 11px;
 }
 .search-btn {
   background: var(--color-accent);
@@ -339,18 +464,20 @@ const tripList = computed(() =>
   font-size: 13px;
   color: #6b6259;
 }
-.quick a {
+.quick button {
   color: var(--color-primary);
-  text-decoration: none;
+  font: inherit;
+  font-size: 13px;
   border: 1px solid #e7e0d6;
   border-radius: 999px;
   padding: 4px 13px;
   background: var(--color-bg);
+  cursor: pointer;
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
 }
-.quick a:hover {
+.quick button:hover {
   border-color: var(--color-primary);
   background: #eef4f2;
 }
@@ -555,6 +682,114 @@ const tripList = computed(() =>
 .result-bar .sort {
   color: #6b6259;
   font-size: 13px;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.filter-tag {
+  border: 1px solid #e3cdae;
+  background: #ffffff;
+  color: var(--color-primary);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.filter-tag:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.clear-all {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: #6b6259;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.clear-all:hover {
+  color: var(--color-accent);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.trip-placeholder {
+  width: 100%;
+  height: clamp(150px, 17vw, 194px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #a89c8e;
+  background: repeating-linear-gradient(
+    45deg,
+    #f3ece1,
+    #f3ece1 14px,
+    #efe6d8 14px,
+    #efe6d8 28px
+  );
+}
+
+.no-result {
+  border: 1px dashed #ddd0bd;
+  border-radius: 14px;
+  padding: clamp(32px, 5vw, 56px) 24px;
+  text-align: center;
+  background: #fffdfa;
+}
+.no-result-lead {
+  font-size: 16.5px;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+.no-result-hint {
+  font-size: 14px;
+  color: #6b6259;
+  margin-top: 8px;
+}
+.no-result-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.reset-btn {
+  border: 1px solid #e7e0d6;
+  background: #fff;
+  border-radius: 8px;
+  padding: 11px 22px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.reset-btn:hover {
+  border-color: var(--color-primary);
+}
+.ask-link {
+  font-size: 14px;
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .trips {
