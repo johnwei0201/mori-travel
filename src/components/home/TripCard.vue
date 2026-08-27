@@ -60,7 +60,7 @@ defineProps({
   left: 12px;
   background: var(--color-accent);
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   padding: 4px 10px;
   border-radius: 6px;
 }
@@ -88,7 +88,7 @@ defineProps({
 .feature {
   background: #f3f0ea;
   color: #666;
-  font-size: 12px;
+  font-size: 14px;
   padding: 4px 10px;
   border-radius: 6px;
 }

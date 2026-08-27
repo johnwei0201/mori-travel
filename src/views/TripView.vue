@@ -157,7 +157,7 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
   display: inline-block;
   background: var(--color-accent);
   color: #fff;
-  font-size: 12.5px;
+  font-size: 15px;
   padding: 4px 12px;
   border-radius: 6px;
   margin-bottom: 12px;
@@ -223,7 +223,7 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
 .tag-list span {
   background: var(--color-peach, #fdf1e0);
   color: var(--color-primary);
-  font-size: 13px;
+  font-size: 15px;
   padding: 6px 14px;
   border-radius: 6px;
   font-weight: 500;

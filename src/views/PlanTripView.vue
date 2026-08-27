@@ -592,7 +592,7 @@ const tripList = computed(() =>
   left: 12px;
   background: var(--color-accent);
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   padding: 4px 11px;
   border-radius: 6px;
 }
@@ -622,7 +622,7 @@ const tripList = computed(() =>
 .trip-chips span {
   background: #fdf1e0;
   color: var(--color-primary);
-  font-size: 12px;
+  font-size: 14px;
   padding: 4px 10px;
   border-radius: 6px;
 }

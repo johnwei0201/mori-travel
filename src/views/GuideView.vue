@@ -254,7 +254,7 @@ const checklist = [
   padding: 18px 20px;
 }
 .article-tag {
-  font-size: 11.5px;
+  font-size: 14px;
   color: var(--color-accent);
   font-weight: 700;
   text-transform: uppercase;
