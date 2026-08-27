@@ -2,4 +2,20 @@
   --color-primary: #0a5f61;
   --color-accent: #e8622c;
   --color-bg: #faf7f2;
+
+  /* Header 是 sticky 的,頁面裡其他 sticky 元素要用這個值避開它。
+     數值 = 各斷點下 Header 的實際高度(含 1px 底線) */
+  --header-h: 73px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --header-h: 69px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-h: 61px;
+  }
 }

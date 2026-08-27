@@ -305,7 +305,7 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
 
 .booking-box {
   position: sticky;
-  top: 24px;
+  top: calc(var(--header-h) + 24px);
   background: #ffffff;
   border: 1px solid #e7e0d6;
   border-radius: 16px;

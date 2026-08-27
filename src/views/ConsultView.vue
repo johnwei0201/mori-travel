@@ -629,7 +629,7 @@ function reset() {
 /* 側欄 */
 .side {
   position: sticky;
-  top: 24px;
+  top: calc(var(--header-h) + 24px);
   display: grid;
   gap: 16px;
 }

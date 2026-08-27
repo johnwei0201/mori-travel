@@ -5,6 +5,7 @@
     <RouterLink to="/" class="logo">MORI <span>TRAVEL</span></RouterLink>
 
     <nav class="nav">
+      <RouterLink to="/">回首頁</RouterLink>
       <RouterLink to="/domestic">國內旅遊</RouterLink>
       <RouterLink to="/international">國外旅遊</RouterLink>
       <RouterLink to="/booking">機票訂房</RouterLink>
@@ -25,6 +26,10 @@
   justify-content: space-between;
   padding: 16px 40px;
   background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #e7e0d6;
 }
 
 .logo {
