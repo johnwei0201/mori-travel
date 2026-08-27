@@ -25,7 +25,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 40px;
-  background: #ffffff;
+  background: #f3ece1;
   position: sticky;
   top: 0;
   z-index: 50;
