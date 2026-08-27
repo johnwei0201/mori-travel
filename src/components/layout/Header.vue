@@ -46,14 +46,18 @@
   display: flex;
   /* 連結左右各 16px 內距,兩兩相加剛好是原本的 32px 字間距 */
   gap: 0;
+  /* 撐滿 Header 內容高度,再用負 margin 吃掉 Header 的上下內距,
+     這樣 hover 的底色才會從 Header 頂端貫穿到底端 */
+  align-self: stretch;
+  margin-block: -16px;
 }
 .nav a {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: #333;
   font-size: 19px;
-  padding: 6px 16px;
-  border-radius: 8px;
+  padding: 0 16px;
   transition:
     color 0.15s ease,
     background 0.15s ease;
@@ -99,8 +103,11 @@
   .header {
     padding: 14px 24px;
   }
+  .nav {
+    margin-block: -14px;
+  }
   .nav a {
-    padding: 6px 12px;
+    padding: 0 12px;
   }
 }
 
