@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router'
+
 defineProps({
   icon: String,
   title: String,
@@ -7,13 +9,13 @@ defineProps({
 </script>
 
 <template>
-  <div class="feature-item">
+  <RouterLink to="/consult" class="feature-item">
     <span class="icon">{{ icon }}</span>
     <div class="text">
       <h3 class="title">{{ title }}</h3>
       <p class="desc">{{ desc }}</p>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -22,6 +24,17 @@ defineProps({
   align-items: center;
   gap: 16px;
   flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+.feature-item:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
 }
 .icon {
   width: 48px;

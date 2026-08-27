@@ -156,7 +156,7 @@ function reset() {
           <legend class="block-label">STEP 01 — 怎麼聯繫你</legend>
 
           <div class="field">
-            <label for="c-name">怎麼稱呼你 <span class="req">必填</span></label>
+            <label for="c-name">如何稱呼您 <span class="req">必填</span></label>
             <input
               id="c-name"
               v-model="form.name"
