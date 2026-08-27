@@ -70,7 +70,7 @@
   border-radius: 50%;
   width: 36px;
   height: 36px;
-  background: none;
+  background: #ffffff;
   cursor: pointer;
 }
 .cta-btn {
