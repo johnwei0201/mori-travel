@@ -54,20 +54,20 @@ const whyItems = [
 
   <section class="why-section">
     <div class="why-inner">
-      <div class="why-item" v-for="w in whyItems" :key="w.id">
+      <RouterLink class="why-item" v-for="w in whyItems" :key="w.id" to="/consult">
         <span class="icon">{{ w.icon }}</span>
         <div>
           <h3>{{ w.title }}</h3>
           <p>{{ w.desc }}</p>
         </div>
-      </div>
+      </RouterLink>
     </div>
   </section>
 
   <div class="cta-banner">
     <h2>準備好出發了嗎?</h2>
     <p>探索六大洲熱門地區,找到剛剛好的國外旅程。</p>
-    <button>瀏覽全部行程</button>
+    <RouterLink to="/plan" class="cta-link">瀏覽全部行程</RouterLink>
   </div>
 </template>
 
@@ -183,6 +183,17 @@ const whyItems = [
   align-items: center;
   gap: 14px;
   flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+.why-item:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
 }
 .why-item .icon {
   width: 46px;
@@ -224,7 +235,8 @@ const whyItems = [
   opacity: 0.85;
   margin: 0 0 22px;
 }
-.cta-banner button {
+.cta-banner .cta-link {
+  display: inline-block;
   background: var(--color-accent);
   color: #fff;
   border: none;
@@ -232,7 +244,12 @@ const whyItems = [
   border-radius: 8px;
   font-size: 14.5px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
+  transition: background 0.15s ease;
+}
+.cta-banner .cta-link:hover {
+  background: #d4551f;
 }
 
 @media (max-width: 1024px) {

@@ -5,6 +5,11 @@ import { destinations } from '../data/destinations.js'
 
 const route = useRoute()
 const dest = computed(() => destinations[route.params.slug])
+
+// 帶去諮詢頁的主題:國內六區統一送「國內旅遊」,國外則直接用地區名
+const consultTopic = computed(() =>
+  dest.value?.breadcrumb === '國內旅遊' ? '國內旅遊' : dest.value?.name,
+)
 </script>
 
 <template>
@@ -70,7 +75,9 @@ const dest = computed(() => destinations[route.params.slug])
     <div class="cta-banner">
       <h2>{{ dest.ctaHeading }}</h2>
       <p>{{ dest.ctaText }}</p>
-      <button>立即諮詢行程</button>
+      <RouterLink :to="{ path: '/consult', query: { topic: consultTopic } }" class="cta-link">
+        立即諮詢行程
+      </RouterLink>
     </div>
   </div>
 
@@ -308,14 +315,20 @@ const dest = computed(() => destinations[route.params.slug])
   opacity: 0.85;
   margin: 0 0 24px;
 }
-.cta-banner button {
+.cta-banner .cta-link {
+  display: inline-block;
   background: var(--color-accent);
   color: #fff;
   border: none;
   padding: 13px 30px;
   border-radius: 8px;
   font-size: 15px;
+  text-decoration: none;
   cursor: pointer;
+  transition: background 0.15s ease;
+}
+.cta-banner .cta-link:hover {
+  background: #d4551f;
 }
 
 .not-found {

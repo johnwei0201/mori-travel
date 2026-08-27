@@ -179,7 +179,7 @@ const tripList = computed(() =>
       <div class="eyebrow light">TALK TO US</div>
       <h2>還在猶豫哪一趟?我們陪你想</h2>
       <p>留下你的旅行想像,專屬顧問會在一個工作天內回覆,替你比對最適合的出發日期與行程安排。</p>
-      <button class="cta-btn">預約免費諮詢</button>
+      <RouterLink to="/consult" class="cta-btn">預約免費諮詢</RouterLink>
     </div>
   </section>
 </template>
@@ -734,6 +734,7 @@ const tripList = computed(() =>
   margin-inline: auto;
 }
 .cta-btn {
+  display: inline-block;
   margin-top: 24px;
   background: var(--color-accent);
   color: #fff;
@@ -742,6 +743,7 @@ const tripList = computed(() =>
   padding: 14px 34px;
   font-size: 15.5px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
   transition: background 0.15s ease;
 }
