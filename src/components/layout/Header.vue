@@ -44,16 +44,22 @@
 
 .nav {
   display: flex;
-  gap: 32px;
+  /* 連結左右各 16px 內距,兩兩相加剛好是原本的 32px 字間距 */
+  gap: 0;
 }
 .nav a {
   display: inline-block;
   text-decoration: none;
   color: #333;
   font-size: 19px;
-  transition: color 0.15s ease;
+  padding: 6px 16px;
+  border-radius: 8px;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
 }
 .nav a:hover {
+  background: #ffffff;
   color: #c2410c;
   text-shadow:
     0 0 0.6px currentColor,
@@ -93,8 +99,8 @@
   .header {
     padding: 14px 24px;
   }
-  .nav {
-    gap: 20px;
+  .nav a {
+    padding: 6px 12px;
   }
 }
 
