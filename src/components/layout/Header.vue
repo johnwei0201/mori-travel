@@ -1,21 +1,64 @@
-<script setup></script>
+<script setup>
+import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const menuOpen = ref(false)
+const route = useRoute()
+
+const links = [
+  { to: '/', text: '回首頁' },
+  { to: '/domestic', text: '國內旅遊' },
+  { to: '/international', text: '國外旅遊' },
+  { to: '/booking', text: '機票訂房' },
+  { to: '/guide', text: '旅遊指南' },
+]
+
+// 換頁後把選單收起來,否則點完連結選單會一直開著
+watch(
+  () => route.fullPath,
+  () => {
+    menuOpen.value = false
+  },
+)
+
+function onKeydown(e) {
+  if (e.key === 'Escape') menuOpen.value = false
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onUnmounted(() => window.removeEventListener('keydown', onKeydown))
+</script>
 
 <template>
   <header class="header">
     <RouterLink to="/" class="logo">MORI <span>TRAVEL</span></RouterLink>
 
     <nav class="nav">
-      <RouterLink to="/">回首頁</RouterLink>
-      <RouterLink to="/domestic">國內旅遊</RouterLink>
-      <RouterLink to="/international">國外旅遊</RouterLink>
-      <RouterLink to="/booking">機票訂房</RouterLink>
-      <RouterLink to="/guide">旅遊指南</RouterLink>
+      <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
     </nav>
 
     <div class="actions">
       <button class="icon-btn">👤</button>
       <RouterLink to="/plan" class="cta-btn">開始找旅行</RouterLink>
+
+      <button
+        class="burger"
+        :class="{ open: menuOpen }"
+        :aria-expanded="menuOpen"
+        aria-controls="mobile-nav"
+        :aria-label="menuOpen ? '關閉選單' : '開啟選單'"
+        @click="menuOpen = !menuOpen"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
+
+    <nav id="mobile-nav" class="mobile-nav" v-show="menuOpen">
+      <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
+      <button class="mobile-account">👤 會員登入</button>
+    </nav>
   </header>
 </template>
 
@@ -98,15 +141,89 @@
   background: #d4551f;
 }
 
+/* 漢堡按鈕:桌機隱藏,1024px 以下才出現 */
+.burger {
+  display: none;
+  width: 40px;
+  height: 36px;
+  padding: 8px 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.burger span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--color-primary);
+  transition:
+    transform 0.22s ease,
+    opacity 0.18s ease;
+}
+.burger.open span:nth-child(1) {
+  transform: translateY(8.5px) rotate(45deg);
+}
+.burger.open span:nth-child(2) {
+  opacity: 0;
+}
+.burger.open span:nth-child(3) {
+  transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* 展開的選單面板:貼在 Header 正下方 */
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e7e0d6;
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.12);
+  flex-direction: column;
+}
+.mobile-nav a,
+.mobile-account {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 15px 24px;
+  font-size: 16.5px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  border: none;
+  background: none;
+  border-bottom: 1px solid #f0e9df;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+.mobile-nav a:hover,
+.mobile-account:hover {
+  background: var(--color-bg);
+  color: #c2410c;
+}
+.mobile-account {
+  border-bottom: none;
+  color: var(--color-primary);
+}
+
 @media (max-width: 1024px) {
   .header {
     padding: 14px 24px;
   }
   .nav {
-    margin-block: -14px;
+    display: none;
   }
-  .nav a {
-    padding: 0 12px;
+  .burger {
+    display: flex;
+  }
+  .mobile-nav {
+    display: flex;
   }
 }
 
@@ -114,15 +231,23 @@
   .header {
     padding: 12px 16px;
   }
-  .nav {
-    display: none;
-  }
   .logo {
     font-size: 19px;
+  }
+  .actions {
+    gap: 10px;
+  }
+  /* 手機寬度放不下,會員入口移到展開的選單裡 */
+  .icon-btn {
+    display: none;
   }
   .cta-btn {
     padding: 8px 14px;
     font-size: 13px;
+  }
+  .mobile-nav a,
+  .mobile-account {
+    padding: 14px 16px;
   }
 }
 </style>
