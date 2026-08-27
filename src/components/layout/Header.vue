@@ -57,6 +57,8 @@
   text-decoration: none;
   color: #333;
   font-size: 19px;
+  /* 平時就用和 hover 相同的字重,滑過時只換顏色與底色,不再有粗細跳動 */
+  font-weight: 500;
   padding: 0 16px;
   transition:
     color 0.15s ease,
@@ -65,9 +67,6 @@
 .nav a:hover {
   background: #ffffff;
   color: #c2410c;
-  text-shadow:
-    0 0 0.6px currentColor,
-    0 0 0.6px currentColor;
 }
 
 .actions {
