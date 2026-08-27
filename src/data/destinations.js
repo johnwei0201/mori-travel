@@ -156,4 +156,163 @@ export const destinations = {
     ctaHeading: '準備好前往美加了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的美加旅程。',
   },
+
+  // ───────── 國內旅遊 ─────────
+  // 台灣實景照片尚未取得,heroImg 與 highlights 的 img 先留 null,
+  // 頁面會自動顯示佔位區塊;補圖時只要把 null 換成 import 進來的變數即可。
+  taipei: {
+    name: '台北・北海岸',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — TAIPEI',
+    tagline: '城市步調與海岸線,只隔一段車程',
+    facts: [
+      { icon: '🌤️', label: '最佳季節', value: '10月—4月' },
+      { icon: '🚗', label: '車程時間', value: '市區即達' },
+      { icon: '📅', label: '建議天數', value: '2—3 天' },
+      { icon: '🚇', label: '交通方式', value: '捷運・客運' },
+    ],
+    introEyebrow: 'ABOUT TAIPEI',
+    introHeading: '一天之內,從街區走到海邊',
+    introText:
+      '台北的迷人之處,在於它把城市與自然放得很近。早上還在大稻埕的老街喝茶,中午搭捷運轉客運,下午就能站在野柳的海蝕地形前吹風。往北一小時是九份的山城燈火,往東是東北角的岩岸線,不用長假,也能走出一趟完整的旅程。',
+    highlights: [
+      { name: '九份老街', desc: '山城階梯與紅燈籠交織的懷舊街景。', img: null },
+      { name: '野柳地質公園', desc: '海蝕風化雕出的奇岩地貌。', img: null },
+      { name: '陽明山', desc: '硫磺谷、擎天崗與季節限定的花季。', img: null },
+      { name: '淡水漁人碼頭', desc: '情人橋與河口日落的經典畫面。', img: null },
+    ],
+    ctaHeading: '準備好走一趟台北了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的北台灣旅程。',
+  },
+
+  'yilan-hualien': {
+    name: '宜蘭・花蓮',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — YILAN & HUALIEN',
+    tagline: '太平洋的藍,與後山的慢',
+    facts: [
+      { icon: '🌊', label: '最佳季節', value: '3月—11月' },
+      { icon: '🚗', label: '車程時間', value: '約 1—3 小時' },
+      { icon: '📅', label: '建議天數', value: '3—4 天' },
+      { icon: '🚆', label: '交通方式', value: '台鐵・自駕' },
+    ],
+    introEyebrow: 'ABOUT YILAN & HUALIEN',
+    introHeading: '一邊是山壁,一邊是太平洋',
+    introText:
+      '從雪隧鑽出來的那一刻,空氣就變了。宜蘭有溫泉與平原的悠緩,再往南走,花蓮把中央山脈與太平洋壓縮在同一條公路上——立霧溪切出太魯閣的峽谷,清水斷崖直接落進海裡。這是台灣風景最有張力的一段路。',
+    highlights: [
+      { name: '太魯閣峽谷', desc: '立霧溪切穿大理岩的千仞峽谷。', img: null },
+      { name: '清水斷崖', desc: '公路貼著海崖而行的壯闊視野。', img: null },
+      { name: '七星潭', desc: '弧線優美的礫石海灣與遠山。', img: null },
+      { name: '礁溪溫泉', desc: '平原上的碳酸氫鈉泉,泡湯首選。', img: null },
+    ],
+    ctaHeading: '準備好走一趟東海岸了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的宜花旅程。',
+  },
+
+  'taichung-nantou': {
+    name: '台中・南投',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — TAICHUNG & NANTOU',
+    tagline: '高山湖泊與城市綠意的中台灣',
+    facts: [
+      { icon: '🍃', label: '最佳季節', value: '全年皆宜' },
+      { icon: '🚗', label: '車程時間', value: '約 2 小時' },
+      { icon: '📅', label: '建議天數', value: '2—3 天' },
+      { icon: '🚄', label: '交通方式', value: '高鐵・自駕' },
+    ],
+    introEyebrow: 'ABOUT TAICHUNG & NANTOU',
+    introHeading: '往山裡走一點,天氣就變好了',
+    introText:
+      '台中是台灣少數氣候穩定到讓人放心排行程的城市,綠園道、歌劇院、老宅咖啡構成它的城市節奏。再往南投走,海拔一路拉高——日月潭的晨霧、清境的草原、合歡山的日出與冬季霧凇,把中台灣的層次拉得很開。',
+    highlights: [
+      { name: '日月潭', desc: '環湖步道與晨霧中的水社碼頭。', img: null },
+      { name: '合歡山', desc: '公路可達的三千公尺高山雲海。', img: null },
+      { name: '清境農場', desc: '青青草原與綿羊放牧的高山牧場。', img: null },
+      { name: '高美濕地', desc: '木棧道盡頭的潮間帶落日。', img: null },
+    ],
+    ctaHeading: '準備好走一趟中台灣了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的中台灣旅程。',
+  },
+
+  'tainan-kaohsiung': {
+    name: '台南・高雄',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — TAINAN & KAOHSIUNG',
+    tagline: '古都巷弄,與港都的日落',
+    facts: [
+      { icon: '☀️', label: '最佳季節', value: '10月—3月' },
+      { icon: '🚗', label: '車程時間', value: '約 2—2.5 小時' },
+      { icon: '📅', label: '建議天數', value: '2—3 天' },
+      { icon: '🚄', label: '交通方式', value: '高鐵・台鐵' },
+    ],
+    introEyebrow: 'ABOUT TAINAN & KAOHSIUNG',
+    introHeading: '台灣最會吃的兩座城市',
+    introText:
+      '台南把四百年的歷史藏在巷弄裡,一間廟、一碗牛肉湯、一條安平老街,慢慢走才有味道。往南四十分鐘的高雄則完全相反——港灣、駁二的倉庫群、輕軌沿線的城市更新,傍晚在西子灣看夕陽沉進台灣海峽。一趟行程,兩種節奏。',
+    highlights: [
+      { name: '安平老街', desc: '樹屋、古堡與蜜餞香的府城起點。', img: null },
+      { name: '奇美博物館', desc: '西洋古典建築與大量館藏典藏。', img: null },
+      { name: '蓮池潭', desc: '龍虎塔與湖畔廟宇群的南國地標。', img: null },
+      { name: '駁二藝術特區', desc: '港邊倉庫改造的藝文與市集場域。', img: null },
+    ],
+    ctaHeading: '準備好走一趟南台灣了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的南台灣旅程。',
+  },
+
+  kenting: {
+    name: '墾丁・屏東',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — KENTING',
+    tagline: '國境之南,一整年的夏天',
+    facts: [
+      { icon: '🏖️', label: '最佳季節', value: '4月—10月' },
+      { icon: '🚗', label: '車程時間', value: '約 4—5 小時' },
+      { icon: '📅', label: '建議天數', value: '3—4 天' },
+      { icon: '🚌', label: '交通方式', value: '高鐵+客運' },
+    ],
+    introEyebrow: 'ABOUT KENTING',
+    introHeading: '台灣唯一的熱帶海岸線',
+    introText:
+      '恆春半島是台灣少數全年都像夏天的地方。西岸有白沙灣的細砂與浮潛,東岸是龍磐草原被落山風吹出的遼闊草坡,南端的鵝鑾鼻燈塔則守著兩片海的交界。夜裡回到恆春老城,吃碗綠豆蒜,慢慢把一天收尾。',
+    highlights: [
+      { name: '白沙灣', desc: '細白砂灘與清透海水的浮潛勝地。', img: null },
+      { name: '鵝鑾鼻燈塔', desc: '台灣最南端的白色燈塔與海景。', img: null },
+      { name: '龍磐草原', desc: '崖上草坡與太平洋的無敵視野。', img: null },
+      { name: '小琉球', desc: '船程半小時可達的珊瑚礁離島。', img: null },
+    ],
+    ctaHeading: '準備好走一趟墾丁了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的恆春半島旅程。',
+  },
+
+  penghu: {
+    name: '澎湖・離島',
+    breadcrumb: '國內旅遊',
+    heroImg: null,
+    eyebrow: 'DOMESTIC — PENGHU',
+    tagline: '玄武岩與跳島,夏天最遠的那片藍',
+    facts: [
+      { icon: '🐚', label: '最佳季節', value: '4月—9月' },
+      { icon: '✈️', label: '飛行時間', value: '約 50 分鐘' },
+      { icon: '📅', label: '建議天數', value: '3—4 天' },
+      { icon: '⛴️', label: '交通方式', value: '飛機・客輪' },
+    ],
+    introEyebrow: 'ABOUT PENGHU',
+    introHeading: '九十座島嶼,一片透明的海',
+    introText:
+      '澎湖由九十幾座島嶼組成,夏天是它最好的季節。柱狀玄武岩是火山留下的紀念,雙心石滬是先民捕魚的智慧,而跳島行程能一次走過七美、吉貝、望安——每座島的海都藍得不太一樣,這是本島看不到的顏色。',
+    highlights: [
+      { name: '雙心石滬', desc: '七美島上的心形古老捕魚石滬。', img: null },
+      { name: '七美嶼', desc: '海崖草原與環島公路的南方離島。', img: null },
+      { name: '吉貝沙尾', desc: '延伸入海的細白沙嘴與水上活動。', img: null },
+      { name: '澎湖跨海大橋', desc: '連接白沙與西嶼的經典地標。', img: null },
+    ],
+    ctaHeading: '準備好跳島去澎湖了嗎?',
+    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的離島旅程。',
+  },
 }

@@ -12,15 +12,24 @@ const dest = computed(() => destinations[route.params.slug])
     <div class="breadcrumb">
       <RouterLink to="/">首頁</RouterLink>
       <span class="sep">›</span>
-      <span>熱門目的地</span>
+      <span>{{ dest.breadcrumb || '熱門目的地' }}</span>
       <span class="sep">›</span>
       <span>{{ dest.name }}</span>
     </div>
 
     <section class="hero">
-      <img :src="dest.heroImg" :alt="dest.name + '主視覺'" class="hero-photo" />
-      <div class="hero-scrim"></div>
-      <div class="hero-text">
+      <img
+        v-if="dest.heroImg"
+        :src="dest.heroImg"
+        :alt="dest.name + '主視覺'"
+        class="hero-photo"
+      />
+      <div v-else class="hero-photo placeholder hero-placeholder">
+        <span class="ph-mark">🖼</span>
+        <span class="ph-text">主視覺待補</span>
+      </div>
+      <div class="hero-scrim" :class="{ 'scrim-light': !dest.heroImg }"></div>
+      <div class="hero-text" :class="{ 'text-dark': !dest.heroImg }">
         <div class="hero-eyebrow">{{ dest.eyebrow }}</div>
         <h1 class="hero-title">{{ dest.name }}</h1>
         <p class="hero-tagline">{{ dest.tagline }}</p>
@@ -46,7 +55,10 @@ const dest = computed(() => destinations[route.params.slug])
       <h2>精選景點</h2>
       <div class="highlight-grid">
         <div class="highlight-card" v-for="h in dest.highlights" :key="h.name">
-          <img :src="h.img" :alt="h.name" class="highlight-photo" />
+          <img v-if="h.img" :src="h.img" :alt="h.name" class="highlight-photo" />
+          <div v-else class="highlight-photo placeholder">
+            <span class="ph-text">圖片待補</span>
+          </div>
           <div class="highlight-body">
             <h3>{{ h.name }}</h3>
             <p>{{ h.desc }}</p>
@@ -124,6 +136,54 @@ const dest = computed(() => destinations[route.params.slug])
   font-size: 17px;
   opacity: 0.92;
   margin: 0;
+}
+
+/* 圖片待補時的佔位樣式 —— 資料補上 img 之後這些規則就不會生效 */
+.placeholder {
+  background: repeating-linear-gradient(
+    45deg,
+    #f3ece1,
+    #f3ece1 14px,
+    #efe6d8 14px,
+    #efe6d8 28px
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #a89c8e;
+}
+/* .highlight-photo / .hero-photo 的 display:block 定義在後面,
+   這裡用複合選擇器提高特異性,確保佔位內容維持置中 */
+.hero-photo.placeholder,
+.highlight-photo.placeholder {
+  display: flex;
+}
+.hero-placeholder {
+  justify-content: flex-start;
+  padding-top: 48px;
+}
+.ph-mark {
+  font-size: 26px;
+  opacity: 0.7;
+}
+.ph-text {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.scrim-light {
+  background: linear-gradient(180deg, rgba(6, 32, 31, 0), rgba(6, 32, 31, 0.06));
+}
+.text-dark {
+  color: var(--color-primary);
+}
+.text-dark .hero-eyebrow {
+  opacity: 0.7;
+}
+.text-dark .hero-tagline {
+  color: #6b6259;
+  opacity: 1;
 }
 
 .facts-card {

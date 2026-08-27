@@ -8,12 +8,12 @@
 const heroImg = null
 
 const regions = [
-  { id: 1, name: '台北・北海岸', img: null },
-  { id: 2, name: '宜蘭・花蓮', img: null },
-  { id: 3, name: '台中・南投', img: null },
-  { id: 4, name: '台南・高雄', img: null },
-  { id: 5, name: '墾丁・屏東', img: null },
-  { id: 6, name: '澎湖・離島', img: null },
+  { id: 1, name: '台北・北海岸', img: null, slug: 'taipei' },
+  { id: 2, name: '宜蘭・花蓮', img: null, slug: 'yilan-hualien' },
+  { id: 3, name: '台中・南投', img: null, slug: 'taichung-nantou' },
+  { id: 4, name: '台南・高雄', img: null, slug: 'tainan-kaohsiung' },
+  { id: 5, name: '墾丁・屏東', img: null, slug: 'kenting' },
+  { id: 6, name: '澎湖・離島', img: null, slug: 'penghu' },
 ]
 
 const whyItems = [
@@ -42,14 +42,21 @@ const whyItems = [
     <div class="section-label">DESTINATIONS</div>
     <h2>熱門地區</h2>
     <div class="region-grid">
-      <div class="region-card" v-for="r in regions" :key="r.id">
+      <RouterLink
+        class="region-card"
+        v-for="r in regions"
+        :key="r.id"
+        :to="`/destinations/${r.slug}`"
+        target="_blank"
+        rel="noopener"
+      >
         <img v-if="r.img" :src="r.img" :alt="r.name" />
         <div v-else class="card-placeholder">
           <span class="ph-mark">🖼</span>
           <span class="ph-text">圖片待補</span>
         </div>
         <div class="label" :class="{ 'label-dark': !r.img }">{{ r.name }}</div>
-      </div>
+      </RouterLink>
     </div>
   </section>
 
