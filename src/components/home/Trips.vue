@@ -1,44 +1,19 @@
 <script setup>
 import TripCard from './TripCard.vue'
-import tokyoImg from '../../assets/images/trip-tokyo-autumn.png'
-import hokkaidoImg from '../../assets/images/trip-hokkaido-winter.png'
-import italyImg from '../../assets/images/trip-italy-classic.png'
+import { trips as tripData } from '../../data/trips.js'
 
-const trips = [
-  {
-    id: 1,
-    slug: 'tokyo',
-    tag: '人氣推薦',
-    img: tokyoImg,
-    title: '東京賞楓 5 日',
-    date: '2025/11/12 出發',
-    duration: '5 天 4 夜',
-    features: ['含來回機票', '市區飯店', '賞楓名所'],
-    price: 26900,
-  },
-  {
-    id: 2,
-    slug: 'hokkaido',
-    tag: '熱銷中',
-    img: hokkaidoImg,
-    title: '北海道雪祭 6 日',
-    date: '2026/02/03 出發',
-    duration: '6 天 5 夜',
-    features: ['含來回機票', '溫泉飯店', '雪祭體驗'],
-    price: 31900,
-  },
-  {
-    id: 3,
-    slug: 'italy',
-    tag: '經典首選',
-    img: italyImg,
-    title: '義大利經典 10 日',
-    date: '2025/10/28 出發',
-    duration: '10 天 9 夜',
-    features: ['含來回機票', '四星飯店', '中文導遊'],
-    price: 52900,
-  },
-]
+// 直接沿用 data/trips.js —— 首頁卡片與行程內頁共用同一份資料,
+// 之後改日期或價格只要動 trips.js,不會兩邊對不上。
+const trips = Object.entries(tripData).map(([slug, t]) => ({
+  slug,
+  tag: t.tag,
+  img: t.heroImg,
+  title: t.title,
+  date: `${t.date} 出發`,
+  duration: t.duration,
+  features: t.features,
+  price: t.price,
+}))
 </script>
 
 <template>
@@ -47,7 +22,7 @@ const trips = [
     <div class="list">
       <RouterLink
         v-for="trip in trips"
-        :key="trip.id"
+        :key="trip.slug"
         :to="`/trips/${trip.slug}`"
         target="_blank"
         rel="noopener"

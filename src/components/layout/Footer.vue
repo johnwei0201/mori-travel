@@ -41,7 +41,7 @@ const socials = [
     </div>
 
     <div class="bottom">
-      <p>© 2025 MORI TRAVEL. All rights reserved.</p>
+      <p>© {{ new Date().getFullYear() }} MORI TRAVEL. All rights reserved.</p>
     </div>
   </footer>
 </template>

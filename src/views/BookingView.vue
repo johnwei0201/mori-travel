@@ -39,15 +39,15 @@ const activeTab = ref('flight')
       <div class="widget-form" v-if="activeTab === 'flight'">
         <div class="widget-field"><label>出發地</label><div class="val">台北 TPE</div></div>
         <div class="widget-field"><label>目的地</label><div class="val">東京 NRT</div></div>
-        <div class="widget-field"><label>出發日期</label><div class="val">2025/11/12</div></div>
+        <div class="widget-field"><label>出發日期</label><div class="val">2026/11/11</div></div>
         <div class="widget-field"><label>旅客人數</label><div class="val">2 位成人</div></div>
         <button class="widget-search-btn">搜尋</button>
       </div>
 
       <div class="widget-form" v-else>
         <div class="widget-field"><label>目的地 / 飯店</label><div class="val">東京都</div></div>
-        <div class="widget-field"><label>入住日期</label><div class="val">2025/11/12</div></div>
-        <div class="widget-field"><label>退房日期</label><div class="val">2025/11/16</div></div>
+        <div class="widget-field"><label>入住日期</label><div class="val">2026/11/11</div></div>
+        <div class="widget-field"><label>退房日期</label><div class="val">2026/11/15</div></div>
         <div class="widget-field"><label>房客與房間</label><div class="val">2 位成人・1 間房</div></div>
         <button class="widget-search-btn">搜尋</button>
       </div>
