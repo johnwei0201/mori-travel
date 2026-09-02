@@ -474,7 +474,7 @@ const checklist = [
 }
 
 .checklist-section {
-  padding: 56px 40px 0;
+  padding: 56px 40px clamp(48px, 5vw, 64px);
   max-width: 1120px;
   margin: 0 auto;
 }
