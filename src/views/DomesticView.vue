@@ -20,7 +20,7 @@ const regions = [
 
 const whyItems = [
   { id: 1, icon: 'car', title: '專車接送', desc: '定點集合出發,免自行開車' },
-  { id: 2, icon: 'headphone', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
+  { id: 2, icon: 'headphone', title: '專人服務', desc: '旅遊顧問一對一諮詢', to: '/service' },
   { id: 3, icon: 'clipboard', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
 ]
 </script>
@@ -64,7 +64,7 @@ const whyItems = [
 
   <section class="why-section">
     <div class="why-inner">
-      <RouterLink class="why-item" v-for="w in whyItems" :key="w.id" to="/consult">
+      <RouterLink class="why-item" v-for="w in whyItems" :key="w.id" :to="w.to ?? '/consult'">
         <span class="icon"><AppIcon :name="w.icon" :size="21" /></span>
         <div>
           <h3>{{ w.title }}</h3>

@@ -6,11 +6,12 @@ defineProps({
   icon: String,
   title: String,
   desc: String,
+  to: { type: String, default: '/consult' },
 })
 </script>
 
 <template>
-  <RouterLink to="/consult" class="feature-item">
+  <RouterLink :to="to" class="feature-item">
     <span class="icon"><AppIcon :name="icon" :size="22" /></span>
     <div class="text">
       <h3 class="title">{{ title }}</h3>
