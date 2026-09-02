@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import heroFuji from '../assets/images/hero-japan-fuji.png'
-import { travelStyles, months, hotSearches, otherPaths } from '../data/planTrip.js'
+import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
 import { tripCatalog, durationOptions, budgetOptions } from '../data/tripCatalog.js'
 
@@ -280,15 +280,15 @@ function scrollToResults() {
   <section class="paths">
     <div class="wrap">
       <div class="eyebrow">OTHER WAYS IN</div>
-      <h2 class="paths-heading">還是沒想法?換個方式找</h2>
-      <div class="paths-grid">
-        <RouterLink v-for="p in otherPaths" :key="p.title" :to="p.to" class="path">
-          <span class="path-icon"><AppIcon :name="p.icon" :size="24" /></span>
-          <h3>{{ p.title }}</h3>
-          <p>{{ p.text }}</p>
-          <span class="path-go">{{ p.action }} →</span>
-        </RouterLink>
-      </div>
+      <h2 class="paths-heading">還是沒想法?</h2>
+      <RouterLink :to="consultPath.to" class="path">
+        <span class="path-icon"><AppIcon :name="consultPath.icon" :size="26" /></span>
+        <div class="path-body">
+          <h3>{{ consultPath.title }}</h3>
+          <p>{{ consultPath.text }}</p>
+        </div>
+        <span class="path-go">{{ consultPath.action }} →</span>
+      </RouterLink>
     </div>
   </section>
 
@@ -908,48 +908,64 @@ function scrollToResults() {
   color: var(--color-primary);
   margin-top: 10px;
 }
-.paths-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(14px, 2vw, 26px);
-  margin-top: 26px;
-}
+/* 只剩一張卡,改成橫向長條填滿版面寬度 */
 .path {
+  margin-top: 26px;
   border: 1px solid #e7e0d6;
-  border-radius: 12px;
-  padding: 22px 22px 24px;
+  border-radius: 14px;
+  padding: clamp(20px, 2.4vw, 28px) clamp(22px, 2.6vw, 32px);
   background: var(--color-bg);
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: clamp(16px, 2vw, 26px);
   text-decoration: none;
   transition:
     border-color 0.18s ease,
-    transform 0.18s ease;
+    box-shadow 0.18s ease;
 }
 .path:hover {
   border-color: var(--color-primary);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(43, 36, 32, 0.09);
+}
+.path-body {
+  flex: 1;
+  min-width: 0;
 }
 .path-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fdf1e0;
   display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-primary);
-  line-height: 1;
+  flex-shrink: 0;
 }
 .path h3 {
-  font-size: 16.5px;
+  font-size: 17.5px;
   color: var(--color-primary);
+  margin-bottom: 6px;
 }
 .path p {
-  font-size: 13.5px;
+  font-size: 14px;
   color: #6b6259;
   line-height: 1.8;
 }
+/* 右側行動點,做成按鈕外型讓它在長條裡站得住 */
 .path-go {
-  margin-top: 4px;
-  font-size: 13.5px;
-  color: var(--color-accent);
-  font-weight: 500;
+  flex-shrink: 0;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+.path:hover .path-go {
+  background: #d4551f;
 }
 
 /* cta */
@@ -1010,9 +1026,6 @@ function scrollToResults() {
   .trips {
     grid-template-columns: repeat(2, 1fr);
   }
-  .paths-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 640px) {
@@ -1031,6 +1044,15 @@ function scrollToResults() {
   }
   .months {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .path {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .path-go {
+    width: 100%;
+    text-align: center;
   }
   .trips {
     grid-template-columns: 1fr;
