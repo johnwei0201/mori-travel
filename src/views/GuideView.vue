@@ -2,7 +2,89 @@
 import tripTokyo from '../assets/images/trip-tokyo-autumn.png'
 import tripHokkaido from '../assets/images/trip-hokkaido-winter.png'
 import tripItaly from '../assets/images/trip-italy-classic.png'
+import { ref, computed } from 'vue'
 import AppIcon from '../components/ui/AppIcon.vue'
+import { countries, hotelTiers } from '../data/countryInfo.js'
+
+/* ---------- 各國實用資訊速查表 ---------- */
+const infoKeyword = ref('')
+
+const filteredCountries = computed(() => {
+  const kw = infoKeyword.value.trim().toLowerCase()
+  if (!kw) return countries
+  return countries.filter((c) =>
+    [c.name, c.region, c.currency, c.visa].join(' ').toLowerCase().includes(kw),
+  )
+})
+
+/* ---------- 時差換算器 ---------- */
+function nowHHMM() {
+  const d = new Date()
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+}
+
+const tzCountry = ref('japan')
+const tzTime = ref(nowHHMM())
+
+const tzTarget = computed(() => countries.find((c) => c.id === tzCountry.value))
+
+const tzResult = computed(() => {
+  const [h, m] = tzTime.value.split(':').map(Number)
+  if (Number.isNaN(h) || Number.isNaN(m)) return null
+
+  const minutes = h * 60 + m + tzTarget.value.offset * 60
+  // 除以一天的分鐘數,取商數判斷跨日、餘數換回時分
+  const dayShift = Math.floor(minutes / 1440)
+  const inDay = ((minutes % 1440) + 1440) % 1440
+
+  return {
+    time: `${String(Math.floor(inDay / 60)).padStart(2, '0')}:${String(inDay % 60).padStart(2, '0')}`,
+    dayLabel: dayShift > 0 ? '(隔天)' : dayShift < 0 ? '(前一天)' : '',
+    diffLabel:
+      tzTarget.value.offset === 0
+        ? '與台灣同步'
+        : `${tzTarget.value.offset > 0 ? '快' : '慢'}台灣 ${Math.abs(tzTarget.value.offset)} 小時`,
+  }
+})
+
+function useNow() {
+  tzTime.value = nowHHMM()
+}
+
+/* ---------- 費用試算 ---------- */
+const costCountry = ref('japan')
+const costDays = ref(5)
+const costPeople = ref(2)
+const costTier = ref(1)
+
+const costTarget = computed(() => countries.find((c) => c.id === costCountry.value))
+
+const estimate = computed(() => {
+  const c = costTarget.value.cost
+  const days = Math.max(1, Number(costDays.value) || 1)
+  const people = Math.max(1, Number(costPeople.value) || 1)
+  const nights = Math.max(1, days - 1)
+  const rooms = Math.ceil(people / 2) // 以兩人一室計
+
+  const flight = c.flight * people
+  const hotel = c.hotel[costTier.value] * nights * rooms
+  const daily = c.daily * days * people
+  const total = flight + hotel + daily
+
+  return {
+    nights,
+    rooms,
+    rows: [
+      { label: '來回機票', note: `${people} 人`, value: flight },
+      { label: '住宿', note: `${nights} 晚 × ${rooms} 間`, value: hotel },
+      { label: '餐食與雜支', note: `${days} 天 × ${people} 人`, value: daily },
+    ],
+    total,
+    perPerson: Math.round(total / people),
+  }
+})
+
+const money = (n) => `NT$${n.toLocaleString()}`
 
 const articles = [
   {
@@ -89,6 +171,162 @@ const checklist = [
         <ul>
           <li v-for="item in c.items" :key="item">{{ item }}</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 各國實用資訊速查表 -->
+  <section class="info-section">
+    <div class="info-inner">
+      <div class="section-label">QUICK REFERENCE</div>
+      <div class="info-head">
+        <h2>各國實用資訊速查</h2>
+        <div class="info-search">
+          <AppIcon name="pin" :size="17" />
+          <input
+            v-model="infoKeyword"
+            type="search"
+            placeholder="搜尋國家、地區或貨幣"
+            aria-label="搜尋各國資訊"
+          />
+        </div>
+      </div>
+
+      <div v-if="filteredCountries.length" class="table-scroll">
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>國家 / 地區</th>
+              <th>簽證</th>
+              <th>時差</th>
+              <th>電壓・插頭</th>
+              <th>貨幣</th>
+              <th>小費</th>
+              <th>緊急電話</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="c in filteredCountries" :key="c.id">
+              <td class="col-name">
+                {{ c.name }}
+                <span class="col-region">{{ c.region }}</span>
+              </td>
+              <td>{{ c.visa }}</td>
+              <td class="col-num">
+                {{ c.offset === 0 ? '同台灣' : (c.offset > 0 ? '+' : '') + c.offset }}
+                <span v-if="c.offsetNote" class="col-note">{{ c.offsetNote }}</span>
+              </td>
+              <td>{{ c.voltage }}・{{ c.plug }}</td>
+              <td>{{ c.currency }}</td>
+              <td>{{ c.tip }}</td>
+              <td>{{ c.emergency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p v-else class="info-empty">找不到「{{ infoKeyword }}」,換個關鍵字試試。</p>
+
+      <p class="disclaimer">
+        ※ 簽證規定、電壓與緊急電話可能異動,出發前請以外交部領事事務局與當地官方公告為準。
+      </p>
+    </div>
+  </section>
+
+  <!-- 時差換算器 -->
+  <section class="tz-section">
+    <div class="tool-inner">
+      <div class="section-label">TIME DIFFERENCE</div>
+      <h2>時差換算器</h2>
+      <p class="tool-lead">輸入台灣時間,看看當地現在幾點,約定通話或訂餐廳時很好用。</p>
+
+      <div class="tz-body">
+        <div class="tz-form">
+          <div class="tool-field">
+            <label for="tz-country">目的地</label>
+            <select id="tz-country" v-model="tzCountry">
+              <option v-for="c in countries" :key="c.id" :value="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+          <div class="tool-field">
+            <label for="tz-time">台灣時間</label>
+            <input id="tz-time" v-model="tzTime" type="time" />
+          </div>
+          <button class="tz-now" @click="useNow">用現在時間</button>
+        </div>
+
+        <div v-if="tzResult" class="tz-result">
+          <div class="tz-result-label">{{ tzTarget.name }}當地時間</div>
+          <div class="tz-clock">
+            <AppIcon name="clock" :size="26" />
+            <span class="tz-value">{{ tzResult.time }}</span>
+            <span v-if="tzResult.dayLabel" class="tz-day">{{ tzResult.dayLabel }}</span>
+          </div>
+          <div class="tz-diff">{{ tzResult.diffLabel }}</div>
+          <p v-if="tzTarget.offsetNote" class="tz-note">※ {{ tzTarget.offsetNote }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 費用試算 -->
+  <section class="cost-section">
+    <div class="tool-inner">
+      <div class="section-label">BUDGET ESTIMATE</div>
+      <h2>旅費試算</h2>
+      <p class="tool-lead">抓一個心裡有底的數字,再決定要往哪個方向找行程。</p>
+
+      <div class="cost-body">
+        <div class="cost-form">
+          <div class="tool-field">
+            <label for="cost-country">目的地</label>
+            <select id="cost-country" v-model="costCountry">
+              <option v-for="c in countries" :key="c.id" :value="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+          <div class="cost-row">
+            <div class="tool-field">
+              <label for="cost-days">天數</label>
+              <input id="cost-days" v-model.number="costDays" type="number" min="1" max="30" />
+            </div>
+            <div class="tool-field">
+              <label for="cost-people">人數</label>
+              <input id="cost-people" v-model.number="costPeople" type="number" min="1" max="20" />
+            </div>
+          </div>
+          <div class="tool-field">
+            <span class="label-text">住宿等級</span>
+            <div class="tier-row">
+              <button
+                v-for="(t, i) in hotelTiers"
+                :key="t.label"
+                class="tier"
+                :class="{ active: costTier === i }"
+                :aria-pressed="costTier === i"
+                @click="costTier = i"
+              >
+                <span class="tier-label">{{ t.label }}</span>
+                <span class="tier-note">{{ t.note }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cost-result">
+          <div class="cost-rows">
+            <div v-for="r in estimate.rows" :key="r.label" class="cost-line">
+              <span class="cost-line-label">{{ r.label }}<em>{{ r.note }}</em></span>
+              <span class="cost-line-value">{{ money(r.value) }}</span>
+            </div>
+          </div>
+          <div class="cost-total">
+            <span>預估總計</span>
+            <b>{{ money(estimate.total) }}</b>
+          </div>
+          <div class="cost-per">平均每人約 {{ money(estimate.perPerson) }}</div>
+          <p class="disclaimer">
+            ※ 為粗略估算,未含旅遊保險、購物與門票;實際費用以行程頁面報價為準。
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -238,6 +476,359 @@ const checklist = [
   font-weight: 700;
 }
 
+/* ---------- 各國實用資訊速查表 ---------- */
+.info-section {
+  background: #ffffff;
+  border-top: 1px solid #e7e0d6;
+  border-bottom: 1px solid #e7e0d6;
+  padding: clamp(44px, 5.5vw, 68px) 40px;
+}
+.info-inner,
+.tool-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.info-head h2 {
+  font-size: clamp(21px, 2.5vw, 27px);
+  color: var(--color-primary);
+  margin: 8px 0 0;
+}
+.info-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #e7e0d6;
+  border-radius: 999px;
+  padding: 9px 18px;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  min-width: 260px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.info-search:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
+}
+.info-search input {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: #2b2420;
+  width: 100%;
+  outline: none;
+}
+.info-search input::placeholder {
+  color: #a89c8e;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid #e7e0d6;
+  border-radius: 14px;
+}
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 900px;
+}
+.info-table th {
+  text-align: left;
+  background: #fdf1e0;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 13px 16px;
+  white-space: nowrap;
+}
+.info-table td {
+  padding: 14px 16px;
+  border-top: 1px solid #f0e9df;
+  color: #2b2420;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.info-table tbody tr:hover {
+  background: #fffdfa;
+}
+.col-name {
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+.col-region {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #6b6259;
+  margin-top: 2px;
+}
+.col-num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.col-note {
+  display: block;
+  font-size: 11.5px;
+  color: #6b6259;
+  white-space: normal;
+  max-width: 190px;
+  margin-top: 3px;
+}
+.info-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #6b6259;
+  font-size: 14.5px;
+}
+.disclaimer {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: #6b6259;
+  line-height: 1.7;
+}
+
+/* ---------- 共用的工具表單樣式 ---------- */
+.tool-lead {
+  font-size: 14.5px;
+  color: #6b6259;
+  line-height: 1.8;
+  margin: 8px 0 26px;
+  max-width: 60ch;
+}
+.tool-inner h2 {
+  font-size: clamp(21px, 2.5vw, 27px);
+  color: var(--color-primary);
+  margin: 8px 0 0;
+}
+.tool-field label,
+.tool-field .label-text {
+  display: block;
+  font-size: 13px;
+  color: #6b6259;
+  margin-bottom: 7px;
+}
+.tool-field input,
+.tool-field select {
+  width: 100%;
+  border: 1px solid #e7e0d6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2b2420;
+  font: inherit;
+  font-size: 15px;
+  padding: 11px 14px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.tool-field input:focus,
+.tool-field select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
+}
+
+/* ---------- 時差換算器 ---------- */
+.tz-section {
+  background: #fdf1e0;
+  padding: clamp(44px, 5.5vw, 68px) 40px;
+}
+.tz-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: stretch;
+}
+.tz-form {
+  background: #ffffff;
+  border: 1px solid #f0e2cc;
+  border-radius: 14px;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.tz-now {
+  justify-self: start;
+  border: 1px solid #e7e0d6;
+  background: var(--color-bg);
+  border-radius: 8px;
+  padding: 9px 18px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.tz-now:hover {
+  border-color: var(--color-primary);
+}
+.tz-result {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 14px;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tz-result-label {
+  font-size: 14px;
+  color: #cfe0dd;
+}
+.tz-clock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 6px;
+  color: #ffc4a3;
+}
+.tz-value {
+  font-size: clamp(38px, 5.5vw, 54px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.tz-day {
+  font-size: 15px;
+  color: #ffc4a3;
+  align-self: flex-end;
+  padding-bottom: 6px;
+}
+.tz-diff {
+  font-size: 15px;
+  color: #cfe0dd;
+}
+.tz-note {
+  font-size: 12.5px;
+  color: #9dbab6;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+/* ---------- 費用試算 ---------- */
+.cost-section {
+  padding: clamp(44px, 5.5vw, 68px) 40px;
+}
+.cost-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+.cost-form {
+  display: grid;
+  gap: 18px;
+}
+.cost-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.tier-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.tier {
+  border: 1px solid #e7e0d6;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 10px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.tier:hover {
+  border-color: #cdbfae;
+}
+.tier.active {
+  border-color: var(--color-accent);
+  background: #fdf1e0;
+}
+.tier-label {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+.tier-note {
+  display: block;
+  font-size: 11.5px;
+  color: #6b6259;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.cost-result {
+  background: #ffffff;
+  border: 1px solid #e7e0d6;
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 10px 30px rgba(43, 36, 32, 0.07);
+}
+.cost-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid #f0e9df;
+  font-size: 14.5px;
+}
+.cost-line-label {
+  color: #2b2420;
+}
+.cost-line-label em {
+  font-style: normal;
+  font-size: 12.5px;
+  color: #6b6259;
+  margin-left: 8px;
+}
+.cost-line-value {
+  color: #2b2420;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cost-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 16px;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #6b6259;
+}
+.cost-total b {
+  font-size: 27px;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+.cost-per {
+  margin-top: 6px;
+  text-align: right;
+  font-size: 13.5px;
+  color: #6b6259;
+  font-variant-numeric: tabular-nums;
+}
+
 .articles-section {
   padding: 60px 40px;
   max-width: 1120px;
@@ -338,6 +929,15 @@ const checklist = [
   .checklist-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .info-section,
+  .tz-section,
+  .cost-section {
+    padding-inline: 24px;
+  }
+  .tz-body,
+  .cost-body {
+    grid-template-columns: 1fr;
+  }
 }
 @media (max-width: 860px) {
   .article-grid {
@@ -347,6 +947,22 @@ const checklist = [
 @media (max-width: 640px) {
   .checklist-grid {
     grid-template-columns: 1fr;
+  }
+  .info-section,
+  .tz-section,
+  .cost-section {
+    padding-inline: 16px;
+  }
+  .info-search {
+    min-width: 0;
+    width: 100%;
+  }
+  .tier-row {
+    grid-template-columns: 1fr;
+  }
+  .tz-form,
+  .cost-result {
+    padding: 20px;
   }
 }
 </style>
