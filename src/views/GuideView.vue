@@ -293,9 +293,10 @@ const checklist = [
               <input id="tz-time" v-model="manualTime" type="time" />
             </div>
             <p v-if="manualResult" class="tz-manual-out">
-              台灣 {{ manualTime }} → {{ tzTarget.name }}
-              <b>{{ manualResult.time }}</b>
-              <span>{{ manualResult.dayLabel }}</span>
+              <span class="tz-from">台灣 {{ manualTime }}</span>
+              <span class="tz-arrow" aria-hidden="true">➤</span>
+              <span class="tz-to">{{ tzTarget.name }} <b>{{ manualResult.time }}</b></span>
+              <span class="tz-shift">{{ manualResult.dayLabel }}</span>
             </p>
             <p v-else class="tz-manual-hint">留空的話,右邊顯示的就是當地現在時間。</p>
           </div>
@@ -718,20 +719,36 @@ const checklist = [
   padding-top: 16px;
 }
 .tz-manual-out {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #6b6259;
-  line-height: 1.7;
+  margin-top: 14px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  line-height: 1.6;
 }
-.tz-manual-out b {
+.tz-from,
+.tz-to {
   font-size: 17px;
-  color: var(--color-primary);
+  color: #2b2420;
   font-variant-numeric: tabular-nums;
-  margin-left: 4px;
 }
-.tz-manual-out span {
-  font-size: 12.5px;
-  margin-left: 4px;
+.tz-to {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+.tz-to b {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  margin-left: 2px;
+}
+.tz-arrow {
+  font-size: 19px;
+  color: var(--color-accent);
+  line-height: 1;
+}
+.tz-shift {
+  font-size: 13px;
+  color: #6b6259;
 }
 .tz-manual-hint {
   margin-top: 12px;
