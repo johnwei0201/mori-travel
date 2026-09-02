@@ -2,7 +2,7 @@
 import tripTokyo from '../assets/images/trip-tokyo-autumn.png'
 import tripHokkaido from '../assets/images/trip-hokkaido-winter.png'
 import tripItaly from '../assets/images/trip-italy-classic.png'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AppIcon from '../components/ui/AppIcon.vue'
 import { countries, hotelTiers } from '../data/countryInfo.js'
 
@@ -18,38 +18,77 @@ const filteredCountries = computed(() => {
 })
 
 /* ---------- 時差換算器 ---------- */
-function nowHHMM() {
-  const d = new Date()
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-}
+const pad = (n) => String(n).padStart(2, '0')
+const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
 
 const tzCountry = ref('japan')
-const tzTime = ref(nowHHMM())
-
 const tzTarget = computed(() => countries.find((c) => c.id === tzCountry.value))
 
-const tzResult = computed(() => {
-  const [h, m] = tzTime.value.split(':').map(Number)
+// 每秒更新一次的「此刻」,讓當地時間會自己跳
+const now = ref(new Date())
+let ticker
+onMounted(() => {
+  ticker = setInterval(() => (now.value = new Date()), 1000)
+})
+onUnmounted(() => clearInterval(ticker))
+
+/**
+ * 把某個時區的牆上時間取出來。
+ * 作法:真實 UTC 毫秒 + 該時區與 UTC 的時差,再用 getUTC* 讀出來 ——
+ * 這樣不論訪客的電腦在哪個時區,算出來都正確。
+ */
+function wallClock(utcMs, offsetFromUtc) {
+  const d = new Date(utcMs + offsetFromUtc * 3600000)
+  return {
+    h: d.getUTCHours(),
+    m: d.getUTCMinutes(),
+    s: d.getUTCSeconds(),
+    month: d.getUTCMonth() + 1,
+    date: d.getUTCDate(),
+    weekday: WEEKDAYS[d.getUTCDay()],
+    key: `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()}`,
+  }
+}
+
+const diffLabel = computed(() =>
+  tzTarget.value.offset === 0
+    ? '與台灣同步'
+    : `${tzTarget.value.offset > 0 ? '快' : '慢'}台灣 ${Math.abs(tzTarget.value.offset)} 小時`,
+)
+
+// 台灣 = UTC+8,目的地 = UTC+8+offset
+const liveClock = computed(() => {
+  const utcMs = now.value.getTime()
+  const tw = wallClock(utcMs, 8)
+  const local = wallClock(utcMs, 8 + tzTarget.value.offset)
+
+  return {
+    time: `${pad(local.h)}:${pad(local.m)}`,
+    seconds: pad(local.s),
+    dateLabel: `${local.month}/${local.date}(週${local.weekday})`,
+    dayLabel: local.key === tw.key ? '' : local.key > tw.key ? '已是隔天' : '還是前一天',
+    taiwan: `${pad(tw.h)}:${pad(tw.m)}`,
+  }
+})
+
+/* 進階:換算指定的台灣時間 */
+const manualTime = ref('')
+
+const manualResult = computed(() => {
+  if (!manualTime.value) return null
+  const [h, m] = manualTime.value.split(':').map(Number)
   if (Number.isNaN(h) || Number.isNaN(m)) return null
 
   const minutes = h * 60 + m + tzTarget.value.offset * 60
-  // 除以一天的分鐘數,取商數判斷跨日、餘數換回時分
+  // 除以一天的分鐘數,商數判斷跨日、餘數換回時分
   const dayShift = Math.floor(minutes / 1440)
   const inDay = ((minutes % 1440) + 1440) % 1440
 
   return {
-    time: `${String(Math.floor(inDay / 60)).padStart(2, '0')}:${String(inDay % 60).padStart(2, '0')}`,
-    dayLabel: dayShift > 0 ? '(隔天)' : dayShift < 0 ? '(前一天)' : '',
-    diffLabel:
-      tzTarget.value.offset === 0
-        ? '與台灣同步'
-        : `${tzTarget.value.offset > 0 ? '快' : '慢'}台灣 ${Math.abs(tzTarget.value.offset)} 小時`,
+    time: `${pad(Math.floor(inDay / 60))}:${pad(inDay % 60)}`,
+    dayLabel: dayShift > 0 ? '(隔天)' : dayShift < 0 ? '(前一天)' : '(同一天)',
   }
 })
-
-function useNow() {
-  tzTime.value = nowHHMM()
-}
 
 /* ---------- 費用試算 ---------- */
 const costCountry = ref('japan')
@@ -237,7 +276,7 @@ const checklist = [
     <div class="tool-inner">
       <div class="section-label">TIME DIFFERENCE</div>
       <h2>時差換算器</h2>
-      <p class="tool-lead">輸入台灣時間,看看當地現在幾點,約定通話或訂餐廳時很好用。</p>
+      <p class="tool-lead">選一個目的地,直接看當地此刻幾點;要約定通話時間,也可以換算指定時刻。</p>
 
       <div class="tz-body">
         <div class="tz-form">
@@ -247,21 +286,35 @@ const checklist = [
               <option v-for="c in countries" :key="c.id" :value="c.id">{{ c.name }}</option>
             </select>
           </div>
-          <div class="tool-field">
-            <label for="tz-time">台灣時間</label>
-            <input id="tz-time" v-model="tzTime" type="time" />
+
+          <div class="tz-manual">
+            <div class="tool-field">
+              <label for="tz-time">或換算指定的台灣時間</label>
+              <input id="tz-time" v-model="manualTime" type="time" />
+            </div>
+            <p v-if="manualResult" class="tz-manual-out">
+              台灣 {{ manualTime }} → {{ tzTarget.name }}
+              <b>{{ manualResult.time }}</b>
+              <span>{{ manualResult.dayLabel }}</span>
+            </p>
+            <p v-else class="tz-manual-hint">留空的話,右邊顯示的就是當地現在時間。</p>
           </div>
-          <button class="tz-now" @click="useNow">用現在時間</button>
         </div>
 
-        <div v-if="tzResult" class="tz-result">
-          <div class="tz-result-label">{{ tzTarget.name }}當地時間</div>
-          <div class="tz-clock">
-            <AppIcon name="clock" :size="26" />
-            <span class="tz-value">{{ tzResult.time }}</span>
-            <span v-if="tzResult.dayLabel" class="tz-day">{{ tzResult.dayLabel }}</span>
+        <div class="tz-result">
+          <div class="tz-result-label">
+            <AppIcon name="clock" :size="17" />
+            {{ tzTarget.name }}現在時間
           </div>
-          <div class="tz-diff">{{ tzResult.diffLabel }}</div>
+          <div class="tz-clock">
+            <span class="tz-value">{{ liveClock.time }}</span>
+            <span class="tz-sec">:{{ liveClock.seconds }}</span>
+          </div>
+          <div class="tz-date">
+            {{ liveClock.dateLabel }}
+            <span v-if="liveClock.dayLabel" class="tz-day">{{ liveClock.dayLabel }}</span>
+          </div>
+          <div class="tz-diff">{{ diffLabel }}・台灣現在 {{ liveClock.taiwan }}</div>
           <p v-if="tzTarget.offsetNote" class="tz-note">※ {{ tzTarget.offsetNote }}</p>
         </div>
       </div>
@@ -660,20 +713,31 @@ const checklist = [
   gap: 16px;
   align-content: start;
 }
-.tz-now {
-  justify-self: start;
-  border: 1px solid #e7e0d6;
-  background: var(--color-bg);
-  border-radius: 8px;
-  padding: 9px 18px;
-  font: inherit;
-  font-size: 13.5px;
-  color: var(--color-primary);
-  cursor: pointer;
-  transition: border-color 0.15s ease;
+.tz-manual {
+  border-top: 1px solid #f0e9df;
+  padding-top: 16px;
 }
-.tz-now:hover {
-  border-color: var(--color-primary);
+.tz-manual-out {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #6b6259;
+  line-height: 1.7;
+}
+.tz-manual-out b {
+  font-size: 17px;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+  margin-left: 4px;
+}
+.tz-manual-out span {
+  font-size: 12.5px;
+  margin-left: 4px;
+}
+.tz-manual-hint {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: #a89c8e;
+  line-height: 1.7;
 }
 .tz-result {
   background: var(--color-primary);
@@ -685,31 +749,49 @@ const checklist = [
   justify-content: center;
 }
 .tz-result-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: #cfe0dd;
 }
 .tz-clock {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 10px 0 6px;
-  color: #ffc4a3;
+  align-items: baseline;
+  margin: 12px 0 8px;
 }
 .tz-value {
-  font-size: clamp(38px, 5.5vw, 54px);
+  font-size: clamp(46px, 6.5vw, 66px);
   font-weight: 700;
   color: #fff;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+.tz-sec {
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 500;
+  color: #ffc4a3;
+  font-variant-numeric: tabular-nums;
+  margin-left: 2px;
+}
+.tz-date {
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 4px;
 }
 .tz-day {
-  font-size: 15px;
-  color: #ffc4a3;
-  align-self: flex-end;
-  padding-bottom: 6px;
+  display: inline-block;
+  font-size: 12.5px;
+  color: var(--color-primary);
+  background: #ffc4a3;
+  border-radius: 5px;
+  padding: 2px 9px;
+  margin-left: 8px;
+  vertical-align: 1px;
 }
 .tz-diff {
-  font-size: 15px;
+  font-size: 14.5px;
   color: #cfe0dd;
 }
 .tz-note {
