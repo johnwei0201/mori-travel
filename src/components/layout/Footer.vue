@@ -1,15 +1,17 @@
 <script setup>
+import AppIcon from '../ui/AppIcon.vue'
+
 const contacts = [
-  { id: 1, icon: '📞', text: '02-7755-6688' },
-  { id: 2, icon: '✉️', text: 'hello@moritravel.com.tw' },
-  { id: 3, icon: '🕐', text: '週一至週五 09:30 - 18:30' },
-  { id: 4, icon: '📍', text: '台北市中山區南京東路二段 88 號 6 樓' },
+  { id: 1, icon: 'phone', text: '02-7755-6688' },
+  { id: 2, icon: 'mail', text: 'hello@moritravel.com.tw' },
+  { id: 3, icon: 'clock', text: '週一至週五 09:30 - 18:30' },
+  { id: 4, icon: 'pin', text: '台北市中山區南京東路二段 88 號 6 樓' },
 ]
 
 const socials = [
-  { id: 1, icon: '📘' },
-  { id: 2, icon: '📷' },
-  { id: 3, icon: '💬' },
+  { id: 1, icon: 'facebook' },
+  { id: 2, icon: 'instagram' },
+  { id: 3, icon: 'message' },
 ]
 </script>
 
@@ -21,7 +23,10 @@ const socials = [
         <p class="desc">專為喜愛探索世界的你,打造剛剛好的旅行體驗。</p>
 
         <div class="contacts">
-          <p v-for="c in contacts" :key="c.id" class="contact-item">{{ c.icon }} {{ c.text }}</p>
+          <p v-for="c in contacts" :key="c.id" class="contact-item">
+            <AppIcon :name="c.icon" :size="16" />
+            <span>{{ c.text }}</span>
+          </p>
         </div>
       </div>
 
@@ -35,7 +40,9 @@ const socials = [
         </div>
 
         <div class="socials">
-          <span v-for="s in socials" :key="s.id" class="social-icon">{{ s.icon }}</span>
+          <span v-for="s in socials" :key="s.id" class="social-icon">
+            <AppIcon :name="s.icon" :size="17" />
+          </span>
         </div>
       </div>
     </div>
@@ -80,6 +87,9 @@ const socials = [
 }
 
 .contact-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   font-size: 14px;
   color: #cfe0df;
   margin-bottom: 10px;

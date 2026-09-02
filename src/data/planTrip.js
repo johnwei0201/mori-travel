@@ -33,21 +33,21 @@ export const hotSearches = ['東京賞楓', '北海道雪祭', '義大利十日'
 
 export const otherPaths = [
   {
-    icon: '💰',
+    icon: 'wallet',
     title: '用預算找',
     text: '先設定一個能接受的金額範圍,看看這個預算能走到多遠的地方。',
     action: '告訴顧問你的預算',
     to: '/consult',
   },
   {
-    icon: '🗓️',
+    icon: 'calendar',
     title: '用假期長度找',
     text: '只有連假三天,還是排得出十天長假?依天數看哪些行程排得進去。',
     action: '告訴顧問你的假期',
     to: '/consult',
   },
   {
-    icon: '💬',
+    icon: 'message',
     title: '交給顧問安排',
     text: '把想法直接說給我們聽,由專屬顧問替你比對行程、回覆建議。',
     action: '聯絡旅遊顧問',

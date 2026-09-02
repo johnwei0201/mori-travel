@@ -1,4 +1,6 @@
 <script setup>
+import AppIcon from '../ui/AppIcon.vue'
+
 defineProps({
   tag: String,
   img: String,
@@ -21,8 +23,8 @@ defineProps({
       <h3 class="title">{{ title }}</h3>
 
       <div class="meta">
-        <span>📅 {{ date }}</span>
-        <span>☀️ {{ duration }}</span>
+        <span><AppIcon name="calendar" :size="15" /> {{ date }}</span>
+        <span><AppIcon name="sun" :size="15" /> {{ duration }}</span>
       </div>
 
       <div class="features">
@@ -78,6 +80,11 @@ defineProps({
   font-size: 13px;
   color: #666;
   margin-bottom: 12px;
+}
+.meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 .features {
   display: flex;

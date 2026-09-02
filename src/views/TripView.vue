@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { trips } from '../data/trips.js'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 const route = useRoute()
 const trip = computed(() => trips[route.params.slug])
@@ -31,9 +32,9 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
       <div class="main-col">
         <section>
           <div class="meta-row">
-            <span>📅 {{ trip.date }} 出發</span>
-            <span>☀️ {{ trip.duration }}</span>
-            <span>👥 已有 {{ trip.signups }} 人報名</span>
+            <span><AppIcon name="calendar" :size="16" /> {{ trip.date }} 出發</span>
+            <span><AppIcon name="sun" :size="16" /> {{ trip.duration }}</span>
+            <span><AppIcon name="users" :size="16" /> 已有 {{ trip.signups }} 人報名</span>
           </div>
           <div class="tag-list">
             <span v-for="f in trip.features" :key="f">{{ f }}</span>
@@ -50,7 +51,9 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
           <div class="section-label">ITINERARY</div>
           <h2>每日行程</h2>
           <div class="itinerary-item" v-for="(day, i) in trip.itinerary" :key="day.title">
-            <div class="day-badge"><span>DAY</span><b>{{ i + 1 }}</b></div>
+            <div class="day-badge">
+              <span>DAY</span><b>{{ i + 1 }}</b>
+            </div>
             <div class="itinerary-body">
               <h3>{{ day.title }}</h3>
               <p>{{ day.text }}</p>
@@ -84,7 +87,10 @@ const total = computed(() => (trip.value ? trip.value.price * 2 : 0))
 
         <div class="booking-field">
           <label>出發日期</label>
-          <div class="value"><span>{{ trip.date }}</span><span>▾</span></div>
+          <div class="value">
+            <span>{{ trip.date }}</span
+            ><span>▾</span>
+          </div>
         </div>
 
         <div class="booking-field">

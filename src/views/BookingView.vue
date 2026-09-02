@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import AppIcon from '../components/ui/AppIcon.vue'
 import destJapan from '../assets/images/destination-japan.png'
 import destKorea from '../assets/images/destination-korea.png'
 import destEurope from '../assets/images/destination-europe.png'
@@ -29,26 +30,52 @@ const activeTab = ref('flight')
     <div class="booking-widget">
       <div class="tabs">
         <div class="tab" :class="{ active: activeTab === 'flight' }" @click="activeTab = 'flight'">
-          ✈️ 機票
+          <AppIcon name="plane" :size="17" />
+          機票
         </div>
         <div class="tab" :class="{ active: activeTab === 'hotel' }" @click="activeTab = 'hotel'">
-          🏨 訂房
+          <AppIcon name="bed" :size="17" />
+          訂房
         </div>
       </div>
 
       <div class="widget-form" v-if="activeTab === 'flight'">
-        <div class="widget-field"><label>出發地</label><div class="val">台北 TPE</div></div>
-        <div class="widget-field"><label>目的地</label><div class="val">東京 NRT</div></div>
-        <div class="widget-field"><label>出發日期</label><div class="val">2026/11/11</div></div>
-        <div class="widget-field"><label>旅客人數</label><div class="val">2 位成人</div></div>
+        <div class="widget-field">
+          <label>出發地</label>
+          <div class="val">台北 TPE</div>
+        </div>
+        <div class="widget-field">
+          <label>目的地</label>
+          <div class="val">東京 NRT</div>
+        </div>
+        <div class="widget-field">
+          <label>出發日期</label>
+          <div class="val">2026/11/11</div>
+        </div>
+        <div class="widget-field">
+          <label>旅客人數</label>
+          <div class="val">2 位成人</div>
+        </div>
         <button class="widget-search-btn">搜尋</button>
       </div>
 
       <div class="widget-form" v-else>
-        <div class="widget-field"><label>目的地 / 飯店</label><div class="val">東京都</div></div>
-        <div class="widget-field"><label>入住日期</label><div class="val">2026/11/11</div></div>
-        <div class="widget-field"><label>退房日期</label><div class="val">2026/11/15</div></div>
-        <div class="widget-field"><label>房客與房間</label><div class="val">2 位成人・1 間房</div></div>
+        <div class="widget-field">
+          <label>目的地 / 飯店</label>
+          <div class="val">東京都</div>
+        </div>
+        <div class="widget-field">
+          <label>入住日期</label>
+          <div class="val">2026/11/11</div>
+        </div>
+        <div class="widget-field">
+          <label>退房日期</label>
+          <div class="val">2026/11/15</div>
+        </div>
+        <div class="widget-field">
+          <label>房客與房間</label>
+          <div class="val">2 位成人・1 間房</div>
+        </div>
         <button class="widget-search-btn">搜尋</button>
       </div>
     </div>
@@ -126,7 +153,10 @@ const activeTab = ref('flight')
 .tab {
   flex: 1;
   padding: 16px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   font-size: 14.5px;
   font-weight: 700;
   color: #6b6259;

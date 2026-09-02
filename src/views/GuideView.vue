@@ -2,6 +2,7 @@
 import tripTokyo from '../assets/images/trip-tokyo-autumn.png'
 import tripHokkaido from '../assets/images/trip-hokkaido-winter.png'
 import tripItaly from '../assets/images/trip-italy-classic.png'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 const articles = [
   {
@@ -27,30 +28,40 @@ const articles = [
   },
 ]
 
-const categories = ['🎒 行前準備', '🚄 交通指南', '🍜 美食推薦', '🏨 住宿攻略']
+const categories = [
+  { icon: 'backpack', text: '行前準備' },
+  { icon: 'train', text: '交通指南' },
+  { icon: 'food', text: '美食推薦' },
+  { icon: 'bed', text: '住宿攻略' },
+]
 
 const checklist = [
   {
     id: 1,
-    icon: '🛂',
+    icon: 'passport',
     title: '證件財務',
-    items: ['護照(效期 6 個月以上)', '簽證 / 電子許可', '機票與訂房確認單', '信用卡・現金・當地貨幣'],
+    items: [
+      '護照(效期 6 個月以上)',
+      '簽證 / 電子許可',
+      '機票與訂房確認單',
+      '信用卡・現金・當地貨幣',
+    ],
   },
   {
     id: 2,
-    icon: '🧳',
+    icon: 'suitcase',
     title: '衣物穿搭',
     items: ['換洗衣物', '保暖外套 / 雨具', '舒適好走的鞋款', '睡衣'],
   },
   {
     id: 3,
-    icon: '🪥',
+    icon: 'drop',
     title: '個人清潔',
     items: ['牙刷、牙膏', '毛巾、盥洗用品', '防曬乳、個人保養品', '常備藥品'],
   },
   {
     id: 4,
-    icon: '🔌',
+    icon: 'plug',
     title: '3C 用品',
     items: ['手機、充電器', '轉接頭、行動電源', '相機、記憶卡', '耳機'],
   },
@@ -73,7 +84,7 @@ const checklist = [
     <h2>行前必備清單</h2>
     <div class="checklist-grid">
       <div class="checklist-card" v-for="c in checklist" :key="c.id">
-        <div class="checklist-icon">{{ c.icon }}</div>
+        <div class="checklist-icon"><AppIcon :name="c.icon" :size="22" /></div>
         <h3>{{ c.title }}</h3>
         <ul>
           <li v-for="item in c.items" :key="item">{{ item }}</li>
@@ -98,7 +109,10 @@ const checklist = [
   </section>
 
   <div class="category-row">
-    <span class="category-pill" v-for="c in categories" :key="c">{{ c }}</span>
+    <span class="category-pill" v-for="c in categories" :key="c.text">
+      <AppIcon :name="c.icon" :size="17" />
+      {{ c.text }}
+    </span>
   </div>
 
   <div class="cta-banner">
@@ -196,7 +210,7 @@ const checklist = [
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  color: var(--color-primary);
   margin-bottom: 14px;
 }
 .checklist-card h3 {

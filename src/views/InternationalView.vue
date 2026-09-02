@@ -6,6 +6,7 @@ import destSea from '../assets/images/destination-southeast-asia.png'
 import destEurope from '../assets/images/destination-europe.png'
 import destAmerica from '../assets/images/destination-america.png'
 import destOceania from '../assets/images/destination-oceania.png'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 const regions = [
   { id: 1, name: '日本', img: destJapan, slug: 'japan' },
@@ -17,9 +18,9 @@ const regions = [
 ]
 
 const whyItems = [
-  { id: 1, icon: '🛡️', title: '安心出發', desc: '嚴選合作夥伴,完善旅遊保險' },
-  { id: 2, icon: '🎧', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
-  { id: 3, icon: '📋', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
+  { id: 1, icon: 'shield', title: '安心出發', desc: '嚴選合作夥伴,完善旅遊保險' },
+  { id: 2, icon: 'headphone', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
+  { id: 3, icon: 'clipboard', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
 ]
 </script>
 
@@ -55,7 +56,7 @@ const whyItems = [
   <section class="why-section">
     <div class="why-inner">
       <RouterLink class="why-item" v-for="w in whyItems" :key="w.id" to="/consult">
-        <span class="icon">{{ w.icon }}</span>
+        <span class="icon"><AppIcon :name="w.icon" :size="21" /></span>
         <div>
           <h3>{{ w.title }}</h3>
           <p>{{ w.desc }}</p>
@@ -203,7 +204,7 @@ const whyItems = [
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 .why-item h3 {

@@ -1,4 +1,6 @@
 <script setup>
+import AppIcon from '../components/ui/AppIcon.vue'
+
 // 圖片待補:之後把 import 解除註解,並把下面對應的 img 從 null 換成變數即可,
 // 版面與樣式都不用再改。
 // import heroTaiwan from '../assets/images/hero-taiwan.png'
@@ -17,9 +19,9 @@ const regions = [
 ]
 
 const whyItems = [
-  { id: 1, icon: '🚐', title: '專車接送', desc: '定點集合出發,免自行開車' },
-  { id: 2, icon: '🎧', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
-  { id: 3, icon: '📋', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
+  { id: 1, icon: 'car', title: '專車接送', desc: '定點集合出發,免自行開車' },
+  { id: 2, icon: 'headphone', title: '專人服務', desc: '旅遊顧問一對一諮詢' },
+  { id: 3, icon: 'clipboard', title: '行程透明', desc: '行程內容清楚標示,無隱藏費用' },
 ]
 </script>
 
@@ -27,7 +29,7 @@ const whyItems = [
   <section class="hero-photo">
     <img v-if="heroImg" :src="heroImg" alt="國內旅遊" class="hero-img" />
     <div v-else class="hero-img hero-placeholder">
-      <span class="ph-mark">🖼</span>
+      <AppIcon class="ph-mark" name="image" :size="30" />
       <span class="ph-text">主視覺待補</span>
     </div>
     <div class="hero-scrim" :class="{ 'scrim-light': !heroImg }"></div>
@@ -52,7 +54,7 @@ const whyItems = [
       >
         <img v-if="r.img" :src="r.img" :alt="r.name" />
         <div v-else class="card-placeholder">
-          <span class="ph-mark">🖼</span>
+          <AppIcon class="ph-mark" name="image" :size="30" />
           <span class="ph-text">圖片待補</span>
         </div>
         <div class="label" :class="{ 'label-dark': !r.img }">{{ r.name }}</div>
@@ -63,7 +65,7 @@ const whyItems = [
   <section class="why-section">
     <div class="why-inner">
       <RouterLink class="why-item" v-for="w in whyItems" :key="w.id" to="/consult">
-        <span class="icon">{{ w.icon }}</span>
+        <span class="icon"><AppIcon :name="w.icon" :size="21" /></span>
         <div>
           <h3>{{ w.title }}</h3>
           <p>{{ w.desc }}</p>
@@ -125,13 +127,7 @@ const whyItems = [
 /* 圖片待補時的佔位樣式 —— 補上真實圖片後這些規則就不會生效 */
 .hero-placeholder,
 .card-placeholder {
-  background: repeating-linear-gradient(
-    45deg,
-    #f3ece1,
-    #f3ece1 14px,
-    #efe6d8 14px,
-    #efe6d8 28px
-  );
+  background: repeating-linear-gradient(45deg, #f3ece1, #f3ece1 14px, #efe6d8 14px, #efe6d8 28px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,8 +145,7 @@ const whyItems = [
   padding-top: 48px;
 }
 .ph-mark {
-  font-size: 26px;
-  opacity: 0.7;
+  opacity: 0.55;
 }
 .ph-text {
   font-size: 13px;
@@ -265,7 +260,7 @@ const whyItems = [
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 .why-item h3 {

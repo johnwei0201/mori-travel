@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { destinations } from '../data/destinations.js'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 const route = useRoute()
 const dest = computed(() => destinations[route.params.slug])
@@ -23,14 +24,9 @@ const consultTopic = computed(() =>
     </div>
 
     <section class="hero">
-      <img
-        v-if="dest.heroImg"
-        :src="dest.heroImg"
-        :alt="dest.name + '主視覺'"
-        class="hero-photo"
-      />
+      <img v-if="dest.heroImg" :src="dest.heroImg" :alt="dest.name + '主視覺'" class="hero-photo" />
       <div v-else class="hero-photo placeholder hero-placeholder">
-        <span class="ph-mark">🖼</span>
+        <AppIcon class="ph-mark" name="image" :size="30" />
         <span class="ph-text">主視覺待補</span>
       </div>
       <div class="hero-scrim" :class="{ 'scrim-light': !dest.heroImg }"></div>
@@ -43,7 +39,7 @@ const consultTopic = computed(() =>
 
     <div class="facts-card">
       <div class="fact" v-for="f in dest.facts" :key="f.label">
-        <div class="fact-icon">{{ f.icon }}</div>
+        <div class="fact-icon"><AppIcon :name="f.icon" :size="20" /></div>
         <div class="fact-label">{{ f.label }}</div>
         <div class="fact-value">{{ f.value }}</div>
       </div>
@@ -147,13 +143,7 @@ const consultTopic = computed(() =>
 
 /* 圖片待補時的佔位樣式 —— 資料補上 img 之後這些規則就不會生效 */
 .placeholder {
-  background: repeating-linear-gradient(
-    45deg,
-    #f3ece1,
-    #f3ece1 14px,
-    #efe6d8 14px,
-    #efe6d8 28px
-  );
+  background: repeating-linear-gradient(45deg, #f3ece1, #f3ece1 14px, #efe6d8 14px, #efe6d8 28px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,8 +162,7 @@ const consultTopic = computed(() =>
   padding-top: 48px;
 }
 .ph-mark {
-  font-size: 26px;
-  opacity: 0.7;
+  opacity: 0.55;
 }
 .ph-text {
   font-size: 13px;
@@ -215,7 +204,9 @@ const consultTopic = computed(() =>
   border-left: none;
 }
 .fact-icon {
-  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  color: var(--color-primary);
   margin-bottom: 6px;
 }
 .fact-label {

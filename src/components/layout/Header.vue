@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import AppIcon from '../ui/AppIcon.vue'
 
 const menuOpen = ref(false)
 const route = useRoute()
@@ -38,7 +39,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     </nav>
 
     <div class="actions">
-      <button class="icon-btn">👤</button>
+      <button class="icon-btn" aria-label="會員登入">
+        <AppIcon name="user" :size="19" />
+      </button>
       <RouterLink to="/plan" class="cta-btn">開始找旅行</RouterLink>
 
       <button
@@ -57,7 +60,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
     <nav id="mobile-nav" class="mobile-nav" v-show="menuOpen">
       <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
-      <button class="mobile-account">👤 會員登入</button>
+      <button class="mobile-account">
+        <AppIcon name="user" :size="18" />
+        <span>會員登入</span>
+      </button>
     </nav>
   </header>
 </template>
@@ -124,6 +130,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   height: 36px;
   background: #ffffff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
 }
 .cta-btn {
   background: var(--color-accent);
@@ -187,7 +197,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 }
 .mobile-nav a,
 .mobile-account {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
   text-align: left;
   padding: 15px 24px;

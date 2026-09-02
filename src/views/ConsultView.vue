@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 const route = useRoute()
 
@@ -36,13 +37,7 @@ const months = [
   '2027 年 3 月以後',
 ]
 const dayOptions = ['3 天以內', '4—5 天', '6—8 天', '9 天以上', '還不確定']
-const budgetOptions = [
-  'NT$2 萬以下',
-  'NT$2—4 萬',
-  'NT$4—6 萬',
-  'NT$6 萬以上',
-  '想先聽建議',
-]
+const budgetOptions = ['NT$2 萬以下', 'NT$2—4 萬', 'NT$4—6 萬', 'NT$6 萬以上', '想先聽建議']
 
 const steps = [
   { n: 1, title: '送出諮詢單', text: '填寫你的旅行輪廓,不用很精確,有想法就好。' },
@@ -126,7 +121,7 @@ function reset() {
   <div class="layout">
     <!-- 送出後的確認畫面 -->
     <section v-if="submitted" class="done-card">
-      <div class="done-mark">✓</div>
+      <div class="done-mark"><AppIcon name="check" :size="26" /></div>
       <h2>諮詢單已送出</h2>
       <p class="done-lead">
         {{ form.name }},謝謝你的來信。顧問會在一個工作天內以<b>{{ form.contactPref }}</b>
@@ -135,12 +130,30 @@ function reset() {
       </p>
 
       <dl class="done-list">
-        <div v-if="form.topics.length"><dt>想去的地方</dt><dd>{{ form.topics.join('、') }}</dd></div>
-        <div v-if="form.month"><dt>預計出發</dt><dd>{{ form.month }}</dd></div>
-        <div v-if="form.days"><dt>旅遊天數</dt><dd>{{ form.days }}</dd></div>
-        <div><dt>旅客人數</dt><dd>{{ form.people }} 位</dd></div>
-        <div v-if="form.budget"><dt>每人預算</dt><dd>{{ form.budget }}</dd></div>
-        <div v-if="form.note.trim()"><dt>補充說明</dt><dd>{{ form.note }}</dd></div>
+        <div v-if="form.topics.length">
+          <dt>想去的地方</dt>
+          <dd>{{ form.topics.join('、') }}</dd>
+        </div>
+        <div v-if="form.month">
+          <dt>預計出發</dt>
+          <dd>{{ form.month }}</dd>
+        </div>
+        <div v-if="form.days">
+          <dt>旅遊天數</dt>
+          <dd>{{ form.days }}</dd>
+        </div>
+        <div>
+          <dt>旅客人數</dt>
+          <dd>{{ form.people }} 位</dd>
+        </div>
+        <div v-if="form.budget">
+          <dt>每人預算</dt>
+          <dd>{{ form.budget }}</dd>
+        </div>
+        <div v-if="form.note.trim()">
+          <dt>補充說明</dt>
+          <dd>{{ form.note }}</dd>
+        </div>
       </dl>
 
       <div class="done-actions">
@@ -279,10 +292,10 @@ function reset() {
         <h2 class="side-title">想直接聊聊?</h2>
         <p class="contact-lead">上班時間來電,通常可以直接接到顧問。</p>
         <div class="contact-list">
-          <p>📞 02-7755-6688</p>
-          <p>✉️ hello@moritravel.com.tw</p>
-          <p>🕐 週一至週五 09:30 – 18:30</p>
-          <p>📍 台北市中山區南京東路二段 88 號 6 樓</p>
+          <p><AppIcon name="phone" :size="15" /><span>02-7755-6688</span></p>
+          <p><AppIcon name="mail" :size="15" /><span>hello@moritravel.com.tw</span></p>
+          <p><AppIcon name="clock" :size="15" /><span>週一至週五 09:30 – 18:30</span></p>
+          <p><AppIcon name="pin" :size="15" /><span>台北市中山區南京東路二段 88 號 6 樓</span></p>
         </div>
       </div>
     </aside>
@@ -696,6 +709,9 @@ function reset() {
   gap: 9px;
 }
 .contact-list p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13.5px;
   color: #2b2420;
   margin: 0;

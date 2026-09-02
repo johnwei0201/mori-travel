@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import AppIcon from '../ui/AppIcon.vue'
 
 defineProps({
   icon: String,
@@ -10,7 +11,7 @@ defineProps({
 
 <template>
   <RouterLink to="/consult" class="feature-item">
-    <span class="icon">{{ icon }}</span>
+    <span class="icon"><AppIcon :name="icon" :size="22" /></span>
     <div class="text">
       <h3 class="title">{{ title }}</h3>
       <p class="desc">{{ desc }}</p>
@@ -44,7 +45,7 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 .title {

@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import heroFuji from '../assets/images/hero-japan-fuji.png'
 import { travelStyles, months, hotSearches, otherPaths } from '../data/planTrip.js'
+import AppIcon from '../components/ui/AppIcon.vue'
 import { tripCatalog, durationOptions, budgetOptions } from '../data/tripCatalog.js'
 
 // 篩選條件:全部都是空字串 / null = 不限
@@ -219,7 +220,9 @@ function scrollToResults() {
     </div>
 
     <div class="result-bar">
-      <span>符合條件的行程 <b>{{ sortedResults.length }}</b> 筆</span>
+      <span
+        >符合條件的行程 <b>{{ sortedResults.length }}</b> 筆</span
+      >
       <div v-if="activeFilters.length" class="filter-tags">
         <button
           v-for="f in activeFilters"
@@ -245,8 +248,8 @@ function scrollToResults() {
         <div class="trip-body">
           <h3>{{ trip.title }}</h3>
           <div class="trip-meta">
-            <span>📅 {{ trip.date }} 出發</span>
-            <span>☀️ {{ trip.duration }}</span>
+            <span><AppIcon name="calendar" :size="14" /> {{ trip.date }} 出發</span>
+            <span><AppIcon name="sun" :size="14" /> {{ trip.duration }}</span>
           </div>
           <div class="trip-chips">
             <span v-for="f in trip.features" :key="f">{{ f }}</span>
@@ -280,7 +283,7 @@ function scrollToResults() {
       <h2 class="paths-heading">還是沒想法?換個方式找</h2>
       <div class="paths-grid">
         <RouterLink v-for="p in otherPaths" :key="p.title" :to="p.to" class="path">
-          <span class="path-icon">{{ p.icon }}</span>
+          <span class="path-icon"><AppIcon :name="p.icon" :size="24" /></span>
           <h3>{{ p.title }}</h3>
           <p>{{ p.text }}</p>
           <span class="path-go">{{ p.action }} →</span>
@@ -737,13 +740,7 @@ function scrollToResults() {
   font-size: 13px;
   letter-spacing: 1px;
   color: #a89c8e;
-  background: repeating-linear-gradient(
-    45deg,
-    #f3ece1,
-    #f3ece1 14px,
-    #efe6d8 14px,
-    #efe6d8 28px
-  );
+  background: repeating-linear-gradient(45deg, #f3ece1, #f3ece1 14px, #efe6d8 14px, #efe6d8 28px);
 }
 
 .no-result {
@@ -849,6 +846,11 @@ function scrollToResults() {
   gap: 14px;
   flex-wrap: wrap;
 }
+.trip-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
 .trip-chips {
   display: flex;
   gap: 6px;
@@ -930,7 +932,8 @@ function scrollToResults() {
   transform: translateY(-2px);
 }
 .path-icon {
-  font-size: 22px;
+  display: flex;
+  color: var(--color-primary);
   line-height: 1;
 }
 .path h3 {
