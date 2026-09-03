@@ -114,20 +114,25 @@ function formatAmount(n, code) {
   return Number.isInteger(rounded) ? rounded.toLocaleString() : rounded.toFixed(2)
 }
 
+const TWD = { name: '台幣', code: 'TWD' }
+
+/** 換算的來源與目標,方向切換時只有這裡對調,其他地方都讀這份 */
+const sides = computed(() => {
+  const c = { name: curTarget.value.name, code: curTarget.value.code }
+  return curToTwd.value ? { from: c, to: TWD } : { from: TWD, to: c }
+})
+
 const conversion = computed(() => {
   const amount = Number(curAmount.value)
   if (!Number.isFinite(amount) || amount < 0) return null
 
   const c = curTarget.value
-  const fromCode = curToTwd.value ? c.code : 'TWD'
-  const toCode = curToTwd.value ? 'TWD' : c.code
+  const { from, to } = sides.value
   const result = curToTwd.value ? amount * c.twd : amount / c.twd
 
   return {
-    fromCode,
-    toCode,
-    fromText: `${formatAmount(amount, fromCode)} ${fromCode}`,
-    toText: formatAmount(result, toCode),
+    fromText: formatAmount(amount, from.code),
+    toText: formatAmount(result, to.code),
     // 參考匯率用該幣別的慣用單位表示,例如「100 日圓 ≈ NT$21」
     reference: `${c.unit.toLocaleString()} ${c.name} ≈ NT$${formatAmount(c.unit * c.twd, 'TWD')}`,
   }
@@ -390,26 +395,31 @@ const checklist = [
           <div class="cur-amount-row">
             <div class="tool-field">
               <label for="cur-amount">
-                金額({{ curToTwd ? curTarget.code : 'TWD' }})
+                金額(<b>{{ sides.from.name }}</b> {{ sides.from.code }})
               </label>
               <input id="cur-amount" v-model.number="curAmount" type="number" min="0" step="100" />
             </div>
             <button class="cur-swap" @click="swapDirection">
               <span class="cur-swap-icon" aria-hidden="true">⇄</span>
-              換方向
+              對調
             </button>
           </div>
 
           <p class="cur-direction">
-            目前是<b>{{ curToTwd ? `${curTarget.name}換台幣` : `台幣換${curTarget.name}` }}</b>
+            目前是<b>{{ sides.from.name }}</b> 換 <b>{{ sides.to.name }}</b>
           </p>
         </div>
 
         <div v-if="conversion" class="cur-result">
-          <div class="cur-from">{{ conversion.fromText }}</div>
+          <div class="cur-pair">
+            <b>{{ sides.from.name }}</b> {{ sides.from.code }}
+            <span class="cur-pair-arrow" aria-hidden="true">➤</span>
+            <b>{{ sides.to.name }}</b> {{ sides.to.code }}
+          </div>
+          <div class="cur-from">{{ sides.from.name }} {{ conversion.fromText }}</div>
           <div class="cur-to">
             <span class="cur-value">{{ conversion.toText }}</span>
-            <span class="cur-code">{{ conversion.toCode }}</span>
+            <span class="cur-code">{{ sides.to.name }} {{ sides.to.code }}</span>
           </div>
           <div class="cur-ref">參考匯率:{{ conversion.reference }}</div>
           <p class="cur-note">※ 概估值,更新於 {{ RATE_UPDATED }},未計入換匯手續費。</p>
@@ -978,7 +988,11 @@ const checklist = [
 }
 .cur-direction b {
   color: var(--color-primary);
-  margin-left: 2px;
+}
+/* 標籤裡的幣別名稱要比括號內文字更顯眼 */
+.cur-form .tool-field label b {
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
 .cur-result {
@@ -989,6 +1003,27 @@ const checklist = [
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+/* 頂端一行清楚寫出「誰換誰」 */
+.cur-pair {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: #9dbab6;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.cur-pair b {
+  color: #fff;
+  font-weight: 500;
+}
+.cur-pair-arrow {
+  color: var(--color-accent);
+  font-size: 14px;
+  line-height: 1;
 }
 .cur-from {
   font-size: 15px;
