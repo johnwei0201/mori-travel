@@ -1,5 +1,6 @@
 <script setup>
 import AppIcon from '../ui/AppIcon.vue'
+import logoMark from '../../assets/icons/mori_logo.png'
 
 const contacts = [
   { id: 1, icon: 'phone', text: '02-7755-6688' },
@@ -19,7 +20,10 @@ const socials = [
   <footer class="footer">
     <div class="top">
       <div class="brand">
-        <h2 class="logo">MORI <span>TRAVEL</span></h2>
+        <h2 class="logo">
+          <img :src="logoMark" alt="" class="logo-mark" />
+          <span class="logo-name">MORI <span class="logo-travel">TRAVEL</span></span>
+        </h2>
         <p class="desc">專為喜愛探索世界的你,打造剛剛好的旅行體驗。</p>
 
         <div class="contacts">
@@ -72,11 +76,24 @@ const socials = [
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 12px;
 }
-.logo span {
+/* logo 本身是深綠,和頁尾底色相同,用濾鏡轉成白色:
+   brightness(0) 先把不透明的像素壓成黑,invert(1) 再翻成白,透明區不受影響 */
+.logo-mark {
+  height: 30px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+}
+/* 只讓 TRAVEL 變細,不影響外層包住整組字的 .logo-name */
+.logo .logo-travel {
   font-weight: 400;
 }
 
