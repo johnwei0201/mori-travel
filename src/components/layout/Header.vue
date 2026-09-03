@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import logoMark from '../../assets/icons/mori_logo.png'
 import AppIcon from '../ui/AppIcon.vue'
 
 const menuOpen = ref(false)
@@ -32,7 +33,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
 <template>
   <header class="header">
-    <RouterLink to="/" class="logo">MORI <span>TRAVEL</span></RouterLink>
+    <RouterLink to="/" class="logo">
+      <img :src="logoMark" alt="" class="logo-mark" />
+      <span class="logo-name">MORI <span class="logo-travel">TRAVEL</span></span>
+    </RouterLink>
 
     <nav class="nav">
       <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
@@ -82,12 +86,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 22px;
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: none;
 }
-.logo span {
+.logo-mark {
+  height: 30px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+/* 只讓 TRAVEL 變細,不影響外層包住整組字的 .logo-name */
+.logo .logo-travel {
   font-weight: 400;
 }
 
@@ -245,6 +259,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   }
   .logo {
     font-size: 19px;
+    gap: 8px;
+  }
+  .logo-mark {
+    height: 26px;
   }
   .actions {
     gap: 10px;
