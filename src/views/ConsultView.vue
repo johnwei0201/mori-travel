@@ -295,7 +295,7 @@ function reset() {
           <p><AppIcon name="phone" :size="15" /><span>02-7755-6688</span></p>
           <p><AppIcon name="mail" :size="15" /><span>hello@moritravel.com.tw</span></p>
           <p><AppIcon name="clock" :size="15" /><span>週一至週五 09:30 – 18:30</span></p>
-          <p><AppIcon name="pin" :size="15" /><span>台北市中山區南京東路二段 88 號 6 樓</span></p>
+          <p><AppIcon name="pin" :size="15" /><span>241 新北市三重區自強路四段 101 號</span></p>
         </div>
       </div>
     </aside>
