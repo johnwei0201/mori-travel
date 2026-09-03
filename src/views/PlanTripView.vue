@@ -287,7 +287,10 @@ function scrollToResults() {
           <h3>{{ consultPath.title }}</h3>
           <p>{{ consultPath.text }}</p>
         </div>
-        <span class="path-go">{{ consultPath.action }} →</span>
+        <span class="path-go">
+          {{ consultPath.action }}
+          <span class="go-arrow" aria-hidden="true">➤</span>
+        </span>
       </RouterLink>
     </div>
   </section>
@@ -955,6 +958,9 @@ function scrollToResults() {
 /* 右側行動點,做成按鈕外型讓它在長條裡站得住 */
 .path-go {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: var(--color-accent);
   color: #fff;
   font-size: 14.5px;
@@ -966,6 +972,14 @@ function scrollToResults() {
 }
 .path:hover .path-go {
   background: #d4551f;
+}
+.go-arrow {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+.path:hover .go-arrow {
+  transform: translateX(3px);
 }
 
 /* cta */

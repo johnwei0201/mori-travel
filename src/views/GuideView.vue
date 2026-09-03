@@ -17,7 +17,7 @@ const filteredCountries = computed(() => {
   )
 })
 
-/* ---------- 時差換算器 ---------- */
+/* ---------- 時差換算 ---------- */
 const pad = (n) => String(n).padStart(2, '0')
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
 
@@ -271,11 +271,11 @@ const checklist = [
     </div>
   </section>
 
-  <!-- 時差換算器 -->
+  <!-- 時差換算 -->
   <section class="tz-section">
     <div class="tool-inner">
       <div class="section-label">TIME DIFFERENCE</div>
-      <h2>時差換算器</h2>
+      <h2>時差換算</h2>
       <p class="tool-lead">選一個目的地,直接看當地此刻幾點;要約定通話時間,也可以換算指定時刻。</p>
 
       <div class="tz-body">
@@ -694,7 +694,7 @@ const checklist = [
   box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
 }
 
-/* ---------- 時差換算器 ---------- */
+/* ---------- 時差換算 ---------- */
 .tz-section {
   background: #fdf1e0;
   padding: clamp(44px, 5.5vw, 68px) 40px;
