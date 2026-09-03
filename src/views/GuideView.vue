@@ -252,20 +252,6 @@ const checklist = [
     </div>
   </section>
 
-  <section class="checklist-section">
-    <div class="section-label">BEFORE YOU GO</div>
-    <h2>行前必備清單</h2>
-    <div class="checklist-grid">
-      <div class="checklist-card" v-for="c in checklist" :key="c.id">
-        <div class="checklist-icon"><AppIcon :name="c.icon" :size="22" /></div>
-        <h3>{{ c.title }}</h3>
-        <ul>
-          <li v-for="item in c.items" :key="item">{{ item }}</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <!-- 各國實用資訊速查表 -->
   <section class="info-section">
     <div class="info-inner">
@@ -491,6 +477,23 @@ const checklist = [
     </div>
   </section>
 
+  <!-- 行前提醒 -->
+  <section class="checklist-section">
+    <div class="checklist-inner">
+      <div class="section-label">BEFORE YOU GO</div>
+      <h2>行前提醒您</h2>
+      <div class="checklist-grid">
+        <div class="checklist-card" v-for="c in checklist" :key="c.id">
+          <div class="checklist-icon"><AppIcon :name="c.icon" :size="22" /></div>
+          <h3>{{ c.title }}</h3>
+          <ul>
+            <li v-for="item in c.items" :key="item">{{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="articles-section">
     <div class="section-label">FEATURED</div>
     <h2>精選文章</h2>
@@ -579,8 +582,12 @@ const checklist = [
   margin-bottom: 8px;
 }
 
+/* 上下都是頁面底色,用蜜桃色把這一區隔開,白卡片放在上面也更立體 */
 .checklist-section {
-  padding: 56px 40px clamp(48px, 5vw, 64px);
+  background: #fdf1e0;
+  padding: clamp(44px, 5.5vw, 68px) 40px;
+}
+.checklist-inner {
   max-width: 1120px;
   margin: 0 auto;
 }
@@ -1274,7 +1281,8 @@ const checklist = [
   .info-section,
   .tz-section,
   .cur-section,
-  .cost-section {
+  .cost-section,
+  .checklist-section {
     padding-inline: 24px;
   }
   .tz-body,
@@ -1295,7 +1303,8 @@ const checklist = [
   .info-section,
   .tz-section,
   .cur-section,
-  .cost-section {
+  .cost-section,
+  .checklist-section {
     padding-inline: 16px;
   }
   .cur-amount-row {
