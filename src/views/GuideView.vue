@@ -4,7 +4,13 @@ import tripHokkaido from '../assets/images/trip-hokkaido-winter.png'
 import tripItaly from '../assets/images/trip-italy-classic.png'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AppIcon from '../components/ui/AppIcon.vue'
-import { countries, hotelTiers } from '../data/countryInfo.js'
+import {
+  countries,
+  hotelTiers,
+  currencies,
+  WHOLE_UNIT_CODES,
+  RATE_UPDATED,
+} from '../data/countryInfo.js'
 
 /* ---------- 各國實用資訊速查表 ---------- */
 const infoKeyword = ref('')
@@ -89,6 +95,47 @@ const manualResult = computed(() => {
     dayLabel: dayShift > 0 ? '(隔天)' : dayShift < 0 ? '(前一天)' : '(同一天)',
   }
 })
+
+/* ---------- 貨幣換算 ---------- */
+const curCode = ref('JPY')
+const curAmount = ref(1000)
+const curToTwd = ref(true) // true = 外幣換台幣
+
+const curTarget = computed(() => currencies.find((c) => c.code === curCode.value))
+
+/** 依幣別決定要不要留小數:日圓、韓元這類不看小數,金額大時也直接取整 */
+function formatAmount(n, code) {
+  if (!Number.isFinite(n)) return '0'
+  if (WHOLE_UNIT_CODES.includes(code) || Math.abs(n) >= 1000) {
+    return Math.round(n).toLocaleString()
+  }
+  // 先四捨五入到兩位,順便吃掉浮點誤差(0.21×100 會算出 21.000000000000004)
+  const rounded = Math.round(n * 100) / 100
+  return Number.isInteger(rounded) ? rounded.toLocaleString() : rounded.toFixed(2)
+}
+
+const conversion = computed(() => {
+  const amount = Number(curAmount.value)
+  if (!Number.isFinite(amount) || amount < 0) return null
+
+  const c = curTarget.value
+  const fromCode = curToTwd.value ? c.code : 'TWD'
+  const toCode = curToTwd.value ? 'TWD' : c.code
+  const result = curToTwd.value ? amount * c.twd : amount / c.twd
+
+  return {
+    fromCode,
+    toCode,
+    fromText: `${formatAmount(amount, fromCode)} ${fromCode}`,
+    toText: formatAmount(result, toCode),
+    // 參考匯率用該幣別的慣用單位表示,例如「100 日圓 ≈ NT$21」
+    reference: `${c.unit.toLocaleString()} ${c.name} ≈ NT$${formatAmount(c.unit * c.twd, 'TWD')}`,
+  }
+})
+
+function swapDirection() {
+  curToTwd.value = !curToTwd.value
+}
 
 /* ---------- 費用試算 ---------- */
 const costCountry = ref('japan')
@@ -317,6 +364,55 @@ const checklist = [
           </div>
           <div class="tz-diff">{{ diffLabel }}・台灣現在 {{ liveClock.taiwan }}</div>
           <p v-if="tzTarget.offsetNote" class="tz-note">※ {{ tzTarget.offsetNote }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 貨幣換算 -->
+  <section class="cur-section">
+    <div class="tool-inner">
+      <div class="section-label">CURRENCY</div>
+      <h2>貨幣換算</h2>
+      <p class="tool-lead">概估用的參考匯率,先抓個大概;實際換匯以銀行當日牌告為準。</p>
+
+      <div class="cur-body">
+        <div class="cur-form">
+          <div class="tool-field">
+            <label for="cur-code">幣別</label>
+            <select id="cur-code" v-model="curCode">
+              <option v-for="c in currencies" :key="c.code" :value="c.code">
+                {{ c.name }} {{ c.code }}({{ c.where }})
+              </option>
+            </select>
+          </div>
+
+          <div class="cur-amount-row">
+            <div class="tool-field">
+              <label for="cur-amount">
+                金額({{ curToTwd ? curTarget.code : 'TWD' }})
+              </label>
+              <input id="cur-amount" v-model.number="curAmount" type="number" min="0" step="100" />
+            </div>
+            <button class="cur-swap" @click="swapDirection">
+              <span class="cur-swap-icon" aria-hidden="true">⇄</span>
+              換方向
+            </button>
+          </div>
+
+          <p class="cur-direction">
+            目前是<b>{{ curToTwd ? `${curTarget.name}換台幣` : `台幣換${curTarget.name}` }}</b>
+          </p>
+        </div>
+
+        <div v-if="conversion" class="cur-result">
+          <div class="cur-from">{{ conversion.fromText }}</div>
+          <div class="cur-to">
+            <span class="cur-value">{{ conversion.toText }}</span>
+            <span class="cur-code">{{ conversion.toCode }}</span>
+          </div>
+          <div class="cur-ref">參考匯率:{{ conversion.reference }}</div>
+          <p class="cur-note">※ 概估值,更新於 {{ RATE_UPDATED }},未計入換匯手續費。</p>
         </div>
       </div>
     </div>
@@ -818,6 +914,118 @@ const checklist = [
   margin-top: 12px;
 }
 
+/* ---------- 貨幣換算 ---------- */
+.cur-section {
+  background: #ffffff;
+  border-top: 1px solid #e7e0d6;
+  border-bottom: 1px solid #e7e0d6;
+  padding: clamp(44px, 5.5vw, 68px) 40px;
+}
+.cur-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: stretch;
+}
+.cur-form {
+  background: var(--color-bg);
+  border: 1px solid #e7e0d6;
+  border-radius: 14px;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.cur-form .tool-field input,
+.cur-form .tool-field select {
+  background: #ffffff;
+}
+.cur-amount-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.cur-amount-row .tool-field {
+  flex: 1;
+}
+.cur-swap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #e7e0d6;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 11px 16px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--color-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+.cur-swap:hover {
+  border-color: var(--color-primary);
+}
+.cur-swap-icon {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-accent);
+}
+.cur-direction {
+  font-size: 13px;
+  color: #6b6259;
+}
+.cur-direction b {
+  color: var(--color-primary);
+  margin-left: 2px;
+}
+
+.cur-result {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 14px;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cur-from {
+  font-size: 15px;
+  color: #cfe0dd;
+  font-variant-numeric: tabular-nums;
+}
+.cur-to {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 8px 0 14px;
+  flex-wrap: wrap;
+}
+.cur-value {
+  font-size: clamp(36px, 5vw, 50px);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+}
+.cur-code {
+  font-size: 18px;
+  color: #ffc4a3;
+  font-weight: 500;
+}
+.cur-ref {
+  font-size: 14px;
+  color: #cfe0dd;
+  font-variant-numeric: tabular-nums;
+}
+.cur-note {
+  font-size: 12.5px;
+  color: #9dbab6;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
 /* ---------- 費用試算 ---------- */
 .cost-section {
   padding: clamp(44px, 5.5vw, 68px) 40px;
@@ -1030,10 +1238,12 @@ const checklist = [
   }
   .info-section,
   .tz-section,
+  .cur-section,
   .cost-section {
     padding-inline: 24px;
   }
   .tz-body,
+  .cur-body,
   .cost-body {
     grid-template-columns: 1fr;
   }
@@ -1049,8 +1259,20 @@ const checklist = [
   }
   .info-section,
   .tz-section,
+  .cur-section,
   .cost-section {
     padding-inline: 16px;
+  }
+  .cur-amount-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cur-swap {
+    justify-content: center;
+  }
+  .cur-form,
+  .cur-result {
+    padding: 20px;
   }
   .info-search {
     min-width: 0;

@@ -195,6 +195,38 @@ export const countries = [
   },
 ]
 
+/**
+ * 貨幣換算用的參考匯率。
+ *
+ * twd  : 1 單位外幣約等於多少新台幣
+ * unit : 顯示參考匯率時的慣用單位(日圓、韓元習慣看 100 元,越南盾、印尼盾看 1000 元)
+ *
+ * 這是「心裡有個底」用的概估值,不是即時牌告。匯率天天在動,
+ * 真的要換匯時請以銀行或換匯所當日公告為準。
+ */
+export const RATE_UPDATED = '2026 年中'
+
+export const currencies = [
+  { code: 'JPY', name: '日圓', twd: 0.21, unit: 100, where: '日本' },
+  { code: 'KRW', name: '韓元', twd: 0.023, unit: 100, where: '韓國' },
+  { code: 'THB', name: '泰銖', twd: 0.92, unit: 1, where: '泰國' },
+  { code: 'VND', name: '越南盾', twd: 0.0013, unit: 1000, where: '越南' },
+  { code: 'SGD', name: '新幣', twd: 24.5, unit: 1, where: '新加坡' },
+  { code: 'IDR', name: '印尼盾', twd: 0.002, unit: 1000, where: '印尼、峇里島' },
+  { code: 'EUR', name: '歐元', twd: 35, unit: 1, where: '義大利、法國等歐元區' },
+  { code: 'CZK', name: '捷克克朗', twd: 1.42, unit: 1, where: '捷克' },
+  { code: 'GBP', name: '英鎊', twd: 41, unit: 1, where: '英國' },
+  { code: 'USD', name: '美元', twd: 32, unit: 1, where: '美國' },
+  { code: 'CAD', name: '加幣', twd: 23.5, unit: 1, where: '加拿大' },
+  { code: 'AUD', name: '澳幣', twd: 21, unit: 1, where: '澳洲' },
+  { code: 'NZD', name: '紐幣', twd: 19.5, unit: 1, where: '紐西蘭' },
+  { code: 'HKD', name: '港幣', twd: 4.1, unit: 1, where: '香港、澳門' },
+  { code: 'CNY', name: '人民幣', twd: 4.5, unit: 1, where: '中國' },
+]
+
+/** 這幾種幣別金額通常不看小數 */
+export const WHOLE_UNIT_CODES = ['JPY', 'KRW', 'VND', 'IDR']
+
 /** 住宿等級,index 對應 cost.hotel 陣列 */
 export const hotelTiers = [
   { label: '經濟', note: '青旅、商務旅館' },
