@@ -272,7 +272,10 @@ function scrollToResults() {
       <p class="no-result-hint">可以移除其中一兩個條件再看看,或直接讓顧問幫你找。</p>
       <div class="no-result-actions">
         <button class="reset-btn" @click="clearAll">清除全部條件</button>
-        <RouterLink to="/consult" class="ask-link">請顧問幫我找 →</RouterLink>
+        <RouterLink to="/consult" class="ask-link">
+          請顧問幫我找
+          <span class="go-arrow" aria-hidden="true">➤</span>
+        </RouterLink>
       </div>
     </div>
   </section>
@@ -786,10 +789,16 @@ function scrollToResults() {
   border-color: var(--color-primary);
 }
 .ask-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: var(--color-accent);
   text-decoration: none;
   font-weight: 500;
+}
+.ask-link:hover .go-arrow {
+  transform: translateX(3px);
 }
 
 .trips {
