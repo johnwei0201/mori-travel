@@ -6,6 +6,8 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   <section class="hero">
     <img :src="heroFuji" alt="富士山秋景" class="hero-image" />
 
+    <p class="hero-headline">你有多少沒旅行了。</p>
+
     <div class="search-card">
       <h1 class="search-title">找一趟剛剛好的旅行</h1>
 
@@ -38,6 +40,27 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   height: 480px;
   object-fit: cover;
   display: block;
+}
+
+/* 壓在山腰那一帶的主標。黑體字族優先取系統內建的正黑 / 蘋方,
+   白字配深色陰影,才不會在亮處的天空與雪面上糊掉 */
+.hero-headline {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1100px, 90%);
+  margin: 0;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Microsoft JhengHei', 'PingFang TC', 'Heiti TC', 'Noto Sans TC', sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 4.4vw, 52px);
+  letter-spacing: 3px;
+  line-height: 1.4;
+  text-shadow:
+    0 2px 14px rgba(6, 32, 31, 0.55),
+    0 1px 3px rgba(6, 32, 31, 0.5);
 }
 
 .search-card {
@@ -100,6 +123,12 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   .hero-image {
     height: 400px;
   }
+  /* 這個寬度搜尋卡片會換行變高,上方只剩窄窄一條,標題改貼近頂端並縮小 */
+  .hero-headline {
+    top: 14px;
+    font-size: clamp(22px, 3.2vw, 30px);
+    letter-spacing: 2px;
+  }
   .search-card {
     width: min(600px, 92%);
     padding: 24px;
@@ -118,6 +147,10 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
 @media (max-width: 640px) {
   .hero-image {
     height: 620px;
+  }
+  .hero-headline {
+    top: 16%;
+    letter-spacing: 2px;
   }
   .search-card {
     width: 92%;
