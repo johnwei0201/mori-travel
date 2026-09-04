@@ -44,9 +44,7 @@ function search() {
           <label for="hero-month">DEPARTURE MONTH</label>
           <select id="hero-month" v-model="month">
             <option value="">選擇出發月份</option>
-            <option v-for="mo in months" :key="mo.m" :value="mo.m">
-              {{ mo.m }} 月・{{ mo.season }}
-            </option>
+            <option v-for="mo in months" :key="mo.m" :value="mo.m">{{ mo.m }} 月</option>
           </select>
         </div>
         <div class="search-field">
