@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import heroFuji from '../../assets/images/hero-japan-fuji.png'
 import { months } from '../../data/planTrip.js'
-import { durationOptions } from '../../data/tripCatalog.js'
+import { durationOptions, regions } from '../../data/tripCatalog.js'
 
 const router = useRouter()
 
@@ -33,12 +33,10 @@ function search() {
       <form class="search-form" @submit.prevent="search">
         <div class="search-field">
           <label for="hero-dest">DESTINATION</label>
-          <input
-            id="hero-dest"
-            v-model="keyword"
-            type="search"
-            placeholder="輸入國家、城市或景點"
-          />
+          <select id="hero-dest" v-model="keyword">
+            <option value="">選擇目的地</option>
+            <option v-for="r in regions" :key="r" :value="r">{{ r }}</option>
+          </select>
         </div>
         <div class="search-field">
           <label for="hero-month">DEPARTURE MONTH</label>
