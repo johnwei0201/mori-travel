@@ -21,4 +21,15 @@ import promoImg from '../../assets/images/promo-autumn-lake.png'
   display: block;
   border-radius: 16px;
 }
+
+/* 手機上 40px 外距再乘 80% 寬度,banner 會縮得太小,
+   改成貼齊其他區塊的 16px 內距、佔滿可用寬度 */
+@media (max-width: 640px) {
+  .promo {
+    margin: 0 16px 24px;
+  }
+  .banner {
+    width: 100%;
+  }
+}
 </style>
