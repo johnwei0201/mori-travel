@@ -6,7 +6,7 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   <section class="hero">
     <img :src="heroFuji" alt="富士山秋景" class="hero-image" />
 
-    <p class="hero-headline">你有多少沒旅行了。</p>
+    <p class="hero-headline">你有多久沒旅行了。</p>
 
     <div class="search-card">
       <h1 class="search-title">找一趟剛剛好的旅行</h1>
