@@ -313,6 +313,12 @@ export const budgetOptions = [
   { label: 'NT$6 萬以上', min: 60000, max: Infinity },
 ]
 
+/**
+ * 目的地選項:直接從行程目錄推導,所以新增行程時只要 region 是新的,
+ * 選單就會自動多一項,不用再回來手動維護。
+ */
+export const regions = [...new Set(tripCatalog.map((t) => t.region))]
+
 /** 排序方式,searchView 的下拉選單與 sortTrips 共用 */
 export const sortOptions = [
   { value: 'date', label: '出發日期由近至遠' },

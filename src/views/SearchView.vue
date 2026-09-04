@@ -8,6 +8,7 @@ import {
   durationOptions,
   budgetOptions,
   sortOptions,
+  regions,
 } from '../data/tripCatalog.js'
 
 const route = useRoute()
@@ -48,6 +49,17 @@ function clearAll() {
   budget.value = ''
   applyFilters()
 }
+
+/**
+ * 選單只列站上有的地區。若使用者是從首頁打字或帶著舊連結進來,
+ * 那個字串不在清單裡也不能丟掉,補到最前面當一個選項。
+ */
+const destOptions = computed(() => {
+  const list = [...regions]
+  const q = keyword.value.trim()
+  if (q && !list.includes(q)) list.unshift(q)
+  return list
+})
 
 const results = computed(() =>
   sortTrips(
@@ -105,14 +117,11 @@ const money = (n) => `NT$${n.toLocaleString()}`
   <section class="filter-bar">
     <div class="filter-inner">
       <div class="filter-field wide">
-        <label for="s-q">目的地關鍵字</label>
-        <input
-          id="s-q"
-          v-model="keyword"
-          type="search"
-          placeholder="國家、城市或景點"
-          @change="applyFilters"
-        />
+        <label for="s-q">目的地</label>
+        <select id="s-q" v-model="keyword" @change="applyFilters">
+          <option value="">不限</option>
+          <option v-for="d in destOptions" :key="d" :value="d">{{ d }}</option>
+        </select>
       </div>
       <div class="filter-field">
         <label for="s-month">出發月份</label>
