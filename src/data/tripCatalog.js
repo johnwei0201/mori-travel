@@ -312,3 +312,43 @@ export const budgetOptions = [
   { label: 'NT$4—6 萬', min: 40000, max: 59999 },
   { label: 'NT$6 萬以上', min: 60000, max: Infinity },
 ]
+
+/** 排序方式,searchView 的下拉選單與 sortTrips 共用 */
+export const sortOptions = [
+  { value: 'date', label: '出發日期由近至遠' },
+  { value: 'priceAsc', label: '價格由低至高' },
+  { value: 'priceDesc', label: '價格由高至低' },
+  { value: 'daysAsc', label: '天數由短至長' },
+]
+
+/**
+ * 依條件篩選行程。首頁搜尋、搜尋結果頁、開始找旅行三處共用這一份,
+ * 條件留空(空字串 / null)就代表不限。
+ */
+export function filterTrips({ keyword = '', month = null, duration = '', budget = '', style = null } = {}) {
+  const kw = keyword.trim().toLowerCase()
+  const d = duration ? durationOptions.find((o) => o.label === duration) : null
+  const b = budget ? budgetOptions.find((o) => o.label === budget) : null
+
+  return tripCatalog.filter((t) => {
+    if (kw) {
+      // 比對標題、地區與 keywords 陣列
+      const haystack = [t.title, t.region, ...(t.keywords ?? [])].join(' ').toLowerCase()
+      if (!haystack.includes(kw)) return false
+    }
+    if (month && t.month !== month) return false
+    if (style && !t.styles.includes(style)) return false
+    if (d && (t.days < d.min || t.days > d.max)) return false
+    if (b && (t.price < b.min || t.price > b.max)) return false
+    return true
+  })
+}
+
+/** 排序,回傳新陣列不動到原本的 */
+export function sortTrips(list, by = 'date') {
+  const sorted = [...list]
+  if (by === 'priceAsc') return sorted.sort((a, b) => a.price - b.price)
+  if (by === 'priceDesc') return sorted.sort((a, b) => b.price - a.price)
+  if (by === 'daysAsc') return sorted.sort((a, b) => a.days - b.days)
+  return sorted.sort((a, b) => a.date.localeCompare(b.date))
+}

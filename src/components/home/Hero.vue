@@ -1,5 +1,24 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import heroFuji from '../../assets/images/hero-japan-fuji.png'
+import { months } from '../../data/planTrip.js'
+import { durationOptions } from '../../data/tripCatalog.js'
+
+const router = useRouter()
+
+const keyword = ref('')
+const month = ref('')
+const duration = ref('')
+
+/** 只把有填的條件放進網址,乾淨也方便分享 */
+function search() {
+  const query = {}
+  if (keyword.value.trim()) query.q = keyword.value.trim()
+  if (month.value) query.month = month.value
+  if (duration.value) query.days = duration.value
+  router.push({ path: '/search', query })
+}
 </script>
 
 <template>
@@ -11,21 +30,36 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
     <div class="search-card">
       <h1 class="search-title">找一趟剛剛好的旅行</h1>
 
-      <div class="search-form">
+      <form class="search-form" @submit.prevent="search">
         <div class="search-field">
-          <label>DESTINATION</label>
-          <input type="text" placeholder="輸入國家、城市或景點" />
+          <label for="hero-dest">DESTINATION</label>
+          <input
+            id="hero-dest"
+            v-model="keyword"
+            type="search"
+            placeholder="輸入國家、城市或景點"
+          />
         </div>
         <div class="search-field">
-          <label>DEPARTURE MONTH</label>
-          <input type="text" placeholder="選擇出發月份" />
+          <label for="hero-month">DEPARTURE MONTH</label>
+          <select id="hero-month" v-model="month">
+            <option value="">選擇出發月份</option>
+            <option v-for="mo in months" :key="mo.m" :value="mo.m">
+              {{ mo.m }} 月・{{ mo.season }}
+            </option>
+          </select>
         </div>
         <div class="search-field">
-          <label>DURATION</label>
-          <input type="text" placeholder="選擇天數" />
+          <label for="hero-days">DURATION</label>
+          <select id="hero-days" v-model="duration">
+            <option value="">選擇天數</option>
+            <option v-for="d in durationOptions" :key="d.label" :value="d.label">
+              {{ d.label }}
+            </option>
+          </select>
         </div>
-        <button class="search-btn">搜尋行程</button>
-      </div>
+        <button type="submit" class="search-btn">搜尋行程</button>
+      </form>
     </div>
   </section>
 </template>
@@ -102,10 +136,30 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   color: #666;
 }
 
-.search-field input {
+.search-field input,
+.search-field select {
   border: none;
+  background: none;
+  font: inherit;
   font-size: 15px;
+  color: #2b2420;
   outline: none;
+  width: 100%;
+  padding: 0;
+}
+.search-field select {
+  cursor: pointer;
+}
+.search-field input::placeholder {
+  color: #a89c8e;
+}
+/* 下拉未選時顯示的提示文字,顏色比照 placeholder */
+.search-field select:has(option[value='']:checked) {
+  color: #a89c8e;
+}
+.search-field:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
 }
 
 .search-btn {

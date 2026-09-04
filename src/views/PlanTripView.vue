@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import heroFuji from '../assets/images/hero-japan-fuji.png'
 import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
-import { tripCatalog, durationOptions, budgetOptions } from '../data/tripCatalog.js'
+import { durationOptions, budgetOptions, filterTrips, sortTrips } from '../data/tripCatalog.js'
 
 // 篩選條件:全部都是空字串 / null = 不限
 const keyword = ref('')
@@ -29,33 +29,19 @@ const activeFilters = computed(() => {
   return list
 })
 
+// 篩選與排序都用 tripCatalog.js 的共用函式,和首頁搜尋、搜尋結果頁同一套規則
 const results = computed(() =>
-  tripCatalog.filter((t) => {
-    // 關鍵字:比對標題、地區與 keywords 陣列
-    const kw = keyword.value.trim().toLowerCase()
-    if (kw) {
-      const haystack = [t.title, t.region, ...(t.keywords ?? [])].join(' ').toLowerCase()
-      if (!haystack.includes(kw)) return false
-    }
-    if (selectedMonth.value && t.month !== selectedMonth.value) return false
-    if (selectedStyle.value && !t.styles.includes(selectedStyle.value)) return false
-
-    if (selectedDuration.value) {
-      const d = durationOptions.find((o) => o.label === selectedDuration.value)
-      if (d && (t.days < d.min || t.days > d.max)) return false
-    }
-    if (selectedBudget.value) {
-      const b = budgetOptions.find((o) => o.label === selectedBudget.value)
-      if (b && (t.price < b.min || t.price > b.max)) return false
-    }
-    return true
+  filterTrips({
+    keyword: keyword.value,
+    month: selectedMonth.value,
+    duration: selectedDuration.value,
+    budget: selectedBudget.value,
+    style: selectedStyle.value,
   }),
 )
 
 // 依出發日期由近至遠
-const sortedResults = computed(() =>
-  [...results.value].sort((a, b) => a.date.localeCompare(b.date)),
-)
+const sortedResults = computed(() => sortTrips(results.value, 'date'))
 
 function removeFilter(key) {
   if (key === 'keyword') keyword.value = ''
