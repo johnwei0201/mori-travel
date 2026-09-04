@@ -168,6 +168,10 @@ import heroFuji from '../../assets/images/hero-japan-fuji.png'
   .search-field {
     min-width: 0;
   }
+  /* 三個欄位放在兩欄網格,第三個會落單只佔半排,讓它跨滿整列 */
+  .search-field:nth-of-type(3) {
+    grid-column: 1 / -1;
+  }
   .search-btn {
     grid-column: 1 / -1;
   }
