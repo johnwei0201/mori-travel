@@ -800,6 +800,13 @@ const checklist = [
     border-color 0.15s ease,
     box-shadow 0.15s ease;
 }
+/* iOS Safari 的 time / date 欄位預設會把內容置中,和其他欄位對不齊 */
+.tool-field input[type='time'],
+.tool-field input[type='date'] {
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
 .tool-field input:focus,
 .tool-field select:focus {
   outline: none;

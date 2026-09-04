@@ -214,6 +214,14 @@ function search() {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    /* 桌機版是 flex-end,在網格裡會變成靠底而不等高,這裡改回拉伸 */
+    align-items: stretch;
+  }
+  /* DEPARTURE MONTH 在這個寬度會折成兩行,把那一格撐高;縮字並禁止換行 */
+  .search-field label {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
   .search-field {
     min-width: 0;
