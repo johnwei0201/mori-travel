@@ -2,10 +2,20 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { destinations } from '../data/destinations.js'
+import { attractions } from '../data/attractions.js'
 import AppIcon from '../components/ui/AppIcon.vue'
 
 const route = useRoute()
 const dest = computed(() => destinations[route.params.slug])
+
+/**
+ * 由 attractions.js 反查景點頁的 slug,不在 destinations.js 另存一份,
+ * 這樣景點資料只有一個來源;還沒建內頁的景點查不到,卡片就維持不可點。
+ */
+const slugByRegionAndName = Object.fromEntries(
+  Object.entries(attractions).map(([slug, a]) => [`${a.regionSlug}|${a.name}`, slug]),
+)
+const slugFor = (name) => slugByRegionAndName[`${route.params.slug}|${name}`]
 
 // 帶去諮詢頁的主題:國內六區統一送「國內旅遊」,國外則直接用地區名
 const consultTopic = computed(() =>
@@ -62,7 +72,14 @@ const consultTopic = computed(() =>
       <div class="section-label">MUST-SEE</div>
       <h2>精選景點</h2>
       <div class="highlight-grid">
-        <div class="highlight-card" v-for="h in dest.highlights" :key="h.name">
+        <component
+          :is="slugFor(h.name) ? 'RouterLink' : 'div'"
+          v-for="h in dest.highlights"
+          :key="h.name"
+          :to="slugFor(h.name) ? `/attractions/${slugFor(h.name)}` : undefined"
+          class="highlight-card"
+          :class="{ clickable: slugFor(h.name) }"
+        >
           <img v-if="h.img" :src="h.img" :alt="h.name" class="highlight-photo" />
           <div v-else class="highlight-photo placeholder">
             <span class="ph-text">圖片待補</span>
@@ -70,8 +87,11 @@ const consultTopic = computed(() =>
           <div class="highlight-body">
             <h3>{{ h.name }}</h3>
             <p>{{ h.desc }}</p>
+            <span v-if="slugFor(h.name)" class="highlight-go">
+              看更多 <span aria-hidden="true">➤</span>
+            </span>
           </div>
-        </div>
+        </component>
       </div>
     </section>
 
@@ -273,6 +293,36 @@ const consultTopic = computed(() =>
   border: 1px solid #e7e0d6;
   border-radius: 16px;
   overflow: hidden;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+/* 有內頁的卡片才給互動回饋,沒有的維持靜態 */
+.highlight-card.clickable {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.highlight-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
+}
+.highlight-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+.highlight-go span {
+  font-size: 13px;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+.highlight-card.clickable:hover .highlight-go span {
+  transform: translateX(3px);
 }
 .highlight-photo {
   width: 100%;

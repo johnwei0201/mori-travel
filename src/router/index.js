@@ -10,6 +10,7 @@ import PlanTripView from '../views/PlanTripView.vue'
 import ConsultView from '../views/ConsultView.vue'
 import ServiceView from '../views/ServiceView.vue'
 import SearchView from '../views/SearchView.vue'
+import AttractionView from '../views/AttractionView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,7 @@ const router = createRouter({
     { path: '/consult', component: ConsultView },
     { path: '/service', component: ServiceView },
     { path: '/search', component: SearchView },
+    { path: '/attractions/:slug', component: AttractionView },
   ],
   scrollBehavior() {
     return { top: 0 }
