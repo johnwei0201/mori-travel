@@ -24,7 +24,14 @@ const consultTopic = computed(() =>
     </div>
 
     <section class="hero">
-      <img v-if="dest.heroImg" :src="dest.heroImg" :alt="dest.name + '主視覺'" class="hero-photo" />
+      <!-- heroPosition 讓個別照片微調裁切位置,主體偏高的(如自由女神像)才需要設 -->
+      <img
+        v-if="dest.heroImg"
+        :src="dest.heroImg"
+        :alt="dest.name + '主視覺'"
+        class="hero-photo"
+        :style="{ objectPosition: dest.heroPosition || '50% 50%' }"
+      />
       <div v-else class="hero-photo placeholder hero-placeholder">
         <AppIcon class="ph-mark" name="image" :size="30" />
         <span class="ph-text">主視覺待補</span>

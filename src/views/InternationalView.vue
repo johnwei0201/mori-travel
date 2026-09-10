@@ -80,6 +80,8 @@ const whyItems = [
   width: 100%;
   height: 420px;
   object-fit: cover;
+  /* 艾菲爾鐵塔塔尖偏高,置中裁切會切掉 */
+  object-position: 50% 25%;
   display: block;
 }
 .hero-scrim {

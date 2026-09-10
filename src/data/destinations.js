@@ -180,6 +180,8 @@ export const destinations = {
   europe: {
     name: '歐洲',
     heroImg: heroEurope,
+    // 艾菲爾鐵塔塔尖偏高,置中裁切會切掉
+    heroPosition: '50% 25%',
     eyebrow: 'DESTINATION — EUROPE',
     tagline: '石板路古城,與跨越世紀的浪漫',
     facts: [
@@ -204,6 +206,8 @@ export const destinations = {
   america: {
     name: '美加',
     heroImg: heroAmerica,
+    // 自由女神像位置偏高,置中裁切會切掉頭頂
+    heroPosition: '50% 25%',
     eyebrow: 'DESTINATION — AMERICA',
     tagline: '壯闊天際線,與無邊無際的自由感',
     facts: [
