@@ -11,6 +11,36 @@ import destEurope from '../assets/images/destination-europe.png'
 import heroAmerica from '../assets/images/hero-america.png'
 import destAmerica from '../assets/images/destination-america.png'
 
+// ───────── 國外六區:精選景點 ─────────
+import spotFuji from '../assets/images/Selected attractions-Mt. Fuji.png'
+import spotKyoto from '../assets/images/Featured Attractions - Kyoto.png'
+import spotHokkaido from '../assets/images/Featured Attractions - Hokkaido.png'
+import spotOsaka from '../assets/images/Featured Attractions - Osaka.png'
+
+import spotGyeongbokgung from '../assets/images/Featured Attractions - Gyeongbokgung Palace.png'
+import spotGamcheon from '../assets/images/Featured Attractions - Gamcheon Culture Village.png'
+import spotJeju from '../assets/images/Featured Attractions - Jeju Island.png'
+import spotNami from '../assets/images/Featured Attractions - Nami Island.png'
+
+import spotBangkok from '../assets/images/Featured Attractions - Bangkok.png'
+import spotBali from '../assets/images/Selected Attractions - Bali.png'
+import spotHalong from '../assets/images/Selected attractions - Ha Long Bay.png'
+import spotPhuket from '../assets/images/Featured Attractions - Phuket.png'
+
+import spotEiffel from '../assets/images/Featured Attractions - Eiffel Tower.png'
+import spotColosseum from '../assets/images/Featured Attractions - Roman Colosseum.png'
+import spotSantorini from '../assets/images/Selected Attractions - Santorini.png'
+import spotJungfrau from '../assets/images/Featured Attractions - Jungfraujoch.png'
+
+import spotGrandCanyon from '../assets/images/Featured Attractions - Grand Canyon.png'
+import spotBanff from '../assets/images/Featured Attractions - Banff National Park.png'
+import spotVegas from '../assets/images/Featured Attractions - Las Vegas.png'
+
+import spotOperaHouse from '../assets/images/Featured Attractions - Sydney Opera House.png'
+import spotReef from '../assets/images/Featured Attractions - Great Barrier Reef.png'
+import spotQueenstown from '../assets/images/Featured Attractions - Queenstown.png'
+import spotMelbourne from '../assets/images/Featured Attractions - Melbourne.png'
+
 // ───────── 國內六區:主視覺 ─────────
 import heroTaipei from '../assets/images/hero-Taipei-North-Coast.png'
 import heroYilanHualien from '../assets/images/hero-Yilan-Hualien.png'
@@ -67,10 +97,10 @@ export const destinations = {
     introText:
       '從富士山下的湖畔倒影,到京都街巷裡的百年町屋,日本用四季分明的節奏,把每一趟旅程都安排得恰到好處。無論是東京的繁華街景、北海道的粉雪山林,還是大阪的庶民美食,總有一段旅程,剛好適合現在的你。',
     highlights: [
-      { name: '富士山', desc: '湖畔倒影與四季更迭,日本最具代表性的風景。', img: destJapan },
-      { name: '京都', desc: '百年古寺與町屋交織而成的千年古都風景。', img: destJapan },
-      { name: '北海道', desc: '粉雪山林與溫泉並存的冬季夢幻秘境。', img: destJapan },
-      { name: '大阪', desc: '庶民美食與不夜城交織的活力街景。', img: destJapan },
+      { name: '富士山', desc: '湖畔倒影與四季更迭,日本最具代表性的風景。', img: spotFuji },
+      { name: '京都', desc: '百年古寺與町屋交織而成的千年古都風景。', img: spotKyoto },
+      { name: '北海道', desc: '粉雪山林與溫泉並存的冬季夢幻秘境。', img: spotHokkaido },
+      { name: '大阪', desc: '庶民美食與不夜城交織的活力街景。', img: spotOsaka },
     ],
     ctaHeading: '準備好前往日本了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的日本旅程。',
@@ -91,10 +121,10 @@ export const destinations = {
     introText:
       '從景福宮的傳統韓服體驗,到弘大街頭的青春氣息,韓國把復古與潮流揉合得恰到好處。櫻花盛開的春天、楓紅滿山的秋天,每個季節都有屬於韓國的浪漫理由。',
     highlights: [
-      { name: '景福宮', desc: '韓服體驗與六百年古宮的日常浪漫', img: destKorea },
-      { name: '甘川洞文化村', desc: '依山而建的釜山彩色階梯藝術村', img: destKorea },
-      { name: '濟州島', desc: '火山地形與海岸線交織的度假島嶼', img: destKorea },
-      { name: '南怡島', desc: '韓劇取景地,四季皆美的水杉步道', img: destKorea },
+      { name: '景福宮', desc: '韓服體驗與六百年古宮的日常浪漫', img: spotGyeongbokgung },
+      { name: '甘川洞文化村', desc: '依山而建的釜山彩色階梯藝術村', img: spotGamcheon },
+      { name: '濟州島', desc: '火山地形與海岸線交織的度假島嶼', img: spotJeju },
+      { name: '南怡島', desc: '韓劇取景地,四季皆美的水杉步道', img: spotNami },
     ],
     ctaHeading: '準備好前往韓國了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的韓國旅程。',
@@ -115,10 +145,10 @@ export const destinations = {
     introText:
       '雪梨歌劇院的白色風帆,大堡礁的繽紛珊瑚礁,皇后鎮的雪山與湖泊——紐澳用南半球的陽光,提供一趟反季節的度假選擇。當台灣正冷,這裡卻是艷陽高照的夏天,剛好是逃離冬天的最佳理由。',
     highlights: [
-      { name: '雪梨歌劇院', desc: '澳洲最具代表性的建築地標', img: destOceania },
-      { name: '大堡礁', desc: '世界最大珊瑚礁生態系', img: destOceania },
-      { name: '皇后鎮', desc: '紐西蘭南島的極限運動天堂', img: destOceania },
-      { name: '墨爾本', desc: '咖啡文化與塗鴉藝術交織的城市', img: destOceania },
+      { name: '雪梨歌劇院', desc: '澳洲最具代表性的建築地標', img: spotOperaHouse },
+      { name: '大堡礁', desc: '世界最大珊瑚礁生態系', img: spotReef },
+      { name: '皇后鎮', desc: '紐西蘭南島的極限運動天堂', img: spotQueenstown },
+      { name: '墨爾本', desc: '咖啡文化與塗鴉藝術交織的城市', img: spotMelbourne },
     ],
     ctaHeading: '準備好前往紐澳了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的紐澳旅程。',
@@ -139,10 +169,10 @@ export const destinations = {
     introText:
       '長尾船划過翡翠色海水,夕陽把整片天空染成橘紅色——東南亞的美,從來不急著被看完。無論是泰國的市集煙火氣、峇里島的靜謐海灘,還是越南的百年老城,這裡總有一種讓人放慢腳步的魔力。',
     highlights: [
-      { name: '曼谷', desc: '金碧輝煌的寺廟與熱鬧夜市交織的城市', img: destSea },
-      { name: '峇里島', desc: '火山、梯田與海灘並存的度假天堂', img: destSea },
-      { name: '下龍灣', desc: '兩千座石灰岩島嶼的海上奇景', img: destSea },
-      { name: '普吉島', desc: '東南亞最經典的白沙海岸線', img: destSea },
+      { name: '曼谷', desc: '金碧輝煌的寺廟與熱鬧夜市交織的城市', img: spotBangkok },
+      { name: '峇里島', desc: '火山、梯田與海灘並存的度假天堂', img: spotBali },
+      { name: '下龍灣', desc: '兩千座石灰岩島嶼的海上奇景', img: spotHalong },
+      { name: '普吉島', desc: '東南亞最經典的白沙海岸線', img: spotPhuket },
     ],
     ctaHeading: '準備好前往東南亞了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的東南亞旅程。',
@@ -163,10 +193,10 @@ export const destinations = {
     introText:
       '艾菲爾鐵塔下的塞納河畔,羅馬競技場裡兩千年前的迴響,聖托里尼藍白相間的懸崖小鎮——歐洲把藝術、歷史與生活,揉進了每一條石板路裡。這裡的每一趟旅程,都值得放慢腳步細細品味。',
     highlights: [
-      { name: '艾菲爾鐵塔', desc: '巴黎的浪漫地標與塞納河夜景', img: destEurope },
-      { name: '羅馬競技場', desc: '兩千年歷史的古羅馬帝國遺跡', img: destEurope },
-      { name: '聖托里尼', desc: '愛琴海上藍白相間的懸崖美景', img: destEurope },
-      { name: '少女峰', desc: '瑞士阿爾卑斯山的雪白絕景', img: destEurope },
+      { name: '艾菲爾鐵塔', desc: '巴黎的浪漫地標與塞納河夜景', img: spotEiffel },
+      { name: '羅馬競技場', desc: '兩千年歷史的古羅馬帝國遺跡', img: spotColosseum },
+      { name: '聖托里尼', desc: '愛琴海上藍白相間的懸崖美景', img: spotSantorini },
+      { name: '少女峰', desc: '瑞士阿爾卑斯山的雪白絕景', img: spotJungfrau },
     ],
     ctaHeading: '準備好前往歐洲了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的歐洲旅程。',
@@ -187,10 +217,11 @@ export const destinations = {
     introText:
       '紐約的摩天大樓與自由女神,大峽谷的壯闊地貌,洛磯山脈的湖泊倒影——美加用它的遼闊,裝下了城市的繁華與自然的野性。無論想感受都市脈動,還是逃進山林湖泊,這裡都能找到屬於你的自由。',
     highlights: [
+      // destAmerica 本身就是自由女神像,這格沿用即可
       { name: '自由女神像', desc: '紐約港的自由象徵與城市天際線', img: destAmerica },
-      { name: '大峽谷', desc: '億萬年地質雕刻出的壯闊奇景', img: destAmerica },
-      { name: '班夫國家公園', desc: '洛磯山脈的湖泊與雪山秘境', img: destAmerica },
-      { name: '拉斯維加斯', desc: '沙漠中永不熄燈的不夜城', img: destAmerica },
+      { name: '大峽谷', desc: '億萬年地質雕刻出的壯闊奇景', img: spotGrandCanyon },
+      { name: '班夫國家公園', desc: '洛磯山脈的湖泊與雪山秘境', img: spotBanff },
+      { name: '拉斯維加斯', desc: '沙漠中永不熄燈的不夜城', img: spotVegas },
     ],
     ctaHeading: '準備好前往美加了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的美加旅程。',
