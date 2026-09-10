@@ -37,3 +37,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# 生成圖是 images 底下同一批圖的原始備份,和上層檔案完全重複,不進版控
+src/assets/images/生成圖/

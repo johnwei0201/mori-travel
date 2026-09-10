@@ -1,21 +1,23 @@
 <script setup>
 import AppIcon from '../components/ui/AppIcon.vue'
 
-// 圖片待補:之後把 import 解除註解,並把下面對應的 img 從 null 換成變數即可,
-// 版面與樣式都不用再改。
-// import heroTaiwan from '../assets/images/hero-taiwan.png'
-// import destNorth from '../assets/images/destination-north.png'
-// ...
+import heroTaipei from '../assets/images/hero-Taipei-North-Coast.png'
+import heroYilanHualien from '../assets/images/hero-Yilan-Hualien.png'
+import heroTaichungNantou from '../assets/images/hero-Taichung-Nantou.png'
+import heroTainanKaohsiung from '../assets/images/hero-Kaohsiung.png'
+import heroKenting from '../assets/images/hero-Pingtung.png'
+import heroPenghu from '../assets/images/hero-outlying islands.png'
 
-const heroImg = null
+// 主視覺沿用東海岸那張,是台灣辨識度最高的一景
+const heroImg = heroYilanHualien
 
 const regions = [
-  { id: 1, name: '台北・北海岸', img: null, slug: 'taipei' },
-  { id: 2, name: '宜蘭・花蓮', img: null, slug: 'yilan-hualien' },
-  { id: 3, name: '台中・南投', img: null, slug: 'taichung-nantou' },
-  { id: 4, name: '台南・高雄', img: null, slug: 'tainan-kaohsiung' },
-  { id: 5, name: '墾丁・屏東', img: null, slug: 'kenting' },
-  { id: 6, name: '澎湖・離島', img: null, slug: 'penghu' },
+  { id: 1, name: '台北・北海岸', img: heroTaipei, slug: 'taipei' },
+  { id: 2, name: '宜蘭・花蓮', img: heroYilanHualien, slug: 'yilan-hualien' },
+  { id: 3, name: '台中・南投', img: heroTaichungNantou, slug: 'taichung-nantou' },
+  { id: 4, name: '台南・高雄', img: heroTainanKaohsiung, slug: 'tainan-kaohsiung' },
+  { id: 5, name: '墾丁・屏東', img: heroKenting, slug: 'kenting' },
+  { id: 6, name: '澎湖・離島', img: heroPenghu, slug: 'penghu' },
 ]
 
 const whyItems = [

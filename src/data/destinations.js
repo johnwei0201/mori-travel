@@ -11,6 +11,45 @@ import destEurope from '../assets/images/destination-europe.png'
 import heroAmerica from '../assets/images/hero-america.png'
 import destAmerica from '../assets/images/destination-america.png'
 
+// ───────── 國內六區:主視覺 ─────────
+import heroTaipei from '../assets/images/hero-Taipei-North-Coast.png'
+import heroYilanHualien from '../assets/images/hero-Yilan-Hualien.png'
+import heroTaichungNantou from '../assets/images/hero-Taichung-Nantou.png'
+import heroTainanKaohsiung from '../assets/images/hero-Kaohsiung.png'
+import heroKenting from '../assets/images/hero-Pingtung.png'
+import heroPenghu from '../assets/images/hero-outlying islands.png'
+
+// ───────── 國內六區:精選景點 ─────────
+import spotJiufen from '../assets/images/Jiufen Old Street.png'
+import spotYehliu from '../assets/images/Yehliu Geopark.png'
+import spotYangmingshan from '../assets/images/Yangmingshan.png'
+import spotTamsui from "../assets/images/Tamsui Fisherman's Wharf.png"
+
+import spotTaroko from '../assets/images/Taroko Gorge.png'
+import spotQingshui from '../assets/images/Qingshui Cliff.png'
+import spotQixingtan from '../assets/images/Seven Star Pool.png'
+import spotJiaoxi from '../assets/images/Jiaoxi Hot Spring.png'
+
+import spotSunMoonLake from '../assets/images/Sun Moon Lake.png'
+import spotHehuan from '../assets/images/Hehuan Mountain.png'
+import spotCingjing from '../assets/images/Cingjing Farm.png'
+import spotGaomei from '../assets/images/Gaomei Wetlands.png'
+
+import spotAnping from '../assets/images/Anping Old Street.png'
+import spotChimei from '../assets/images/Chimei Museum.png'
+import spotLotusPond from '../assets/images/Lotus Pond.png'
+import spotPier2 from '../assets/images/Pier-2 Art Center.png'
+
+import spotBaisha from '../assets/images/Baisha Bay.png'
+import spotEluanbi from '../assets/images/Eluanbi Lighthouse.png'
+import spotLongpan from '../assets/images/Longpan Grassland.png'
+import spotXiaoliuqiu from '../assets/images/Xiaoliuqiu.png'
+
+import spotDoubleHeart from '../assets/images/Double Heart Stone Weir.png'
+import spotQimei from '../assets/images/Qimeiyu.png'
+import spotJibei from '../assets/images/jibe sand tail.png'
+import spotPenghuBridge from '../assets/images/Penghu Cross-Sea Bridge.png'
+
 export const destinations = {
   japan: {
     name: '日本',
@@ -163,7 +202,7 @@ export const destinations = {
   taipei: {
     name: '台北・北海岸',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroTaipei,
     eyebrow: 'DOMESTIC — TAIPEI',
     tagline: '城市步調與海岸線,只隔一段車程',
     facts: [
@@ -177,10 +216,10 @@ export const destinations = {
     introText:
       '台北的迷人之處,在於它把城市與自然放得很近。早上還在大稻埕的老街喝茶,中午搭捷運轉客運,下午就能站在野柳的海蝕地形前吹風。往北一小時是九份的山城燈火,往東是東北角的岩岸線,不用長假,也能走出一趟完整的旅程。',
     highlights: [
-      { name: '九份老街', desc: '山城階梯與紅燈籠交織的懷舊街景。', img: null },
-      { name: '野柳地質公園', desc: '海蝕風化雕出的奇岩地貌。', img: null },
-      { name: '陽明山', desc: '硫磺谷、擎天崗與季節限定的花季。', img: null },
-      { name: '淡水漁人碼頭', desc: '情人橋與河口日落的經典畫面。', img: null },
+      { name: '九份老街', desc: '山城階梯與紅燈籠交織的懷舊街景。', img: spotJiufen },
+      { name: '野柳地質公園', desc: '海蝕風化雕出的奇岩地貌。', img: spotYehliu },
+      { name: '陽明山', desc: '硫磺谷、擎天崗與季節限定的花季。', img: spotYangmingshan },
+      { name: '淡水漁人碼頭', desc: '情人橋與河口日落的經典畫面。', img: spotTamsui },
     ],
     ctaHeading: '準備好走一趟台北了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的北台灣旅程。',
@@ -189,7 +228,7 @@ export const destinations = {
   'yilan-hualien': {
     name: '宜蘭・花蓮',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroYilanHualien,
     eyebrow: 'DOMESTIC — YILAN & HUALIEN',
     tagline: '太平洋的藍,與後山的慢',
     facts: [
@@ -203,10 +242,10 @@ export const destinations = {
     introText:
       '從雪隧鑽出來的那一刻,空氣就變了。宜蘭有溫泉與平原的悠緩,再往南走,花蓮把中央山脈與太平洋壓縮在同一條公路上——立霧溪切出太魯閣的峽谷,清水斷崖直接落進海裡。這是台灣風景最有張力的一段路。',
     highlights: [
-      { name: '太魯閣峽谷', desc: '立霧溪切穿大理岩的千仞峽谷。', img: null },
-      { name: '清水斷崖', desc: '公路貼著海崖而行的壯闊視野。', img: null },
-      { name: '七星潭', desc: '弧線優美的礫石海灣與遠山。', img: null },
-      { name: '礁溪溫泉', desc: '平原上的碳酸氫鈉泉,泡湯首選。', img: null },
+      { name: '太魯閣峽谷', desc: '立霧溪切穿大理岩的千仞峽谷。', img: spotTaroko },
+      { name: '清水斷崖', desc: '公路貼著海崖而行的壯闊視野。', img: spotQingshui },
+      { name: '七星潭', desc: '弧線優美的礫石海灣與遠山。', img: spotQixingtan },
+      { name: '礁溪溫泉', desc: '平原上的碳酸氫鈉泉,泡湯首選。', img: spotJiaoxi },
     ],
     ctaHeading: '準備好走一趟東海岸了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的宜花旅程。',
@@ -215,7 +254,7 @@ export const destinations = {
   'taichung-nantou': {
     name: '台中・南投',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroTaichungNantou,
     eyebrow: 'DOMESTIC — TAICHUNG & NANTOU',
     tagline: '高山湖泊與城市綠意的中台灣',
     facts: [
@@ -229,10 +268,10 @@ export const destinations = {
     introText:
       '台中是台灣少數氣候穩定到讓人放心排行程的城市,綠園道、歌劇院、老宅咖啡構成它的城市節奏。再往南投走,海拔一路拉高——日月潭的晨霧、清境的草原、合歡山的日出與冬季霧凇,把中台灣的層次拉得很開。',
     highlights: [
-      { name: '日月潭', desc: '環湖步道與晨霧中的水社碼頭。', img: null },
-      { name: '合歡山', desc: '公路可達的三千公尺高山雲海。', img: null },
-      { name: '清境農場', desc: '青青草原與綿羊放牧的高山牧場。', img: null },
-      { name: '高美濕地', desc: '木棧道盡頭的潮間帶落日。', img: null },
+      { name: '日月潭', desc: '環湖步道與晨霧中的水社碼頭。', img: spotSunMoonLake },
+      { name: '合歡山', desc: '公路可達的三千公尺高山雲海。', img: spotHehuan },
+      { name: '清境農場', desc: '青青草原與綿羊放牧的高山牧場。', img: spotCingjing },
+      { name: '高美濕地', desc: '木棧道盡頭的潮間帶落日。', img: spotGaomei },
     ],
     ctaHeading: '準備好走一趟中台灣了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的中台灣旅程。',
@@ -241,7 +280,7 @@ export const destinations = {
   'tainan-kaohsiung': {
     name: '台南・高雄',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroTainanKaohsiung,
     eyebrow: 'DOMESTIC — TAINAN & KAOHSIUNG',
     tagline: '古都巷弄,與港都的日落',
     facts: [
@@ -255,10 +294,10 @@ export const destinations = {
     introText:
       '台南把四百年的歷史藏在巷弄裡,一間廟、一碗牛肉湯、一條安平老街,慢慢走才有味道。往南四十分鐘的高雄則完全相反——港灣、駁二的倉庫群、輕軌沿線的城市更新,傍晚在西子灣看夕陽沉進台灣海峽。一趟行程,兩種節奏。',
     highlights: [
-      { name: '安平老街', desc: '樹屋、古堡與蜜餞香的府城起點。', img: null },
-      { name: '奇美博物館', desc: '西洋古典建築與大量館藏典藏。', img: null },
-      { name: '蓮池潭', desc: '龍虎塔與湖畔廟宇群的南國地標。', img: null },
-      { name: '駁二藝術特區', desc: '港邊倉庫改造的藝文與市集場域。', img: null },
+      { name: '安平老街', desc: '樹屋、古堡與蜜餞香的府城起點。', img: spotAnping },
+      { name: '奇美博物館', desc: '西洋古典建築與大量館藏典藏。', img: spotChimei },
+      { name: '蓮池潭', desc: '龍虎塔與湖畔廟宇群的南國地標。', img: spotLotusPond },
+      { name: '駁二藝術特區', desc: '港邊倉庫改造的藝文與市集場域。', img: spotPier2 },
     ],
     ctaHeading: '準備好走一趟南台灣了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的南台灣旅程。',
@@ -267,7 +306,7 @@ export const destinations = {
   kenting: {
     name: '墾丁・屏東',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroKenting,
     eyebrow: 'DOMESTIC — KENTING',
     tagline: '國境之南,一整年的夏天',
     facts: [
@@ -281,10 +320,10 @@ export const destinations = {
     introText:
       '恆春半島是台灣少數全年都像夏天的地方。西岸有白沙灣的細砂與浮潛,東岸是龍磐草原被落山風吹出的遼闊草坡,南端的鵝鑾鼻燈塔則守著兩片海的交界。夜裡回到恆春老城,吃碗綠豆蒜,慢慢把一天收尾。',
     highlights: [
-      { name: '白沙灣', desc: '細白砂灘與清透海水的浮潛勝地。', img: null },
-      { name: '鵝鑾鼻燈塔', desc: '台灣最南端的白色燈塔與海景。', img: null },
-      { name: '龍磐草原', desc: '崖上草坡與太平洋的無敵視野。', img: null },
-      { name: '小琉球', desc: '船程半小時可達的珊瑚礁離島。', img: null },
+      { name: '白沙灣', desc: '細白砂灘與清透海水的浮潛勝地。', img: spotBaisha },
+      { name: '鵝鑾鼻燈塔', desc: '台灣最南端的白色燈塔與海景。', img: spotEluanbi },
+      { name: '龍磐草原', desc: '崖上草坡與太平洋的無敵視野。', img: spotLongpan },
+      { name: '小琉球', desc: '船程半小時可達的珊瑚礁離島。', img: spotXiaoliuqiu },
     ],
     ctaHeading: '準備好走一趟墾丁了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的恆春半島旅程。',
@@ -293,7 +332,7 @@ export const destinations = {
   penghu: {
     name: '澎湖・離島',
     breadcrumb: '國內旅遊',
-    heroImg: null,
+    heroImg: heroPenghu,
     eyebrow: 'DOMESTIC — PENGHU',
     tagline: '玄武岩與跳島,夏天最遠的那片藍',
     facts: [
@@ -307,10 +346,10 @@ export const destinations = {
     introText:
       '澎湖由九十幾座島嶼組成,夏天是它最好的季節。柱狀玄武岩是火山留下的紀念,雙心石滬是先民捕魚的智慧,而跳島行程能一次走過七美、吉貝、望安——每座島的海都藍得不太一樣,這是本島看不到的顏色。',
     highlights: [
-      { name: '雙心石滬', desc: '七美島上的心形古老捕魚石滬。', img: null },
-      { name: '七美嶼', desc: '海崖草原與環島公路的南方離島。', img: null },
-      { name: '吉貝沙尾', desc: '延伸入海的細白沙嘴與水上活動。', img: null },
-      { name: '澎湖跨海大橋', desc: '連接白沙與西嶼的經典地標。', img: null },
+      { name: '雙心石滬', desc: '七美島上的心形古老捕魚石滬。', img: spotDoubleHeart },
+      { name: '七美嶼', desc: '海崖草原與環島公路的南方離島。', img: spotQimei },
+      { name: '吉貝沙尾', desc: '延伸入海的細白沙嘴與水上活動。', img: spotJibei },
+      { name: '澎湖跨海大橋', desc: '連接白沙與西嶼的經典地標。', img: spotPenghuBridge },
     ],
     ctaHeading: '準備好跳島去澎湖了嗎?',
     ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的離島旅程。',
