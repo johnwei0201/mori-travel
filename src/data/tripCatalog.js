@@ -6,6 +6,8 @@ import seaImg from '../assets/images/destination-southeast-asia.png'
 import europeImg from '../assets/images/destination-europe.png'
 import americaImg from '../assets/images/destination-america.png'
 import oceaniaImg from '../assets/images/destination-oceania.png'
+import tarokoImg from '../assets/images/Taroko Gorge.png'
+import doubleHeartImg from '../assets/images/Double Heart Stone Weir.png'
 
 /**
  * 行程總目錄 —— 這是一份「假資料」,用來讓搜尋 / 篩選真的跑得動。
@@ -268,7 +270,7 @@ export const tripCatalog = [
     detailSlug: null,
     tag: '國內小旅行',
     title: '花蓮太魯閣 3 日',
-    img: null,
+    img: tarokoImg,
     region: '國內旅遊',
     date: '2027/04/18',
     month: 4,
@@ -284,7 +286,7 @@ export const tripCatalog = [
     detailSlug: null,
     tag: '夏日限定',
     title: '澎湖跳島 4 日',
-    img: null,
+    img: doubleHeartImg,
     region: '國內旅遊',
     date: '2027/07/03',
     month: 7,
