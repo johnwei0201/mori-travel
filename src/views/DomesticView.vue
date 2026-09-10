@@ -7,9 +7,9 @@ import heroTaichungNantou from '../assets/images/hero-Taichung-Nantou.png'
 import heroTainanKaohsiung from '../assets/images/hero-Kaohsiung.png'
 import heroKenting from '../assets/images/hero-Pingtung.png'
 import heroPenghu from '../assets/images/hero-outlying islands.png'
+import heroJiufen from '../assets/images/Jiufen Old Street.png'
 
-// 主視覺沿用東海岸那張,是台灣辨識度最高的一景
-const heroImg = heroYilanHualien
+const heroImg = heroJiufen
 
 const regions = [
   { id: 1, name: '台北・北海岸', img: heroTaipei, slug: 'taipei' },
@@ -93,6 +93,9 @@ const whyItems = [
   width: 100%;
   height: 420px;
   object-fit: cover;
+  /* 原圖是正方形,裁進寬扁版位只留約三成高度;
+     上移才能保住九份最有代表性的燈籠與海上夕陽 */
+  object-position: 50% 25%;
   display: block;
 }
 .hero-scrim {
