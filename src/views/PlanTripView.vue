@@ -526,6 +526,10 @@ function scrollToResults() {
   overflow: hidden;
   text-align: left;
   cursor: pointer;
+  /* button 預設會把內容垂直置中,說明只有一行的卡片就會在圖片上方留白;
+     改成直向 flex,再讓文字區塊吃掉剩餘高度,圖片才會貼齊頂端 */
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 2px 10px rgba(43, 36, 32, 0.07);
   transition:
     transform 0.2s ease,
@@ -536,6 +540,7 @@ function scrollToResults() {
   height: clamp(130px, 15vw, 172px);
   object-fit: cover;
   display: block;
+  flex-shrink: 0;
 }
 .style:hover {
   transform: translateY(-3px);
@@ -547,6 +552,7 @@ function scrollToResults() {
   display: block;
   background: #fff;
   padding: 13px 16px 15px;
+  flex: 1;
 }
 .style-name {
   display: block;
