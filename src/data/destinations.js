@@ -9,7 +9,6 @@ import destSea from '../assets/images/destination-southeast-asia.png'
 import heroEurope from '../assets/images/hero-europe.png'
 import destEurope from '../assets/images/destination-europe.png'
 import heroAmerica from '../assets/images/hero-america.png'
-import destAmerica from '../assets/images/destination-america.png'
 
 // ───────── 國外六區:精選景點 ─────────
 import spotFuji from '../assets/images/Selected attractions-Mt. Fuji.png'
@@ -32,6 +31,7 @@ import spotColosseum from '../assets/images/Featured Attractions - Roman Colosse
 import spotSantorini from '../assets/images/Selected Attractions - Santorini.png'
 import spotJungfrau from '../assets/images/Featured Attractions - Jungfraujoch.png'
 
+import spotLiberty from '../assets/images/Featured Attractions - Statue of Liberty.png'
 import spotGrandCanyon from '../assets/images/Featured Attractions - Grand Canyon.png'
 import spotBanff from '../assets/images/Featured Attractions - Banff National Park.png'
 import spotVegas from '../assets/images/Featured Attractions - Las Vegas.png'
@@ -217,8 +217,7 @@ export const destinations = {
     introText:
       '紐約的摩天大樓與自由女神,大峽谷的壯闊地貌,洛磯山脈的湖泊倒影——美加用它的遼闊,裝下了城市的繁華與自然的野性。無論想感受都市脈動,還是逃進山林湖泊,這裡都能找到屬於你的自由。',
     highlights: [
-      // destAmerica 本身就是自由女神像,這格沿用即可
-      { name: '自由女神像', desc: '紐約港的自由象徵與城市天際線', img: destAmerica },
+      { name: '自由女神像', desc: '紐約港的自由象徵與城市天際線', img: spotLiberty },
       { name: '大峽谷', desc: '億萬年地質雕刻出的壯闊奇景', img: spotGrandCanyon },
       { name: '班夫國家公園', desc: '洛磯山脈的湖泊與雪山秘境', img: spotBanff },
       { name: '拉斯維加斯', desc: '沙漠中永不熄燈的不夜城', img: spotVegas },
