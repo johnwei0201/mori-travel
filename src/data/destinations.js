@@ -83,6 +83,8 @@ import spotPenghuBridge from '../assets/images/Penghu Cross-Sea Bridge.png'
 export const destinations = {
   japan: {
     name: '日本',
+    mapCenter: '36.5,138',
+    mapZoom: 5,
     heroImg: heroJapan,
     eyebrow: 'DESTINATION — JAPAN',
     tagline: '楓紅、雪國,與恰到好處的旅行步調',
@@ -107,6 +109,8 @@ export const destinations = {
   },
   korea: {
     name: '韓國',
+    mapCenter: '36.5,127.8',
+    mapZoom: 6,
     heroImg: heroKorea,
     eyebrow: 'DESTINATION — KOREA',
     tagline: '櫻花街道,與韓劇般的浪漫日常',
@@ -131,6 +135,8 @@ export const destinations = {
   },
   oceania: {
     name: '紐澳',
+    mapCenter: '-27,140',
+    mapZoom: 3,
     heroImg: heroOceania,
     eyebrow: 'DESTINATION — OCEANIA',
     tagline: '純淨海岸線,與反季節的夏日假期',
@@ -155,6 +161,8 @@ export const destinations = {
   },
   'southeast-asia': {
     name: '東南亞',
+    mapCenter: '8,113',
+    mapZoom: 4,
     heroImg: heroSea,
     eyebrow: 'DESTINATION — SOUTHEAST ASIA',
     tagline: '碧海藍天,與慢下來的度假時光',
@@ -179,6 +187,8 @@ export const destinations = {
   },
   europe: {
     name: '歐洲',
+    mapCenter: '50,10',
+    mapZoom: 4,
     heroImg: heroEurope,
     // 艾菲爾鐵塔塔尖偏高,置中裁切會切掉
     heroPosition: '50% 25%',
@@ -205,6 +215,8 @@ export const destinations = {
   },
   america: {
     name: '美加',
+    mapCenter: '48,-100',
+    mapZoom: 3,
     heroImg: heroAmerica,
     // 自由女神像位置偏高,置中裁切會切掉頭頂
     heroPosition: '50% 25%',
@@ -235,6 +247,7 @@ export const destinations = {
   // 頁面會自動顯示佔位區塊;補圖時只要把 null 換成 import 進來的變數即可。
   taipei: {
     name: '台北・北海岸',
+    mapQuery: '台北市',
     breadcrumb: '國內旅遊',
     heroImg: heroTaipei,
     eyebrow: 'DOMESTIC — TAIPEI',
@@ -261,6 +274,7 @@ export const destinations = {
 
   'yilan-hualien': {
     name: '宜蘭・花蓮',
+    mapQuery: '宜蘭縣',
     breadcrumb: '國內旅遊',
     heroImg: heroYilanHualien,
     eyebrow: 'DOMESTIC — YILAN & HUALIEN',
@@ -287,6 +301,7 @@ export const destinations = {
 
   'taichung-nantou': {
     name: '台中・南投',
+    mapQuery: '台中市',
     breadcrumb: '國內旅遊',
     heroImg: heroTaichungNantou,
     eyebrow: 'DOMESTIC — TAICHUNG & NANTOU',
@@ -313,6 +328,7 @@ export const destinations = {
 
   'tainan-kaohsiung': {
     name: '台南・高雄',
+    mapQuery: '台南市',
     breadcrumb: '國內旅遊',
     heroImg: heroTainanKaohsiung,
     eyebrow: 'DOMESTIC — TAINAN & KAOHSIUNG',
@@ -339,6 +355,7 @@ export const destinations = {
 
   kenting: {
     name: '墾丁・屏東',
+    mapQuery: '墾丁國家公園',
     breadcrumb: '國內旅遊',
     heroImg: heroKenting,
     eyebrow: 'DOMESTIC — KENTING',
@@ -365,6 +382,7 @@ export const destinations = {
 
   penghu: {
     name: '澎湖・離島',
+    mapQuery: '澎湖縣',
     breadcrumb: '國內旅遊',
     heroImg: heroPenghu,
     eyebrow: 'DOMESTIC — PENGHU',

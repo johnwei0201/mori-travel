@@ -61,6 +61,7 @@ export const attractions = {
   /* ───────── 日本 ───────── */
   'mt-fuji': {
     name: '富士山',
+    mapQuery: '富士山',
     region: '日本',
     regionSlug: 'japan',
     parent: '熱門目的地',
@@ -89,6 +90,7 @@ export const attractions = {
 
   kyoto: {
     name: '京都',
+    mapQuery: '日本京都市',
     region: '日本',
     regionSlug: 'japan',
     parent: '熱門目的地',
@@ -117,6 +119,7 @@ export const attractions = {
 
   hokkaido: {
     name: '北海道',
+    mapQuery: '日本北海道',
     region: '日本',
     regionSlug: 'japan',
     parent: '熱門目的地',
@@ -145,6 +148,7 @@ export const attractions = {
 
   osaka: {
     name: '大阪',
+    mapQuery: '日本大阪市',
     region: '日本',
     regionSlug: 'japan',
     parent: '熱門目的地',
@@ -174,6 +178,7 @@ export const attractions = {
   /* ───────── 韓國 ───────── */
   gyeongbokgung: {
     name: '景福宮',
+    mapQuery: '首爾景福宮',
     region: '韓國',
     regionSlug: 'korea',
     parent: '熱門目的地',
@@ -202,6 +207,7 @@ export const attractions = {
 
   gamcheon: {
     name: '甘川洞文化村',
+    mapQuery: '甘川洞文化村',
     region: '韓國',
     regionSlug: 'korea',
     parent: '熱門目的地',
@@ -230,6 +236,7 @@ export const attractions = {
 
   jeju: {
     name: '濟州島',
+    mapQuery: '濟州島',
     region: '韓國',
     regionSlug: 'korea',
     parent: '熱門目的地',
@@ -258,6 +265,7 @@ export const attractions = {
 
   nami: {
     name: '南怡島',
+    mapQuery: '南怡島',
     region: '韓國',
     regionSlug: 'korea',
     parent: '熱門目的地',
@@ -287,6 +295,7 @@ export const attractions = {
   /* ───────── 東南亞 ───────── */
   bangkok: {
     name: '曼谷',
+    mapQuery: '泰國曼谷',
     region: '東南亞',
     regionSlug: 'southeast-asia',
     parent: '熱門目的地',
@@ -315,6 +324,7 @@ export const attractions = {
 
   bali: {
     name: '峇里島',
+    mapQuery: '印尼峇里島',
     region: '東南亞',
     regionSlug: 'southeast-asia',
     parent: '熱門目的地',
@@ -343,6 +353,7 @@ export const attractions = {
 
   'halong-bay': {
     name: '下龍灣',
+    mapQuery: '下龍灣',
     region: '東南亞',
     regionSlug: 'southeast-asia',
     parent: '熱門目的地',
@@ -371,6 +382,7 @@ export const attractions = {
 
   phuket: {
     name: '普吉島',
+    mapQuery: '泰國普吉島',
     region: '東南亞',
     regionSlug: 'southeast-asia',
     parent: '熱門目的地',
@@ -400,6 +412,7 @@ export const attractions = {
   /* ───────── 歐洲 ───────── */
   'eiffel-tower': {
     name: '艾菲爾鐵塔',
+    mapQuery: '艾菲爾鐵塔',
     region: '歐洲',
     regionSlug: 'europe',
     parent: '熱門目的地',
@@ -428,6 +441,7 @@ export const attractions = {
 
   colosseum: {
     name: '羅馬競技場',
+    mapQuery: '羅馬競技場',
     region: '歐洲',
     regionSlug: 'europe',
     parent: '熱門目的地',
@@ -456,6 +470,7 @@ export const attractions = {
 
   santorini: {
     name: '聖托里尼',
+    mapQuery: '聖托里尼',
     region: '歐洲',
     regionSlug: 'europe',
     parent: '熱門目的地',
@@ -484,6 +499,7 @@ export const attractions = {
 
   jungfraujoch: {
     name: '少女峰',
+    mapQuery: '少女峰',
     region: '歐洲',
     regionSlug: 'europe',
     parent: '熱門目的地',
@@ -513,6 +529,7 @@ export const attractions = {
   /* ───────── 美加 ───────── */
   'statue-of-liberty': {
     name: '自由女神像',
+    mapQuery: '自由女神像',
     region: '美加',
     regionSlug: 'america',
     parent: '熱門目的地',
@@ -541,6 +558,7 @@ export const attractions = {
 
   'grand-canyon': {
     name: '大峽谷',
+    mapQuery: '大峽谷國家公園',
     region: '美加',
     regionSlug: 'america',
     parent: '熱門目的地',
@@ -569,6 +587,7 @@ export const attractions = {
 
   banff: {
     name: '班夫國家公園',
+    mapQuery: '班夫國家公園',
     region: '美加',
     regionSlug: 'america',
     parent: '熱門目的地',
@@ -597,6 +616,7 @@ export const attractions = {
 
   'las-vegas': {
     name: '拉斯維加斯',
+    mapQuery: '拉斯維加斯',
     region: '美加',
     regionSlug: 'america',
     parent: '熱門目的地',
@@ -626,6 +646,7 @@ export const attractions = {
   /* ───────── 紐澳 ───────── */
   'sydney-opera-house': {
     name: '雪梨歌劇院',
+    mapQuery: '雪梨歌劇院',
     region: '紐澳',
     regionSlug: 'oceania',
     parent: '熱門目的地',
@@ -654,6 +675,7 @@ export const attractions = {
 
   'great-barrier-reef': {
     name: '大堡礁',
+    mapQuery: '大堡礁',
     region: '紐澳',
     regionSlug: 'oceania',
     parent: '熱門目的地',
@@ -682,6 +704,7 @@ export const attractions = {
 
   queenstown: {
     name: '皇后鎮',
+    mapQuery: '紐西蘭皇后鎮',
     region: '紐澳',
     regionSlug: 'oceania',
     parent: '熱門目的地',
@@ -710,6 +733,7 @@ export const attractions = {
 
   melbourne: {
     name: '墨爾本',
+    mapQuery: '澳洲墨爾本',
     region: '紐澳',
     regionSlug: 'oceania',
     parent: '熱門目的地',
@@ -739,6 +763,7 @@ export const attractions = {
   /* ───────── 台北・北海岸 ───────── */
   jiufen: {
     name: '九份老街',
+    mapQuery: '九份老街',
     region: '台北・北海岸',
     regionSlug: 'taipei',
     parent: '國內旅遊',
@@ -767,6 +792,7 @@ export const attractions = {
 
   yehliu: {
     name: '野柳地質公園',
+    mapQuery: '野柳地質公園',
     region: '台北・北海岸',
     regionSlug: 'taipei',
     parent: '國內旅遊',
@@ -795,6 +821,7 @@ export const attractions = {
 
   yangmingshan: {
     name: '陽明山',
+    mapQuery: '陽明山國家公園',
     region: '台北・北海岸',
     regionSlug: 'taipei',
     parent: '國內旅遊',
@@ -823,6 +850,7 @@ export const attractions = {
 
   tamsui: {
     name: '淡水漁人碼頭',
+    mapQuery: '淡水漁人碼頭',
     region: '台北・北海岸',
     regionSlug: 'taipei',
     parent: '國內旅遊',
@@ -852,6 +880,7 @@ export const attractions = {
   /* ───────── 宜蘭・花蓮 ───────── */
   taroko: {
     name: '太魯閣峽谷',
+    mapQuery: '太魯閣國家公園',
     region: '宜蘭・花蓮',
     regionSlug: 'yilan-hualien',
     parent: '國內旅遊',
@@ -880,6 +909,7 @@ export const attractions = {
 
   'qingshui-cliff': {
     name: '清水斷崖',
+    mapQuery: '清水斷崖',
     region: '宜蘭・花蓮',
     regionSlug: 'yilan-hualien',
     parent: '國內旅遊',
@@ -908,6 +938,7 @@ export const attractions = {
 
   qixingtan: {
     name: '七星潭',
+    mapQuery: '七星潭風景區',
     region: '宜蘭・花蓮',
     regionSlug: 'yilan-hualien',
     parent: '國內旅遊',
@@ -936,6 +967,7 @@ export const attractions = {
 
   jiaoxi: {
     name: '礁溪溫泉',
+    mapQuery: '礁溪溫泉',
     region: '宜蘭・花蓮',
     regionSlug: 'yilan-hualien',
     parent: '國內旅遊',
@@ -965,6 +997,7 @@ export const attractions = {
   /* ───────── 台中・南投 ───────── */
   'sun-moon-lake': {
     name: '日月潭',
+    mapQuery: '日月潭',
     region: '台中・南投',
     regionSlug: 'taichung-nantou',
     parent: '國內旅遊',
@@ -993,6 +1026,7 @@ export const attractions = {
 
   hehuanshan: {
     name: '合歡山',
+    mapQuery: '合歡山',
     region: '台中・南投',
     regionSlug: 'taichung-nantou',
     parent: '國內旅遊',
@@ -1021,6 +1055,7 @@ export const attractions = {
 
   cingjing: {
     name: '清境農場',
+    mapQuery: '清境農場',
     region: '台中・南投',
     regionSlug: 'taichung-nantou',
     parent: '國內旅遊',
@@ -1049,6 +1084,7 @@ export const attractions = {
 
   gaomei: {
     name: '高美濕地',
+    mapQuery: '高美濕地',
     region: '台中・南投',
     regionSlug: 'taichung-nantou',
     parent: '國內旅遊',
@@ -1078,6 +1114,7 @@ export const attractions = {
   /* ───────── 台南・高雄 ───────── */
   anping: {
     name: '安平老街',
+    mapQuery: '安平老街',
     region: '台南・高雄',
     regionSlug: 'tainan-kaohsiung',
     parent: '國內旅遊',
@@ -1106,6 +1143,7 @@ export const attractions = {
 
   'chimei-museum': {
     name: '奇美博物館',
+    mapQuery: '奇美博物館',
     region: '台南・高雄',
     regionSlug: 'tainan-kaohsiung',
     parent: '國內旅遊',
@@ -1134,6 +1172,7 @@ export const attractions = {
 
   'lotus-pond': {
     name: '蓮池潭',
+    mapQuery: '高雄蓮池潭',
     region: '台南・高雄',
     regionSlug: 'tainan-kaohsiung',
     parent: '國內旅遊',
@@ -1162,6 +1201,7 @@ export const attractions = {
 
   'pier-2': {
     name: '駁二藝術特區',
+    mapQuery: '駁二藝術特區',
     region: '台南・高雄',
     regionSlug: 'tainan-kaohsiung',
     parent: '國內旅遊',
@@ -1191,6 +1231,7 @@ export const attractions = {
   /* ───────── 墾丁・屏東 ───────── */
   baishawan: {
     name: '白沙灣',
+    mapQuery: '墾丁白沙灣',
     region: '墾丁・屏東',
     regionSlug: 'kenting',
     parent: '國內旅遊',
@@ -1219,6 +1260,7 @@ export const attractions = {
 
   eluanbi: {
     name: '鵝鑾鼻燈塔',
+    mapQuery: '鵝鑾鼻燈塔',
     region: '墾丁・屏東',
     regionSlug: 'kenting',
     parent: '國內旅遊',
@@ -1247,6 +1289,7 @@ export const attractions = {
 
   longpan: {
     name: '龍磐草原',
+    mapQuery: '龍磐公園',
     region: '墾丁・屏東',
     regionSlug: 'kenting',
     parent: '國內旅遊',
@@ -1275,6 +1318,7 @@ export const attractions = {
 
   xiaoliuqiu: {
     name: '小琉球',
+    mapQuery: '小琉球',
     region: '墾丁・屏東',
     regionSlug: 'kenting',
     parent: '國內旅遊',
@@ -1304,6 +1348,7 @@ export const attractions = {
   /* ───────── 澎湖・離島 ───────── */
   'double-heart': {
     name: '雙心石滬',
+    mapQuery: '七美雙心石滬',
     region: '澎湖・離島',
     regionSlug: 'penghu',
     parent: '國內旅遊',
@@ -1332,6 +1377,7 @@ export const attractions = {
 
   qimei: {
     name: '七美嶼',
+    mapQuery: '澎湖七美嶼',
     region: '澎湖・離島',
     regionSlug: 'penghu',
     parent: '國內旅遊',
@@ -1360,6 +1406,7 @@ export const attractions = {
 
   jibei: {
     name: '吉貝沙尾',
+    mapQuery: '吉貝嶼',
     region: '澎湖・離島',
     regionSlug: 'penghu',
     parent: '國內旅遊',
@@ -1388,6 +1435,7 @@ export const attractions = {
 
   'penghu-bridge': {
     name: '澎湖跨海大橋',
+    mapQuery: '澎湖跨海大橋',
     region: '澎湖・離島',
     regionSlug: 'penghu',
     parent: '國內旅遊',

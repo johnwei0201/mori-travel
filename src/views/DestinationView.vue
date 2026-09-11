@@ -4,6 +4,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import { destinations } from '../data/destinations.js'
 import { attractions } from '../data/attractions.js'
 import AppIcon from '../components/ui/AppIcon.vue'
+import PlaceMap from '../components/ui/PlaceMap.vue'
 
 const route = useRoute()
 const dest = computed(() => destinations[route.params.slug])
@@ -63,9 +64,19 @@ const consultTopic = computed(() =>
     </div>
 
     <section class="intro">
-      <div class="section-label">{{ dest.introEyebrow }}</div>
-      <h2>{{ dest.introHeading }}</h2>
-      <p>{{ dest.introText }}</p>
+      <div class="intro-text">
+        <div class="section-label">{{ dest.introEyebrow }}</div>
+        <h2>{{ dest.introHeading }}</h2>
+        <p>{{ dest.introText }}</p>
+      </div>
+      <!-- 國內六區有明確地點,用 mapQuery 查地名並標圖釘;
+           國外六區是整個洲/區域,改用 mapCenter + mapZoom 的範圍檢視。 -->
+      <PlaceMap
+        :query="dest.mapQuery"
+        :center="dest.mapCenter"
+        :zoom="dest.mapZoom"
+        :label="`${dest.name}的位置地圖`"
+      />
     </section>
 
     <section class="highlights">
@@ -247,11 +258,19 @@ const consultTopic = computed(() =>
   color: var(--color-primary);
 }
 
+/* 左欄文案、右欄地圖。1024 以下改成上下堆疊,
+   中間尺寸硬擠兩欄的話文字與地圖都會太窄。 */
 .intro {
   padding: 76px 40px 60px;
-  max-width: 760px;
+  max-width: 1120px;
   margin: 0 auto;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  align-items: center;
+}
+.intro-text {
+  text-align: left;
 }
 .intro h2 {
   font-size: 26px;
@@ -262,7 +281,7 @@ const consultTopic = computed(() =>
   font-size: 15.5px;
   line-height: 1.9;
   color: #2b2420;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .section-label {
@@ -393,6 +412,8 @@ const consultTopic = computed(() =>
   }
   .intro {
     padding: 60px 24px 44px;
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
   .highlights {
     padding: 20px 24px 60px;

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import AppIcon from '../components/ui/AppIcon.vue'
+import PlaceMap from '../components/ui/PlaceMap.vue'
 import { attractions } from '../data/attractions.js'
 
 const route = useRoute()
@@ -47,9 +48,12 @@ const siblings = computed(() => {
     </div>
 
     <section class="intro">
-      <div class="section-label">ABOUT</div>
-      <h2>關於{{ spot.name }}</h2>
-      <p>{{ spot.intro }}</p>
+      <div class="intro-text">
+        <div class="section-label">ABOUT</div>
+        <h2>關於{{ spot.name }}</h2>
+        <p>{{ spot.intro }}</p>
+      </div>
+      <PlaceMap :query="spot.mapQuery" :label="`${spot.name}的位置地圖`" />
     </section>
 
     <section class="points">
@@ -234,11 +238,19 @@ const siblings = computed(() => {
 }
 
 /* 簡介 */
+/* 左欄文案、右欄地圖。1024 以下改成上下堆疊,
+   中間尺寸硬擠兩欄的話文字與地圖都會太窄。 */
 .intro {
   padding: 76px 40px 60px;
-  max-width: 760px;
+  max-width: 1120px;
   margin: 0 auto;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  align-items: center;
+}
+.intro-text {
+  text-align: left;
 }
 .intro h2 {
   font-size: 26px;
@@ -250,7 +262,6 @@ const siblings = computed(() => {
   line-height: 1.95;
   color: #2b2420;
   margin: 0;
-  text-align: left;
 }
 
 /* 看點 */
@@ -446,6 +457,8 @@ const siblings = computed(() => {
   }
   .intro {
     padding: 60px 24px 44px;
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
   .points {
     padding: 0 24px 60px;
