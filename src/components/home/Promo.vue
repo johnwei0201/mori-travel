@@ -1,5 +1,5 @@
 <script setup>
-import promoImg from '../../assets/images/promo-autumn-lake.png'
+import promoImg from '../../assets/images_縮小/promo-autumn-lake.png'
 </script>
 
 <template>

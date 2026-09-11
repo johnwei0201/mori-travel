@@ -1,13 +1,13 @@
 <script setup>
 import AppIcon from '../components/ui/AppIcon.vue'
 
-import heroTaipei from '../assets/images/hero-Taipei-North-Coast.png'
-import heroYilanHualien from '../assets/images/hero-Yilan-Hualien.png'
-import heroTaichungNantou from '../assets/images/hero-Taichung-Nantou.png'
-import heroTainanKaohsiung from '../assets/images/hero-Kaohsiung.png'
-import heroKenting from '../assets/images/hero-Pingtung.png'
-import heroPenghu from '../assets/images/hero-outlying islands.png'
-import heroJiufen from '../assets/images/Jiufen Old Street.png'
+import heroTaipei from '../assets/images_縮小/hero-Taipei-North-Coast.jpg'
+import heroYilanHualien from '../assets/images_縮小/hero-Yilan-Hualien.jpg'
+import heroTaichungNantou from '../assets/images_縮小/hero-Taichung-Nantou.jpg'
+import heroTainanKaohsiung from '../assets/images_縮小/hero-Kaohsiung.jpg'
+import heroKenting from '../assets/images_縮小/hero-Pingtung.jpg'
+import heroPenghu from '../assets/images_縮小/hero-outlying-islands.jpg'
+import heroJiufen from '../assets/images_縮小/Jiufen-Old-Street.jpg'
 
 const heroImg = heroJiufen
 

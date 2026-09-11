@@ -1,6 +1,6 @@
-import tokyoImg from '../assets/images/trip-tokyo-autumn.png'
-import hokkaidoImg from '../assets/images/trip-hokkaido-winter.png'
-import italyImg from '../assets/images/trip-italy-classic.png'
+import tokyoImg from '../assets/images_縮小/trip-tokyo-autumn.jpg'
+import hokkaidoImg from '../assets/images_縮小/trip-hokkaido-winter.jpg'
+import italyImg from '../assets/images_縮小/trip-italy-classic.jpg'
 
 export const trips = {
   tokyo: {

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import heroFuji from '../../assets/images/hero-japan-fuji.png'
+import heroFuji from '../../assets/images_縮小/hero-japan-fuji.jpg'
 import { months } from '../../data/planTrip.js'
 import { durationOptions, regions } from '../../data/tripCatalog.js'
 

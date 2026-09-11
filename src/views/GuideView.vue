@@ -1,7 +1,7 @@
 <script setup>
-import tripTokyo from '../assets/images/trip-tokyo-autumn.png'
-import tripHokkaido from '../assets/images/trip-hokkaido-winter.png'
-import tripItaly from '../assets/images/trip-italy-classic.png'
+import tripTokyo from '../assets/images_縮小/trip-tokyo-autumn.jpg'
+import tripHokkaido from '../assets/images_縮小/trip-hokkaido-winter.jpg'
+import tripItaly from '../assets/images_縮小/trip-italy-classic.jpg'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AppIcon from '../components/ui/AppIcon.vue'
 import {

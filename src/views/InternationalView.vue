@@ -1,11 +1,11 @@
 <script setup>
-import heroEurope from '../assets/images/hero-europe.png'
-import destJapan from '../assets/images/destination-japan.png'
-import destKorea from '../assets/images/destination-korea.png'
-import destSea from '../assets/images/destination-southeast-asia.png'
-import destEurope from '../assets/images/destination-europe.png'
-import destAmerica from '../assets/images/destination-america.png'
-import destOceania from '../assets/images/destination-oceania.png'
+import heroEurope from '../assets/images_縮小/hero-europe.jpg'
+import destJapan from '../assets/images_縮小/destination-japan.jpg'
+import destKorea from '../assets/images_縮小/destination-korea.jpg'
+import destSea from '../assets/images_縮小/destination-southeast-asia.jpg'
+import destEurope from '../assets/images_縮小/destination-europe.jpg'
+import destAmerica from '../assets/images_縮小/destination-america.jpg'
+import destOceania from '../assets/images_縮小/destination-oceania.jpg'
 import AppIcon from '../components/ui/AppIcon.vue'
 
 const regions = [

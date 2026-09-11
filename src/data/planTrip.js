@@ -1,9 +1,9 @@
-import styleAutumn from '../assets/images/destination-japan.png'
-import styleSnow from '../assets/images/trip-hokkaido-winter.png'
-import styleIsland from '../assets/images/destination-southeast-asia.png'
-import styleCity from '../assets/images/destination-europe.png'
-import styleFood from '../assets/images/destination-korea.png'
-import styleHoneymoon from '../assets/images/trip-italy-classic.png'
+import styleAutumn from '../assets/images_縮小/destination-japan.jpg'
+import styleSnow from '../assets/images_縮小/trip-hokkaido-winter.jpg'
+import styleIsland from '../assets/images_縮小/destination-southeast-asia.jpg'
+import styleCity from '../assets/images_縮小/destination-europe.jpg'
+import styleFood from '../assets/images_縮小/destination-korea.jpg'
+import styleHoneymoon from '../assets/images_縮小/trip-italy-classic.jpg'
 
 export const travelStyles = [
   { id: 'autumn', name: '賞楓紅葉', note: '10–12 月・日本、韓國、加拿大', img: styleAutumn },

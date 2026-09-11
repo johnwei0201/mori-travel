@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import AppIcon from '../components/ui/AppIcon.vue'
-import destJapan from '../assets/images/destination-japan.png'
-import destKorea from '../assets/images/destination-korea.png'
-import destEurope from '../assets/images/destination-europe.png'
+import destJapan from '../assets/images_縮小/destination-japan.jpg'
+import destKorea from '../assets/images_縮小/destination-korea.jpg'
+import destEurope from '../assets/images_縮小/destination-europe.jpg'
 
 const routes = [
   { id: 1, path: '台北 → 東京', price: 6800 },

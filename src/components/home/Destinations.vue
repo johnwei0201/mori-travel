@@ -1,11 +1,11 @@
 <script setup>
 import DestinationCard from './DestinationCard.vue'
-import japanImg from '../../assets/images/destination-japan.png'
-import koreaImg from '../../assets/images/destination-korea.png'
-import seaImg from '../../assets/images/destination-southeast-asia.png'
-import europeImg from '../../assets/images/destination-europe.png'
-import americaImg from '../../assets/images/destination-america.png'
-import oceaniaImg from '../../assets/images/destination-oceania.png'
+import japanImg from '../../assets/images_縮小/destination-japan.jpg'
+import koreaImg from '../../assets/images_縮小/destination-korea.jpg'
+import seaImg from '../../assets/images_縮小/destination-southeast-asia.jpg'
+import europeImg from '../../assets/images_縮小/destination-europe.jpg'
+import americaImg from '../../assets/images_縮小/destination-america.jpg'
+import oceaniaImg from '../../assets/images_縮小/destination-oceania.jpg'
 
 const destinations = [
   { name: '日本', img: japanImg, slug: 'japan' },

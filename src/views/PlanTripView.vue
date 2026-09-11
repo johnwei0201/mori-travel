@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import heroFuji from '../assets/images/hero-japan-fuji.png'
+import heroFuji from '../assets/images_縮小/hero-japan-fuji.jpg'
 import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
 import { durationOptions, budgetOptions, filterTrips, sortTrips } from '../data/tripCatalog.js'
