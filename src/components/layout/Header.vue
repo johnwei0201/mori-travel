@@ -35,7 +35,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   <header class="header">
     <RouterLink to="/" class="logo">
       <img :src="logoMark" alt="" class="logo-mark" />
-      <span class="logo-name">MORI <span class="logo-travel">TRAVEL</span></span>
+      <span class="logo-name"
+        ><span class="logo-mori">MORI</span> <span class="logo-travel">TRAVEL</span></span
+      >
     </RouterLink>
 
     <nav class="nav">
@@ -99,6 +101,20 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   width: auto;
   display: block;
   flex-shrink: 0;
+}
+/* MORI 用黑體並加粗,與後面較細的 TRAVEL 拉出對比。
+   全站沒有設定 font-family,英文會落到瀏覽器預設的 Times New Roman,
+   所以這裡必須明確指定,否則字體會是襯線的。 */
+.logo .logo-mori {
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    'Microsoft JhengHei',
+    'PingFang TC',
+    sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 /* 只讓 TRAVEL 變細,不影響外層包住整組字的 .logo-name */
 .logo .logo-travel {

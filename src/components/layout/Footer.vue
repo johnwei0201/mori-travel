@@ -22,7 +22,9 @@ const socials = [
       <div class="brand">
         <h2 class="logo">
           <img :src="logoMark" alt="" class="logo-mark" />
-          <span class="logo-name">MORI <span class="logo-travel">TRAVEL</span></span>
+          <span class="logo-name"
+            ><span class="logo-mori">MORI</span> <span class="logo-travel">TRAVEL</span></span
+          >
         </h2>
         <p class="desc">專為喜愛探索世界的你,打造剛剛好的旅行體驗。</p>
 
@@ -91,6 +93,18 @@ const socials = [
   display: block;
   flex-shrink: 0;
   filter: brightness(0) invert(1);
+}
+/* MORI 用黑體並加粗,與後面較細的 TRAVEL 拉出對比(與 Header 同一套) */
+.logo .logo-mori {
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    'Microsoft JhengHei',
+    'PingFang TC',
+    sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 /* 只讓 TRAVEL 變細,不影響外層包住整組字的 .logo-name */
 .logo .logo-travel {
