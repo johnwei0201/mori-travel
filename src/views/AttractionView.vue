@@ -247,7 +247,8 @@ const siblings = computed(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 44px;
-  align-items: center;
+  /* 文案靠上,與地圖上緣切齊;置中的話文字短時上方會空一塊 */
+  align-items: start;
 }
 .intro-text {
   text-align: left;
