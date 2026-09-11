@@ -25,7 +25,11 @@ function search() {
   <section class="hero">
     <img :src="heroFuji" alt="富士山秋景" class="hero-image" />
 
-    <p class="hero-headline">你有多久沒旅行了。</p>
+    <div class="hero-copy">
+      <div class="eyebrow">TIME TO TRAVEL</div>
+      <p class="hero-headline">你有多久沒旅行了。</p>
+      <p class="hero-sub">森林、海島、老城與雪山,總有一段路適合現在的你。</p>
+    </div>
 
     <div class="search-card">
       <h1 class="search-title">找一趟剛剛好的旅行</h1>
@@ -72,25 +76,45 @@ function search() {
   display: block;
 }
 
-/* 壓在山腰那一帶的主標。黑體字族優先取系統內建的正黑 / 蘋方,
-   白字配深色陰影,才不會在亮處的天空與雪面上糊掉 */
-.hero-headline {
+/* 壓在山腰那一帶的整組文案。位置要留夠空間,別撞到下方的搜尋卡片 */
+.hero-copy {
   position: absolute;
-  top: 34%;
+  top: 24%;
   left: 50%;
   transform: translateX(-50%);
   width: min(1100px, 90%);
-  margin: 0;
   text-align: center;
   color: #ffffff;
+  /* 白字在亮處的天空與雪面上會糊掉,整組統一加深色陰影 */
+  text-shadow:
+    0 2px 14px rgba(6, 32, 31, 0.55),
+    0 1px 3px rgba(6, 32, 31, 0.5);
+}
+
+/* 英文小標:與國內外旅遊頁的 .eyebrow 同一套規格 */
+.hero-copy .eyebrow {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+/* 黑體字族優先取系統內建的正黑 / 蘋方 */
+.hero-headline {
+  margin: 0;
   font-family: 'Microsoft JhengHei', 'PingFang TC', 'Heiti TC', 'Noto Sans TC', sans-serif;
   font-weight: 900;
   font-size: clamp(28px, 4.4vw, 52px);
   letter-spacing: 3px;
   line-height: 1.4;
-  text-shadow:
-    0 2px 14px rgba(6, 32, 31, 0.55),
-    0 1px 3px rgba(6, 32, 31, 0.5);
+}
+
+.hero-sub {
+  margin: 12px 0 0;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  opacity: 0.92;
 }
 
 .search-card {
@@ -170,14 +194,26 @@ function search() {
 }
 
 @media (max-width: 1024px) {
+  /* 這個寬度搜尋卡片會換行變高,原本的 400px 會讓卡片壓到上方文案,
+     把圖加高留出空間 */
   .hero-image {
-    height: 400px;
+    height: 470px;
   }
-  /* 這個寬度搜尋卡片會換行變高,上方只剩窄窄一條,標題改貼近頂端並縮小 */
+  /* 這個寬度搜尋卡片會換行變高,上方只剩窄窄一條,整組文案貼近頂端並縮小 */
+  .hero-copy {
+    top: 12px;
+  }
+  .hero-copy .eyebrow {
+    font-size: 11.5px;
+    margin-bottom: 6px;
+  }
   .hero-headline {
-    top: 14px;
     font-size: clamp(22px, 3.2vw, 30px);
     letter-spacing: 2px;
+  }
+  .hero-sub {
+    margin-top: 6px;
+    font-size: 13px;
   }
   .search-card {
     width: min(600px, 92%);
@@ -198,9 +234,20 @@ function search() {
   .hero-image {
     height: 620px;
   }
+  .hero-copy {
+    top: 11%;
+  }
+  .hero-copy .eyebrow {
+    font-size: 11.5px;
+    margin-bottom: 8px;
+  }
   .hero-headline {
-    top: 16%;
     letter-spacing: 2px;
+  }
+  .hero-sub {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
   }
   .search-card {
     width: 92%;
