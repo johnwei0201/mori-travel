@@ -293,7 +293,7 @@ function reset() {
         <p class="contact-lead">上班時間來電,通常可以直接接到顧問。</p>
         <div class="contact-list">
           <p><AppIcon name="phone" :size="15" /><span>02-7755-6688</span></p>
-          <p><AppIcon name="mail" :size="15" /><span>hello@moritravel.com.tw</span></p>
+          <p><AppIcon name="mail" :size="15" /><span>add772@gmail.com</span></p>
           <p><AppIcon name="clock" :size="15" /><span>週一至週五 09:30 – 18:30</span></p>
           <p><AppIcon name="pin" :size="15" /><span>241 新北市三重區自強路四段 101 號</span></p>
         </div>

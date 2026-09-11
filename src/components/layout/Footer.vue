@@ -4,7 +4,7 @@ import logoMark from '../../assets/icons/mori_logo.png'
 
 const contacts = [
   { id: 1, icon: 'phone', text: '02-7755-6688' },
-  { id: 2, icon: 'mail', text: 'hello@moritravel.com.tw' },
+  { id: 2, icon: 'mail', text: 'add772@gmail.com' },
   { id: 3, icon: 'clock', text: '週一至週五 09:30 - 18:30' },
   { id: 4, icon: 'pin', text: '241 新北市三重區自強路四段 101 號' },
 ]

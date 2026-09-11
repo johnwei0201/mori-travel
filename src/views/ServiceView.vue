@@ -50,7 +50,7 @@ const steps = [
 
 const contacts = [
   { icon: 'phone', label: '服務專線', value: '02-7755-6688' },
-  { icon: 'mail', label: 'Email', value: 'hello@moritravel.com.tw' },
+  { icon: 'mail', label: 'Email', value: 'add772@gmail.com' },
   { icon: 'clock', label: '服務時間', value: '週一至週五 09:30 – 18:30' },
 ]
 </script>
