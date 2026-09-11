@@ -1069,8 +1069,12 @@ function scrollToResults() {
     text-align: left;
   }
   .path-go {
-    width: 100%;
-    text-align: center;
+    /* 不要撐滿整張卡片,給一個適中的寬度就好 */
+    width: auto;
+    min-width: 200px;
+    /* 這是 inline-flex,text-align 對裡面的項目沒有作用,
+       要用 justify-content 才能把文字與箭頭置中 */
+    justify-content: center;
   }
   .trips {
     grid-template-columns: 1fr;
