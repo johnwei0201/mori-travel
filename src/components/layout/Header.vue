@@ -3,9 +3,17 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import logoMark from '../../assets/icons/mori_logo.png'
 import AppIcon from '../ui/AppIcon.vue'
+import { useAuth } from '../../composables/useAuth.js'
 
 const menuOpen = ref(false)
 const route = useRoute()
+const { open: openAuth } = useAuth()
+
+/** 手機版按了之後要先把漢堡選單收起來,否則彈窗會蓋在展開的選單上 */
+function openAuthFromMobile() {
+  menuOpen.value = false
+  openAuth('login')
+}
 
 const links = [
   { to: '/', text: '回首頁' },
@@ -45,7 +53,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     </nav>
 
     <div class="actions">
-      <button class="icon-btn" aria-label="會員登入">
+      <button class="icon-btn" aria-label="會員登入" @click="openAuth('login')">
         <AppIcon name="user" :size="19" />
       </button>
       <RouterLink to="/plan" class="cta-btn">開始找旅行</RouterLink>
@@ -66,7 +74,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
     <nav id="mobile-nav" class="mobile-nav" v-show="menuOpen">
       <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
-      <button class="mobile-account">
+      <button class="mobile-account" @click="openAuthFromMobile">
         <AppIcon name="user" :size="18" />
         <span>會員登入</span>
       </button>
