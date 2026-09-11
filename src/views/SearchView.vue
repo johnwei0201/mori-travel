@@ -3,8 +3,11 @@ import { computed, watch, ref } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { months } from '../data/planTrip.js'
 import {
-  filterTrips,
+  searchTrips,
   sortTrips,
+  keywordFacts,
+  alternativeRegions,
+  FILTER_LABELS,
   durationOptions,
   budgetOptions,
   sortOptions,
@@ -61,27 +64,85 @@ const destOptions = computed(() => {
   return list
 })
 
-const results = computed(() =>
-  sortTrips(
-    filterTrips({
-      keyword: keyword.value,
-      month: month.value || null,
-      duration: duration.value,
-      budget: budget.value,
-    }),
-    sortBy.value,
-  ),
-)
+const currentFilters = computed(() => ({
+  keyword: keyword.value,
+  month: month.value || null,
+  duration: duration.value,
+  budget: budget.value,
+}))
 
-/** 已套用的條件,做成可單獨移除的標籤 */
+/** 全中就給全中的;沒有的話自動放寬,並回報放寬了哪些條件 */
+const search = computed(() => searchTrips(currentFilters.value))
+const results = computed(() => sortTrips(search.value.trips, sortBy.value))
+const relaxedKeys = computed(() => search.value.relaxed)
+
+/** 已套用的條件,做成可單獨移除的標籤;被放寬的另外標示 */
 const activeFilters = computed(() => {
   const list = []
   if (keyword.value.trim()) list.push({ key: 'keyword', text: `「${keyword.value.trim()}」` })
   if (month.value) list.push({ key: 'month', text: `${month.value} 月出發` })
   if (duration.value) list.push({ key: 'duration', text: duration.value })
   if (budget.value) list.push({ key: 'budget', text: budget.value })
-  return list
+  return list.map((f) => ({ ...f, relaxed: relaxedKeys.value.includes(f.key) }))
 })
+
+/**
+ * 提示條的說明文字。「歐洲最短 10 天」這種話是從資料算出來的,
+ * 不是寫死的 —— 之後行程增加了,說明會自己跟著變。
+ */
+const relaxNotice = computed(() => {
+  const keys = relaxedKeys.value
+  if (!keys.length || search.value.exhausted) return null
+
+  const names = keys.map((k) => FILTER_LABELS[k])
+  const kw = keyword.value.trim()
+  const facts = keywordFacts(kw)
+
+  // 連目的地都放寬了,而且那個字在站上根本查不到 —— 要講清楚,
+  // 否則使用者只會看到一堆不相干的行程,不知道發生什麼事
+  if (keys.includes('keyword') && !facts) {
+    return {
+      reason: kw ? `站上目前沒有「${kw}」的行程。` : '',
+      relaxedText: names.join('」與「'),
+    }
+  }
+
+  const reasons = []
+  if (facts) {
+    if (keys.includes('duration')) reasons.push(`最短 ${facts.minDays} 天`)
+    if (keys.includes('month')) reasons.push(`出發月份集中在 ${facts.months.join('、')} 月`)
+    if (keys.includes('budget')) reasons.push(`最低每人 NT$${facts.minPrice.toLocaleString()}`)
+  }
+
+  return {
+    reason: reasons.length ? `${kw}的行程${reasons.join(',')}。` : '',
+    relaxedText: names.join('」與「'),
+  }
+})
+
+/** 「堅持某個條件的話,哪些地區有?」 */
+const alternatives = computed(() =>
+  relaxedKeys.value.length && !search.value.exhausted
+    ? alternativeRegions(currentFilters.value, relaxedKeys.value, keyword.value.trim())
+    : null,
+)
+
+/** 一次把被放寬的條件從網址移除,讓畫面上的標籤與實際結果一致 */
+function dropRelaxed() {
+  for (const k of relaxedKeys.value) {
+    if (k === 'keyword') keyword.value = ''
+    if (k === 'month') month.value = ''
+    if (k === 'duration') duration.value = ''
+    if (k === 'budget') budget.value = ''
+  }
+  applyFilters()
+}
+
+/** 從建議列直接換一個地區,其餘條件保留 */
+function useRegion(region) {
+  keyword.value = region
+  applyFilters()
+}
 
 function removeFilter(key) {
   if (key === 'keyword') keyword.value = ''
@@ -105,7 +166,12 @@ const money = (n) => `NT$${n.toLocaleString()}`
     <div class="head-inner">
       <div class="eyebrow">SEARCH RESULTS</div>
       <h1>搜尋結果</h1>
-      <p v-if="activeFilters.length">
+      <!-- 有條件被放寬時,不能再說這些結果「符合」原本的條件 -->
+      <p v-if="activeFilters.length && relaxedKeys.length">
+        沒有完全符合 {{ activeFilters.map((f) => f.text).join('、') }} 的行程,
+        以下是 <b>{{ results.length }}</b> 筆最接近的。
+      </p>
+      <p v-else-if="activeFilters.length">
         找到 <b>{{ results.length }}</b> 筆符合 {{ activeFilters.map((f) => f.text).join('、') }}
         的行程。
       </p>
@@ -154,9 +220,17 @@ const money = (n) => `NT$${n.toLocaleString()}`
       <div class="result-left">
         <span class="result-count">共 <b>{{ results.length }}</b> 筆</span>
         <div v-if="activeFilters.length" class="chips">
-          <button v-for="f in activeFilters" :key="f.key" class="chip" @click="removeFilter(f.key)">
-            {{ f.text }} <span aria-hidden="true">×</span>
-            <span class="sr-only">移除此條件</span>
+          <button
+            v-for="f in activeFilters"
+            :key="f.key"
+            class="chip"
+            :class="{ relaxed: f.relaxed }"
+            @click="removeFilter(f.key)"
+          >
+            <span class="chip-text">{{ f.text }}</span>
+            <span v-if="f.relaxed" class="chip-flag">已放寬</span>
+            <span v-else aria-hidden="true">×</span>
+            <span class="sr-only">{{ f.relaxed ? '這個條件已被放寬,點擊移除' : '移除此條件' }}</span>
           </button>
           <button class="clear-all" @click="clearAll">清除全部</button>
         </div>
@@ -166,6 +240,22 @@ const money = (n) => `NT$${n.toLocaleString()}`
         <select id="s-sort" v-model="sortBy" @change="applyFilters">
           <option v-for="s in sortOptions" :key="s.value" :value="s.value">{{ s.label }}</option>
         </select>
+      </div>
+    </div>
+
+    <!-- 沒有完全符合時,說明放寬了什麼、為什麼 -->
+    <div v-if="relaxNotice" class="relax-notice">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6" />
+        <path d="M12 10.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        <circle cx="12" cy="7.4" r="1.15" fill="currentColor" />
+      </svg>
+      <div class="relax-body">
+        <h2>沒有完全符合的行程,已經幫你放寬條件</h2>
+        <p>
+          {{ relaxNotice.reason }}以下是放寬「{{ relaxNotice.relaxedText }}」之後的結果。
+        </p>
+        <button class="relax-btn" @click="dropRelaxed">移除這些條件</button>
       </div>
     </div>
 
@@ -199,15 +289,33 @@ const money = (n) => `NT$${n.toLocaleString()}`
       </article>
     </div>
 
-    <div v-else class="no-result">
-      <p class="no-result-lead">沒有行程同時符合這些條件。</p>
-      <p class="no-result-hint">試著放寬其中一兩項,或直接讓顧問幫你找。</p>
+    <!-- 放寬之後仍然有結果時,給一條「堅持原條件」也能走的路 -->
+    <div v-if="alternatives" class="alt-row">
+      <span class="alt-lead">堅持「{{ alternatives.text }}」的話,這些地區有:</span>
+      <button
+        v-for="a in alternatives.regions"
+        :key="a.region"
+        class="alt-pill"
+        @click="useRegion(a.region)"
+      >
+        {{ a.region }} <b>{{ a.count }}</b>
+      </button>
+    </div>
+
+    <!-- 放寬到底仍然沒有,才是真正的空結果 -->
+    <div v-if="!results.length" class="no-result">
+      <p class="no-result-lead">
+        站上目前沒有{{ keyword.trim() ? `${keyword.trim()}的` : '符合的' }}行程。
+      </p>
+      <p class="no-result-hint">
+        我們有 {{ regions.length }} 個地區的路線。要不要讓顧問依你的假期與預算,直接幫你排一趟?
+      </p>
       <div class="no-result-actions">
-        <button class="reset-btn" @click="clearAll">清除全部條件</button>
         <RouterLink to="/consult" class="ask-link">
           請顧問幫我找
           <span class="go-arrow" aria-hidden="true">➤</span>
         </RouterLink>
+        <button class="reset-btn" @click="clearAll">看所有行程</button>
       </div>
     </div>
   </section>
@@ -384,6 +492,29 @@ const money = (n) => `NT$${n.toLocaleString()}`
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
+/* 被系統暫時放寬的條件:虛線、劃掉,並標一個橘色的「已放寬」。
+   不直接讓標籤消失,使用者才知道系統動了什麼手腳。 */
+.chip.relaxed {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-style: dashed;
+  border-color: #d8cfc2;
+  background: transparent;
+  color: #6b6259;
+}
+.chip.relaxed .chip-text {
+  text-decoration: line-through;
+  text-decoration-color: #bfb5a8;
+}
+.chip-flag {
+  font-size: 11px;
+  color: var(--color-accent);
+  background: #fdf1e0;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
 .clear-all {
   border: none;
   background: none;
@@ -392,6 +523,88 @@ const money = (n) => `NT$${n.toLocaleString()}`
   color: #6b6259;
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* 放寬說明條 */
+.relax-notice {
+  display: flex;
+  gap: 14px;
+  background: #fdf1e0;
+  border-left: 3px solid var(--color-accent);
+  border-radius: 4px 12px 12px 4px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  color: var(--color-accent);
+}
+.relax-notice svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.relax-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 0;
+}
+.relax-body h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--color-primary);
+}
+.relax-body p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #7a5a41;
+}
+.relax-btn {
+  margin-top: 7px;
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: 1px solid #e2c4ac;
+  background: #fff;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.relax-btn:hover {
+  border-color: var(--color-accent);
+}
+
+/* 「堅持原條件的話,哪些地區有」 */
+.alt-row {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid #e7e0d6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.alt-lead {
+  font-size: 13px;
+  color: #6b6259;
+}
+.alt-pill {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid #e7e0d6;
+  background: #fff;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.alt-pill:hover {
+  border-color: var(--color-accent);
+}
+.alt-pill b {
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
 }
 .clear-all:hover {
   color: var(--color-accent);

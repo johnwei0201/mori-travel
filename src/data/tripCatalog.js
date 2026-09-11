@@ -360,3 +360,93 @@ export function sortTrips(list, by = 'date') {
   if (by === 'daysAsc') return sorted.sort((a, b) => a.days - b.days)
   return sorted.sort((a, b) => a.date.localeCompare(b.date))
 }
+
+/* ───────────────── 漸進放寬搜尋 ─────────────────
+   條件全中才給結果的話,多數組合都會是 0 筆。改成找不到時依序拿掉條件,
+   再把「拿掉了什麼」與「為什麼」一起交給畫面說明。 */
+
+/** 放寬順序:預算最不影響「想去哪」,目的地最在意,留到最後才放 */
+const RELAX_ORDER = ['budget', 'month', 'duration', 'keyword']
+
+/** 各條件在畫面上的名稱 */
+export const FILTER_LABELS = {
+  keyword: '目的地',
+  month: '出發月份',
+  duration: '旅遊天數',
+  budget: '每人預算',
+}
+
+/** 空字串、0、null 都算沒有設定 */
+const isSet = (v) => v !== '' && v !== null && v !== undefined
+
+/** 把指定的條件清成「不限」 */
+function without(filters, keys) {
+  const next = { ...filters }
+  for (const k of keys) next[k] = k === 'month' ? null : ''
+  return next
+}
+
+/**
+ * 先試完全符合;沒有的話,依 RELAX_ORDER 一次多放寬一個,直到有結果。
+ * @returns {{trips: Array, relaxed: string[], exhausted: boolean}}
+ *   relaxed   被放寬的條件(依序累加)
+ *   exhausted 全部放寬完仍然沒有結果
+ */
+export function searchTrips(filters = {}) {
+  const exact = filterTrips(filters)
+  if (exact.length) return { trips: exact, relaxed: [], exhausted: false }
+
+  const relaxed = []
+  for (const key of RELAX_ORDER) {
+    if (!isSet(filters[key])) continue
+    relaxed.push(key)
+    const trips = filterTrips(without(filters, relaxed))
+    if (trips.length) return { trips, relaxed: [...relaxed], exhausted: false }
+  }
+  return { trips: [], relaxed, exhausted: true }
+}
+
+/**
+ * 某個關鍵字(通常是地區)在站上的實際範圍,用來回答「為什麼查不到」。
+ * 例如歐洲最短 10 天、只有 5/9/10 月出發。
+ */
+export function keywordFacts(keyword = '') {
+  const kw = keyword.trim().toLowerCase()
+  if (!kw) return null
+  const list = tripCatalog.filter((t) =>
+    [t.title, t.region, ...(t.keywords ?? [])].join(' ').toLowerCase().includes(kw),
+  )
+  if (!list.length) return null
+  return {
+    count: list.length,
+    months: [...new Set(list.map((t) => t.month))].sort((a, b) => a - b),
+    minDays: Math.min(...list.map((t) => t.days)),
+    maxDays: Math.max(...list.map((t) => t.days)),
+    minPrice: Math.min(...list.map((t) => t.price)),
+  }
+}
+
+/**
+ * 「堅持這個條件的話,哪些地區有?」
+ * 從被放寬掉的條件裡挑一個最具體的,單獨拿它去找還有哪些地區符合。
+ */
+export function alternativeRegions(filters, relaxed = [], excludeRegion = '') {
+  for (const key of ['duration', 'month', 'budget']) {
+    if (!relaxed.includes(key) || !isSet(filters[key])) continue
+
+    const counts = {}
+    for (const t of filterTrips({ [key]: filters[key] })) {
+      if (t.region === excludeRegion) continue
+      counts[t.region] = (counts[t.region] ?? 0) + 1
+    }
+    const list = Object.entries(counts)
+      .map(([region, count]) => ({ region, count }))
+      .sort((a, b) => b.count - a.count)
+
+    if (list.length) {
+      const text = key === 'month' ? `${filters.month} 月出發` : filters[key]
+      return { key, text, regions: list }
+    }
+  }
+  return null
+}
