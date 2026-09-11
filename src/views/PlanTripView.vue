@@ -1063,15 +1063,16 @@ function scrollToResults() {
   .months {
     grid-template-columns: repeat(2, 1fr);
   }
+  /* 手機上排成一欄,整組(圖示、標題、說明、按鈕)置中,
+     與頁尾那個 CTA 區塊同一種處理 */
   .path {
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
   }
   .path-go {
-    /* 不要撐滿整張卡片,給一個適中的寬度就好 */
+    /* 不要撐滿整張卡片,縮到內容寬度就好 */
     width: auto;
-    min-width: 200px;
     /* 這是 inline-flex,text-align 對裡面的項目沒有作用,
        要用 justify-content 才能把文字與箭頭置中 */
     justify-content: center;

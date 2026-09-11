@@ -777,6 +777,11 @@ function reset() {
   .breadcrumb {
     padding: 12px 16px 0;
   }
+  /* 手機上按鈕與下方的小字會各佔一行,兩行都置中 */
+  .submit-row {
+    justify-content: center;
+    text-align: center;
+  }
   .layout {
     padding: 0 16px;
   }
