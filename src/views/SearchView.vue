@@ -9,7 +9,6 @@ import {
   alternativeRegions,
   FILTER_LABELS,
   durationOptions,
-  budgetOptions,
   sortOptions,
   regions,
 } from '../data/tripCatalog.js'
@@ -21,14 +20,12 @@ const router = useRouter()
 const keyword = ref('')
 const month = ref('')
 const duration = ref('')
-const budget = ref('')
 const sortBy = ref('date')
 
 function readQuery() {
   keyword.value = route.query.q ?? ''
   month.value = route.query.month ? Number(route.query.month) : ''
   duration.value = route.query.days ?? ''
-  budget.value = route.query.budget ?? ''
   sortBy.value = route.query.sort ?? 'date'
 }
 readQuery()
@@ -40,7 +37,6 @@ function applyFilters() {
   if (keyword.value.trim()) query.q = keyword.value.trim()
   if (month.value) query.month = month.value
   if (duration.value) query.days = duration.value
-  if (budget.value) query.budget = budget.value
   if (sortBy.value !== 'date') query.sort = sortBy.value
   router.replace({ path: '/search', query })
 }
@@ -49,7 +45,6 @@ function clearAll() {
   keyword.value = ''
   month.value = ''
   duration.value = ''
-  budget.value = ''
   applyFilters()
 }
 
@@ -68,7 +63,6 @@ const currentFilters = computed(() => ({
   keyword: keyword.value,
   month: month.value || null,
   duration: duration.value,
-  budget: budget.value,
 }))
 
 /** 全中就給全中的;沒有的話自動放寬,並回報放寬了哪些條件 */
@@ -82,7 +76,6 @@ const activeFilters = computed(() => {
   if (keyword.value.trim()) list.push({ key: 'keyword', text: `「${keyword.value.trim()}」` })
   if (month.value) list.push({ key: 'month', text: `${month.value} 月出發` })
   if (duration.value) list.push({ key: 'duration', text: duration.value })
-  if (budget.value) list.push({ key: 'budget', text: budget.value })
   return list.map((f) => ({ ...f, relaxed: relaxedKeys.value.includes(f.key) }))
 })
 
@@ -111,7 +104,6 @@ const relaxNotice = computed(() => {
   if (facts) {
     if (keys.includes('duration')) reasons.push(`最短 ${facts.minDays} 天`)
     if (keys.includes('month')) reasons.push(`出發月份集中在 ${facts.months.join('、')} 月`)
-    if (keys.includes('budget')) reasons.push(`最低每人 NT$${facts.minPrice.toLocaleString()}`)
   }
 
   return {
@@ -133,7 +125,6 @@ function dropRelaxed() {
     if (k === 'keyword') keyword.value = ''
     if (k === 'month') month.value = ''
     if (k === 'duration') duration.value = ''
-    if (k === 'budget') budget.value = ''
   }
   applyFilters()
 }
@@ -148,7 +139,6 @@ function removeFilter(key) {
   if (key === 'keyword') keyword.value = ''
   if (key === 'month') month.value = ''
   if (key === 'duration') duration.value = ''
-  if (key === 'budget') budget.value = ''
   applyFilters()
 }
 
@@ -203,13 +193,6 @@ const money = (n) => `NT$${n.toLocaleString()}`
           <option v-for="d in durationOptions" :key="d.label" :value="d.label">
             {{ d.label }}
           </option>
-        </select>
-      </div>
-      <div class="filter-field">
-        <label for="s-budget">每人預算</label>
-        <select id="s-budget" v-model="budget" @change="applyFilters">
-          <option value="">不限</option>
-          <option v-for="b in budgetOptions" :key="b.label" :value="b.label">{{ b.label }}</option>
         </select>
       </div>
     </div>
@@ -402,7 +385,8 @@ const money = (n) => `NT$${n.toLocaleString()}`
   max-width: 1120px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  /* 三個欄位,與首頁搜尋列一致 */
+  grid-template-columns: 1.6fr 1fr 1fr;
   gap: 14px;
 }
 /* 標籤絕對定位疊在上緣,select 撐滿整個欄位 —— 這樣點欄位的任何位置
