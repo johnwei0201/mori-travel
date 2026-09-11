@@ -9,8 +9,8 @@ const menuOpen = ref(false)
 const route = useRoute()
 const { open: openAuth } = useAuth()
 
-/** 手機版按了之後要先把漢堡選單收起來,否則彈窗會蓋在展開的選單上 */
-function openAuthFromMobile() {
+/** 選單展開時按會員圖示,要先把選單收起來,否則彈窗會蓋在展開的選單上 */
+function openLogin() {
   menuOpen.value = false
   openAuth('login')
 }
@@ -53,7 +53,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     </nav>
 
     <div class="actions">
-      <button class="icon-btn" aria-label="會員登入" @click="openAuth('login')">
+      <button class="icon-btn" aria-label="會員登入" @click="openLogin">
         <AppIcon name="user" :size="19" />
       </button>
       <RouterLink to="/plan" class="cta-btn">開始找旅行</RouterLink>
@@ -72,12 +72,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
       </button>
     </div>
 
+    <!-- 會員入口已經固定顯示在 .actions 裡了,這裡不再重複放一份 -->
     <nav id="mobile-nav" class="mobile-nav" v-show="menuOpen">
       <RouterLink v-for="l in links" :key="l.to" :to="l.to">{{ l.text }}</RouterLink>
-      <button class="mobile-account" @click="openAuthFromMobile">
-        <AppIcon name="user" :size="18" />
-        <span>會員登入</span>
-      </button>
     </nav>
   </header>
 </template>
@@ -233,8 +230,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   box-shadow: 0 14px 26px rgba(43, 36, 32, 0.12);
   flex-direction: column;
 }
-.mobile-nav a,
-.mobile-account {
+.mobile-nav a {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -252,14 +248,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   font-family: inherit;
   transition: background 0.15s ease;
 }
-.mobile-nav a:hover,
-.mobile-account:hover {
+.mobile-nav a:hover {
   background: var(--color-bg);
   color: #c2410c;
-}
-.mobile-account {
-  border-bottom: none;
-  color: var(--color-primary);
 }
 
 @media (max-width: 1024px) {
@@ -289,19 +280,57 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     height: 26px;
   }
   .actions {
-    gap: 10px;
+    gap: 8px;
   }
-  /* 手機寬度放不下,會員入口移到展開的選單裡 */
+  /* 會員入口在手機上也直接露出來,不收進漢堡選單 */
   .icon-btn {
-    display: none;
+    width: 34px;
+    height: 34px;
   }
   .cta-btn {
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-size: 13px;
+    white-space: nowrap;
   }
-  .mobile-nav a,
-  .mobile-account {
+  .mobile-nav a {
     padding: 14px 16px;
+  }
+}
+
+/* 窄螢幕要同時容納:樹標 + 字標 + 會員圖示 + CTA + 漢堡,共五個東西。
+   先把字級與間距收緊,字標本身不允許換行(換行會把 Header 撐高一倍)。 */
+@media (max-width: 420px) {
+  .logo {
+    font-size: 17px;
+    gap: 6px;
+  }
+  .logo-mark {
+    height: 24px;
+  }
+  .logo-name {
+    white-space: nowrap;
+  }
+  .actions {
+    gap: 6px;
+  }
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .cta-btn {
+    padding: 8px 10px;
+    font-size: 12.5px;
+  }
+  .burger {
+    width: 34px;
+  }
+}
+
+/* 再窄就放不下了:只留樹標,把寬度讓給實際能操作的按鈕。
+   MORI 的樹本身辨識度夠,拿掉字標不影響認出品牌。 */
+@media (max-width: 360px) {
+  .logo-name {
+    display: none;
   }
 }
 </style>
