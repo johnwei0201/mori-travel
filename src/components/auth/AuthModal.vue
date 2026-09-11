@@ -84,15 +84,7 @@ onUnmounted(() => {
           </button>
 
           <div class="auth-head">
-            <div class="eyebrow">{{ mode === 'register' ? 'JOIN MORI' : 'WELCOME BACK' }}</div>
             <h2 id="auth-title">{{ mode === 'register' ? '建立 MORI 帳號' : '會員登入' }}</h2>
-            <p>
-              {{
-                mode === 'register'
-                  ? '收藏喜歡的行程,下次回來接著看。'
-                  : '登入後可以查看你的諮詢紀錄與收藏。'
-              }}
-            </p>
           </div>
 
           <AuthForm ref="formRef" :mode="mode" @switch-mode="switchMode" />
@@ -100,7 +92,7 @@ onUnmounted(() => {
           <div class="auth-foot">
             <p class="demo-note">此為作品集示範,不會真的建立帳號或傳送任何資料。</p>
             <RouterLink to="/login" class="full-page" @click="close">
-              改用完整頁面登入 <span aria-hidden="true">➤</span>
+              進入登入頁面 <span aria-hidden="true">➤</span>
             </RouterLink>
           </div>
         </div>
@@ -160,23 +152,9 @@ onUnmounted(() => {
 .auth-head {
   margin-bottom: 24px;
 }
-.eyebrow {
-  font-size: 12.5px;
-  letter-spacing: 2.2px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--color-accent);
-  margin-bottom: 8px;
-}
 .auth-head h2 {
   font-size: 23px;
   color: var(--color-primary);
-  margin: 0 0 8px;
-}
-.auth-head p {
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: #6b6259;
   margin: 0;
 }
 
