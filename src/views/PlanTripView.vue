@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import heroFuji from '../assets/images_縮小/hero-japan-fuji.jpg'
+import heroKyoto from '../assets/images_縮小/Featured-Attractions---Kyoto.jpg'
 import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
 import { durationOptions, budgetOptions, filterTrips, sortTrips } from '../data/tripCatalog.js'
@@ -74,7 +74,7 @@ function scrollToResults() {
 
 <template>
   <section class="hero">
-    <img :src="heroFuji" alt="富士山與河口湖的秋日楓紅" class="hero-photo" />
+    <img :src="heroKyoto" alt="京都八坂之塔與櫻花掩映的石板坡道" class="hero-photo" />
     <div class="hero-veil"></div>
     <div class="hero-copy">
       <div class="eyebrow light">PLAN YOUR TRIP</div>
@@ -321,6 +321,9 @@ function scrollToResults() {
   width: 100%;
   height: clamp(340px, 46vw, 520px);
   object-fit: cover;
+  /* 原圖是正方形,塞進寬扁的版位只看得到中間約三分之一。置中會從塔身
+     中間切斷,往上取到 5% 才留得住完整的八坂之塔,標題也剛好壓在天空上。 */
+  object-position: 50% 5%;
   display: block;
 }
 .hero-veil {
