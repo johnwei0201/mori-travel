@@ -783,14 +783,27 @@ function scrollToResults() {
 .reset-btn:hover {
   border-color: var(--color-primary);
 }
+/* 與旁邊的「清除全部條件」成對:那顆是次要動作(白底外框),
+   這顆是主要動作,依全站慣例做成橘色實心。內距與它相同,兩顆才等高。 */
 .ask-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 11px 22px;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  background: var(--color-accent);
   font-size: 14px;
-  color: var(--color-accent);
+  color: #fff;
   text-decoration: none;
   font-weight: 500;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.ask-link:hover {
+  background: #d4551f;
+  border-color: #d4551f;
 }
 .ask-link:hover .go-arrow {
   transform: translateX(3px);
