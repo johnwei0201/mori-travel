@@ -12,10 +12,11 @@ const routes = [
   { id: 4, path: '台北 → 大阪', price: 6300 },
 ]
 
+// to 指向對應的目的地頁,讓卡片點得進去
 const stays = [
-  { id: 1, name: '日本住宿', img: destJapan, price: 2400 },
-  { id: 2, name: '韓國住宿', img: destKorea, price: 1900 },
-  { id: 3, name: '歐洲住宿', img: destEurope, price: 3600 },
+  { id: 1, name: '日本住宿', img: destJapan, price: 2400, to: '/destinations/japan' },
+  { id: 2, name: '韓國住宿', img: destKorea, price: 1900, to: '/destinations/korea' },
+  { id: 3, name: '歐洲住宿', img: destEurope, price: 3600, to: '/destinations/europe' },
 ]
 
 const activeTab = ref('flight')
@@ -94,16 +95,16 @@ const activeTab = ref('flight')
 
   <section class="stay-section">
     <div class="stay-inner">
-      <div class="section-label">STAY</div>
-      <h2>各地住宿精選</h2>
+      <div class="section-label">FEATURED TRIPS</div>
+      <h2>精選旅遊</h2>
       <div class="stay-grid">
-        <div class="stay-card" v-for="s in stays" :key="s.id">
+        <RouterLink class="stay-card" v-for="s in stays" :key="s.id" :to="s.to">
           <img :src="s.img" :alt="s.name" />
           <div class="info">
             <h3>{{ s.name }}</h3>
             <p>市區飯店起 NT${{ s.price.toLocaleString() }}/晚</p>
           </div>
-        </div>
+        </RouterLink>
       </div>
     </div>
   </section>
@@ -263,6 +264,20 @@ const activeTab = ref('flight')
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow 0.2s ease,
+    outline-color 0.2s ease;
+  /* 與國內/國外旅遊的區域卡片同一套 hover:外框變橘色。
+     用 outline 不用 border,才不會佔版面把內容推位。 */
+  outline: 2.5px solid transparent;
+  outline-offset: -2.5px;
+}
+.stay-card:hover {
+  box-shadow: 0 12px 26px rgba(43, 36, 32, 0.16);
+  outline-color: var(--color-accent);
 }
 .stay-card img {
   height: 150px;

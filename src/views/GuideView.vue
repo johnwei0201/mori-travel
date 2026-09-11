@@ -177,6 +177,7 @@ const estimate = computed(() => {
 
 const money = (n) => `NT$${n.toLocaleString()}`
 
+// to 指向同主題的行程內頁,讓卡片點得進去
 const articles = [
   {
     id: 1,
@@ -184,6 +185,7 @@ const articles = [
     tag: '日本',
     title: '東京賞楓完整攻略:最佳時間與路線規劃',
     desc: '從賞楓地圖到交通安排,一篇看懂東京秋季旅遊重點。',
+    to: '/trips/tokyo',
   },
   {
     id: 2,
@@ -191,6 +193,7 @@ const articles = [
     tag: '日本',
     title: '北海道雪季旅遊攻略:交通、穿搭、必去景點',
     desc: '第一次去北海道賞雪,行前必讀的實用建議整理。',
+    to: '/trips/hokkaido',
   },
   {
     id: 3,
@@ -198,6 +201,7 @@ const articles = [
     tag: '歐洲',
     title: '義大利自由行懶人包:城市串聯與交通攻略',
     desc: '羅馬、佛羅倫斯到威尼斯,城市之間該怎麼安排最順?',
+    to: '/trips/italy',
   },
 ]
 
@@ -495,17 +499,17 @@ const checklist = [
   </section>
 
   <section class="articles-section">
-    <div class="section-label">FEATURED</div>
-    <h2>精選文章</h2>
+    <div class="section-label">FEATURED TRIPS</div>
+    <h2>精選旅遊</h2>
     <div class="article-grid">
-      <div class="article-card" v-for="a in articles" :key="a.id">
+      <RouterLink class="article-card" v-for="a in articles" :key="a.id" :to="a.to">
         <img :src="a.img" :alt="a.title" />
         <div class="article-body">
           <span class="article-tag">{{ a.tag }}</span>
           <h3>{{ a.title }}</h3>
           <p>{{ a.desc }}</p>
         </div>
-      </div>
+      </RouterLink>
     </div>
   </section>
 
@@ -1205,6 +1209,20 @@ const checklist = [
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(43, 36, 32, 0.08);
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow 0.2s ease,
+    outline-color 0.2s ease;
+  /* 與國內/國外旅遊的區域卡片同一套 hover:外框變橘色。
+     用 outline 不用 border,才不會佔版面把內容推位。 */
+  outline: 2.5px solid transparent;
+  outline-offset: -2.5px;
+}
+.article-card:hover {
+  box-shadow: 0 14px 34px rgba(43, 36, 32, 0.16);
+  outline-color: var(--color-accent);
 }
 .article-card img {
   width: 100%;
