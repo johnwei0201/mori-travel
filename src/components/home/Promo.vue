@@ -24,22 +24,11 @@ import promoImg from '../../assets/images/promo-autumn-lake.png'
   justify-content: center;
 }
 
+/* banner 本身已經有「立即購買」按鈕當作點擊提示,
+   所以這裡不加 hover 的外框或陰影,維持畫面乾淨。 */
 .banner-link {
   width: 80%;
   display: block;
-  border-radius: 16px;
-  transition:
-    box-shadow 0.2s ease,
-    outline-color 0.2s ease;
-  outline: 2.5px solid transparent;
-  outline-offset: -2.5px;
-}
-
-/* 與國內/國外旅遊的區域卡片同一套 hover:外框變橘色 + 陰影。
-   用 outline 不用 border,才不會佔版面把圖推位。 */
-.banner-link:hover {
-  box-shadow: 0 12px 26px rgba(43, 36, 32, 0.2);
-  outline-color: var(--color-accent);
 }
 
 .banner {
