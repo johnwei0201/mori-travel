@@ -3,6 +3,7 @@ import { computed, watch, ref } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { months } from '../data/planTrip.js'
 import {
+  tripCatalog,
   searchTrips,
   sortTrips,
   keywordFacts,
@@ -12,6 +13,8 @@ import {
   sortOptions,
   regions,
 } from '../data/tripCatalog.js'
+import TripResultCard from '../components/ui/TripResultCard.vue'
+import ConsultCard from '../components/ui/ConsultCard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -142,7 +145,42 @@ function removeFilter(key) {
   applyFilters()
 }
 
-const money = (n) => `NT$${n.toLocaleString()}`
+/* ── 版面補滿 ──────────────────────────────────────────────
+   結果常常只有一兩筆,三欄網格會空掉一大半。補的是真東西:
+   一張通往諮詢的卡片,以及站上其他真的存在的行程。
+   不生成假行程 —— 卡片上有日期與價格,編出來等於給了不存在的承諾。 */
+
+/** 只在結果填不滿一整排時補顧問卡,剛好整排就不補,免得多出孤零零的一列 */
+const showConsultCard = computed(() => results.value.length % 3 !== 0)
+
+/** 網格欄數跟著實際張數走,只有一兩張時就不要撐成三欄留空格 */
+const gridColumns = computed(() =>
+  Math.min(results.value.length + (showConsultCard.value ? 1 : 0), 3),
+)
+
+/**
+ * 你可能也會喜歡:從沒出現在結果裡的行程挑三筆。
+ * 同地區最相關,其次是月份相近、天數接近的。
+ */
+const recommended = computed(() => {
+  const shown = new Set(results.value.map((t) => t.id))
+  const pool = tripCatalog.filter((t) => !shown.has(t.id))
+  if (!pool.length) return []
+
+  const kw = keyword.value.trim()
+  const days = results.value[0]?.days
+  const score = (t) => {
+    let s = 0
+    if (kw && t.region === kw) s += 10
+    if (month.value && Math.abs(t.month - month.value) <= 1) s += 4
+    if (days && Math.abs(t.days - days) <= 2) s += 2
+    return s
+  }
+  // 分數相同時用出發日期排,結果才不會每次重繪都跳來跳去
+  return [...pool]
+    .sort((a, b) => score(b) - score(a) || a.date.localeCompare(b.date))
+    .slice(0, 3)
+})
 </script>
 
 <template>
@@ -242,34 +280,13 @@ const money = (n) => `NT$${n.toLocaleString()}`
       </div>
     </div>
 
-    <div v-if="results.length" class="trip-grid">
-      <article v-for="trip in results" :key="trip.id" class="trip">
-        <div class="trip-media">
-          <img v-if="trip.img" :src="trip.img" :alt="trip.title" />
-          <div v-else class="trip-placeholder">圖片待補</div>
-          <span class="trip-tag">{{ trip.tag }}</span>
-        </div>
-        <div class="trip-body">
-          <span class="trip-region">{{ trip.region }}</span>
-          <h2>{{ trip.title }}</h2>
-          <div class="trip-meta">
-            <span>📅 {{ trip.date }} 出發</span>
-            <span>☀️ {{ trip.duration }}</span>
-          </div>
-          <div class="trip-chips">
-            <span v-for="f in trip.features" :key="f">{{ f }}</span>
-          </div>
-          <div class="trip-foot">
-            <span class="price">{{ money(trip.price) }}<small>/人</small></span>
-            <RouterLink v-if="trip.detailSlug" :to="`/trips/${trip.detailSlug}`">
-              查看行程
-            </RouterLink>
-            <RouterLink v-else :to="{ path: '/consult', query: { topic: trip.region } }">
-              諮詢這條路線
-            </RouterLink>
-          </div>
-        </div>
-      </article>
+    <div
+      v-if="results.length"
+      class="trip-grid"
+      :style="{ '--cols': gridColumns, '--cols-md': Math.min(gridColumns, 2) }"
+    >
+      <TripResultCard v-for="trip in results" :key="trip.id" :trip="trip" />
+      <ConsultCard v-if="showConsultCard" :topic="keyword.trim()" />
     </div>
 
     <!-- 放寬之後仍然有結果時,給一條「堅持原條件」也能走的路 -->
@@ -300,6 +317,16 @@ const money = (n) => `NT$${n.toLocaleString()}`
         </RouterLink>
         <button class="reset-btn" @click="clearAll">看所有行程</button>
       </div>
+    </div>
+  </section>
+
+  <!-- 站上其他真的存在的行程。標題與說明都寫清楚這不是搜尋結果 -->
+  <section v-if="recommended.length" class="recommend wrap">
+    <div class="section-label">YOU MAY ALSO LIKE</div>
+    <h2>你可能也會喜歡</h2>
+    <p class="recommend-note">這些不是上面的搜尋結果,是站上其他你可能有興趣的路線。</p>
+    <div class="trip-grid">
+      <TripResultCard v-for="trip in recommended" :key="trip.id" :trip="trip" />
     </div>
   </section>
 
@@ -632,132 +659,31 @@ const money = (n) => `NT$${n.toLocaleString()}`
 }
 
 /* 行程卡 */
+/* 欄數用 CSS 變數傳進來 —— 不能直接用 inline style 設
+   grid-template-columns,那會蓋掉下面的 media query,手機就永遠是三欄。
+   這裡給預設值,推薦區那個沒傳變數的網格才有得用。 */
 .trip-grid {
+  --cols: 3;
+  --cols-md: 2;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--cols), 1fr);
   gap: clamp(14px, 1.8vw, 24px);
 }
-.trip {
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(43, 36, 32, 0.08);
-  display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.trip:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 30px rgba(43, 36, 32, 0.16);
-}
-.trip-media {
-  position: relative;
-}
-.trip-media img {
-  width: 100%;
-  height: clamp(150px, 17vw, 194px);
-  object-fit: cover;
-  display: block;
-}
-.trip-placeholder {
-  width: 100%;
-  height: clamp(150px, 17vw, 194px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: #a89c8e;
-  background: repeating-linear-gradient(
-    45deg,
-    #f3ece1,
-    #f3ece1 14px,
-    #efe6d8 14px,
-    #efe6d8 28px
-  );
-}
-.trip-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 14px;
-  padding: 4px 11px;
-  border-radius: 6px;
-}
-.trip-body {
-  padding: 16px 18px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-.trip-region {
-  font-size: 12.5px;
-  color: #6b6259;
-  letter-spacing: 1px;
-}
-.trip-body h2 {
-  font-size: 17.5px;
-  color: var(--color-primary);
-  margin: 0;
-}
-.trip-meta {
-  font-size: 12.5px;
-  color: #6b6259;
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.trip-chips {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.trip-chips span {
-  background: #fdf1e0;
-  color: var(--color-primary);
-  font-size: 14px;
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-.trip-foot {
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid #e7e0d6;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-}
-.price {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-}
-.price small {
-  font-size: 12px;
-  color: #6b6259;
-  font-weight: 400;
-  margin-left: 3px;
-}
-.trip-foot a {
-  font-size: 13.5px;
-  color: var(--color-primary);
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
-  white-space: nowrap;
-  transition: color 0.15s ease;
-}
-.trip-foot a:hover {
-  color: var(--color-accent);
-}
 
+/* 你可能也會喜歡 */
+.recommend {
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+.recommend h2 {
+  font-size: 22px;
+  color: var(--color-primary);
+  margin: 0 0 6px;
+}
+.recommend-note {
+  font-size: 13px;
+  color: #6b6259;
+  margin: 0 0 20px;
+}
 /* 查無結果 */
 .no-result {
   border: 1px dashed #ddd0bd;
@@ -878,7 +804,7 @@ const money = (n) => `NT$${n.toLocaleString()}`
     grid-template-columns: 1fr 1fr;
   }
   .trip-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(var(--cols-md), 1fr);
   }
   .cta-banner {
     margin-inline: 24px;
