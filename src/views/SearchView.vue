@@ -405,13 +405,12 @@ const money = (n) => `NT$${n.toLocaleString()}`
   grid-template-columns: 1.6fr 1fr 1fr 1fr;
   gap: 14px;
 }
+/* 標籤絕對定位疊在上緣,select 撐滿整個欄位 —— 這樣點欄位的任何位置
+   (含箭頭)都能展開下拉,而不是只有下半部那一條才點得到。 */
 .filter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  position: relative;
   border: 1px solid #e7e0d6;
   border-radius: 10px;
-  padding: 8px 14px;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -421,9 +420,14 @@ const money = (n) => `NT$${n.toLocaleString()}`
   box-shadow: 0 0 0 3px rgba(10, 95, 97, 0.12);
 }
 .filter-field label {
+  position: absolute;
+  top: 9px;
+  left: 14px;
   font-size: 11.5px;
   letter-spacing: 0.5px;
   color: #6b6259;
+  /* 讓點擊穿透到底下的 select */
+  pointer-events: none;
 }
 .filter-field input,
 .filter-field select {
@@ -434,10 +438,18 @@ const money = (n) => `NT$${n.toLocaleString()}`
   color: #2b2420;
   outline: none;
   width: 100%;
-  padding: 0;
+  /* 上方留給標籤,右方留給箭頭 */
+  padding: 30px 42px 10px 14px;
 }
 .filter-field select {
   cursor: pointer;
+  /* 關掉瀏覽器原生的箭頭,改用自己畫的 —— 原生的又小又不能調大小,
+     而且它是對齊 select 而非整個欄位,看起來會偏下 */
+  appearance: none;
+  -webkit-appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a5f61' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 14px center / 16px;
 }
 .filter-field input::placeholder {
   color: #a89c8e;

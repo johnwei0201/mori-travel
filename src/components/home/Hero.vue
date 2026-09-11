@@ -141,19 +141,22 @@ function search() {
   align-items: flex-end;
 }
 
+/* 與搜尋結果頁的欄位同一套:標籤疊在上緣、select 撐滿整格,
+   點欄位任何位置(含箭頭)都能展開 */
 .search-field {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  position: relative;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 8px 14px;
 }
 
 .search-field label {
+  position: absolute;
+  top: 9px;
+  left: 14px;
   font-size: 13px;
   color: #666;
+  pointer-events: none;
 }
 
 .search-field input,
@@ -165,10 +168,15 @@ function search() {
   color: #2b2420;
   outline: none;
   width: 100%;
-  padding: 0;
+  padding: 32px 42px 10px 14px;
 }
 .search-field select {
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a5f61' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 14px center / 16px;
 }
 .search-field input::placeholder {
   color: #a89c8e;
