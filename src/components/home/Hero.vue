@@ -27,7 +27,9 @@ function search() {
 
     <div class="hero-copy">
       <div class="eyebrow">TIME TO TRAVEL</div>
-      <p class="hero-headline">您有多久沒旅行了。</p>
+      <!-- 全站文案用「您」,只有這句標語例外 —— 它是對所有人喊話,
+           用「你」口吻才夠近 -->
+      <p class="hero-headline">你有多久沒旅行了。</p>
       <p class="hero-sub">森林、海島、老城與雪山,總有一段路適合現在的您。</p>
     </div>
 
