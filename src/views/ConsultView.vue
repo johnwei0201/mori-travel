@@ -40,9 +40,9 @@ const dayOptions = ['3 天以內', '4—5 天', '6—8 天', '9 天以上', '還
 const budgetOptions = ['NT$2 萬以下', 'NT$2—4 萬', 'NT$4—6 萬', 'NT$6 萬以上', '想先聽建議']
 
 const steps = [
-  { n: 1, title: '送出諮詢單', text: '填寫你的旅行輪廓,不用很精確,有想法就好。' },
-  { n: 2, title: '顧問回覆', text: '一個工作天內,由專屬顧問以你偏好的方式聯繫。' },
-  { n: 3, title: '調整到剛剛好', text: '依你的預算與假期,一起把行程調整到最合適的樣子。' },
+  { n: 1, title: '送出諮詢單', text: '填寫您的旅行輪廓,不用很精確,有想法就好。' },
+  { n: 2, title: '顧問回覆', text: '一個工作天內,由專屬顧問以您偏好的方式聯繫。' },
+  { n: 3, title: '調整到剛剛好', text: '依您的預算與假期,一起把行程調整到最合適的樣子。' },
 ]
 
 const faqs = [
@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: '我還沒決定要去哪裡,可以先問嗎?',
-    a: '可以,這也是最常見的狀況。只要告訴我們大概的假期長度與預算,顧問會直接提供幾個方向讓你挑。',
+    a: '可以,這也是最常見的狀況。只要告訴我們大概的假期長度與預算,顧問會直接提供幾個方向讓您挑。',
   },
   {
     q: '多久會收到回覆?',
@@ -70,13 +70,13 @@ const contactSummary = computed(() =>
 
 function submit() {
   const e = {}
-  if (!form.value.name.trim()) e.name = '請留下方便稱呼你的名字'
+  if (!form.value.name.trim()) e.name = '請留下方便稱呼您的名字'
   if (!form.value.phone.trim() && !form.value.email.trim())
-    e.contact = '電話與 Email 至少要留一項,顧問才能與你聯繫'
+    e.contact = '電話與 Email 至少要留一項,顧問才能與您聯繫'
   if (form.value.contactPref === '電話' && !form.value.phone.trim())
-    e.contact = '你選擇以電話聯繫,請留下電話號碼'
+    e.contact = '您選擇以電話聯繫,請留下電話號碼'
   if (form.value.contactPref === 'Email' && !form.value.email.trim())
-    e.contact = '你選擇以 Email 聯繫,請留下 Email'
+    e.contact = '您選擇以 Email 聯繫,請留下 Email'
 
   errors.value = e
   if (Object.keys(e).length) return
@@ -114,7 +114,7 @@ function reset() {
     <div class="head-inner">
       <div class="eyebrow">TRIP CONSULTATION</div>
       <h1>諮詢行程</h1>
-      <p>把你的想法交給我們,剩下的交給專屬顧問。免費、不綁約,聊完再決定也可以。</p>
+      <p>把您的想法交給我們,剩下的交給專屬顧問。免費、不綁約,聊完再決定也可以。</p>
     </div>
   </section>
 
@@ -124,9 +124,9 @@ function reset() {
       <div class="done-mark"><AppIcon name="check" :size="26" /></div>
       <h2>諮詢單已送出</h2>
       <p class="done-lead">
-        {{ form.name }},謝謝你的來信。顧問會在一個工作天內以<b>{{ form.contactPref }}</b>
+        {{ form.name }},謝謝您的來信。顧問會在一個工作天內以<b>{{ form.contactPref }}</b>
         <template v-if="contactSummary">({{ contactSummary }})</template>
-        與你聯繫。
+        與您聯繫。
       </p>
 
       <dl class="done-list">
@@ -166,7 +166,7 @@ function reset() {
     <section v-else class="form-col">
       <form @submit.prevent="submit" novalidate>
         <fieldset class="block">
-          <legend class="block-label">STEP 01 — 怎麼聯繫你</legend>
+          <legend class="block-label">STEP 01 — 怎麼聯繫您</legend>
 
           <div class="field">
             <label for="c-name">如何稱呼您 <span class="req">必填</span></label>
@@ -204,7 +204,7 @@ function reset() {
         </fieldset>
 
         <fieldset class="block">
-          <legend class="block-label">STEP 02 — 你的旅行輪廓</legend>
+          <legend class="block-label">STEP 02 — 您的旅行輪廓</legend>
 
           <div class="field">
             <span class="label-text">想去的地方(可複選)</span>
@@ -304,7 +304,7 @@ function reset() {
   <section class="faq">
     <div class="faq-inner">
       <div class="eyebrow accent">FAQ</div>
-      <h2>諮詢前,你可能想知道</h2>
+      <h2>諮詢前,您可能想知道</h2>
       <div class="faq-grid">
         <div v-for="f in faqs" :key="f.q" class="faq-item">
           <h3>{{ f.q }}</h3>

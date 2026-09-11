@@ -78,7 +78,7 @@ const whyItems = [
 
   <div class="cta-banner">
     <h2>準備好探索台灣了嗎?</h2>
-    <p>專屬旅遊顧問一對一協助,為你規劃剛剛好的國內旅程。</p>
+    <p>專屬旅遊顧問一對一協助,為您規劃剛剛好的國內旅程。</p>
     <RouterLink :to="{ path: '/consult', query: { topic: '國內旅遊' } }" class="cta-link">
       立即諮詢行程
     </RouterLink>

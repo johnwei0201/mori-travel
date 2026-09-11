@@ -23,7 +23,7 @@ const mode = ref(route.query.mode === 'register' ? 'register' : 'login')
         {{
           mode === 'register'
             ? '收藏喜歡的行程,下次回來接著看。'
-            : '登入後可以查看你的諮詢紀錄與收藏。'
+            : '登入後可以查看您的諮詢紀錄與收藏。'
         }}
       </p>
     </div>
@@ -49,7 +49,7 @@ const mode = ref(route.query.mode === 'register' ? 'register' : 'login')
 
       <div class="side-card">
         <h2 class="side-title">想直接找人問?</h2>
-        <p class="side-lead">填一張諮詢單,顧問會在一個工作天內回覆你。</p>
+        <p class="side-lead">填一張諮詢單,顧問會在一個工作天內回覆您。</p>
         <RouterLink to="/consult" class="side-link"
           >諮詢行程 <span aria-hidden="true">➤</span></RouterLink
         >

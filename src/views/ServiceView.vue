@@ -6,7 +6,7 @@ const services = [
   {
     icon: 'message',
     title: '行程規劃',
-    desc: '依你的假期長度、預算與旅伴組成,一起把行程調整到剛剛好,不用自己從零比較。',
+    desc: '依您的假期長度、預算與旅伴組成,一起把行程調整到剛剛好,不用自己從零比較。',
   },
   {
     icon: 'passport',
@@ -16,7 +16,7 @@ const services = [
   {
     icon: 'clipboard',
     title: '行前確認',
-    desc: '出發前寄送行程確認單、集合時間與行李建議,該注意的都幫你整理好。',
+    desc: '出發前寄送行程確認單、集合時間與行李建議,該注意的都幫您整理好。',
   },
   {
     icon: 'phone',
@@ -34,12 +34,12 @@ const steps = [
   {
     n: '02',
     title: '顧問回覆',
-    text: '一個工作天內,由專屬顧問以你偏好的方式聯繫,提供一到兩個適合的行程方向。',
+    text: '一個工作天內,由專屬顧問以您偏好的方式聯繫,提供一到兩個適合的行程方向。',
   },
   {
     n: '03',
     title: '調整定案',
-    text: '依你的意見調整內容、日期與住宿等級,確認沒問題後再完成報名手續。',
+    text: '依您的意見調整內容、日期與住宿等級,確認沒問題後再完成報名手續。',
   },
   {
     n: '04',
@@ -74,7 +74,7 @@ const contacts = [
 
   <section class="wrap block">
     <div class="section-label">WHAT WE DO</div>
-    <h2>顧問能幫你做什麼</h2>
+    <h2>顧問能幫您做什麼</h2>
     <div class="service-grid">
       <div v-for="s in services" :key="s.title" class="service-card">
         <span class="service-icon"><AppIcon :name="s.icon" :size="24" /></span>

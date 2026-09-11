@@ -102,7 +102,7 @@ const siblings = computed(() => {
 
     <div class="cta-banner">
       <h2>想把{{ spot.name }}排進行程嗎?</h2>
-      <p>告訴顧問你的假期與預算,我們幫你把路線接起來。</p>
+      <p>告訴顧問您的假期與預算,我們幫您把路線接起來。</p>
       <div class="cta-actions">
         <RouterLink :to="{ path: '/consult', query: { topic: spot.parent === '國內旅遊' ? '國內旅遊' : spot.region } }" class="cta-primary">
           立即諮詢行程

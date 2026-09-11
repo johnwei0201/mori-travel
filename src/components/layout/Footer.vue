@@ -26,7 +26,7 @@ const socials = [
             ><span class="logo-mori">MORI</span> <span class="logo-travel">TRAVEL</span></span
           >
         </h2>
-        <p class="desc">專為喜愛探索世界的你,打造剛剛好的旅行體驗。</p>
+        <p class="desc">專為喜愛探索世界的您,打造剛剛好的旅行體驗。</p>
 
         <div class="contacts">
           <p v-for="c in contacts" :key="c.id" class="contact-item">
@@ -38,10 +38,10 @@ const socials = [
 
       <div class="subscribe">
         <h3 class="sub-title">訂閱旅遊靈感電子報</h3>
-        <p class="sub-desc">掌握最新優惠與旅遊靈感,每月精選直送你的信箱!</p>
+        <p class="sub-desc">掌握最新優惠與旅遊靈感,每月精選直送您的信箱!</p>
 
         <div class="sub-form">
-          <input type="email" placeholder="輸入你的 Email" />
+          <input type="email" placeholder="輸入您的 Email" />
           <button>訂閱</button>
         </div>
 

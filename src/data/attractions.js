@@ -330,7 +330,7 @@ export const attractions = {
     parent: '熱門目的地',
     img: spotBali,
     eyebrow: 'ATTRACTION — BALI',
-    tagline: '火山、梯田與海灘,一座島把三種假期都給你',
+    tagline: '火山、梯田與海灘,一座島把三種假期都給您',
     facts: [
       { icon: 'clock', label: '建議停留', value: '5—6 天' },
       { icon: 'sun', label: '最佳季節', value: '4—10月乾季' },

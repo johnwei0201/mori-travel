@@ -27,8 +27,8 @@ function search() {
 
     <div class="hero-copy">
       <div class="eyebrow">TIME TO TRAVEL</div>
-      <p class="hero-headline">你有多久沒旅行了。</p>
-      <p class="hero-sub">森林、海島、老城與雪山,總有一段路適合現在的你。</p>
+      <p class="hero-headline">您有多久沒旅行了。</p>
+      <p class="hero-sub">森林、海島、老城與雪山,總有一段路適合現在的您。</p>
     </div>
 
     <div class="search-card">

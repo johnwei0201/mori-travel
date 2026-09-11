@@ -22,7 +22,7 @@ defineProps({
       </svg>
     </span>
     <h3>沒有理想的路線?</h3>
-    <p>告訴顧問你的假期與預算,我們幫你把行程排出來。</p>
+    <p>告訴顧問您的假期與預算,我們幫您把行程排出來。</p>
     <span class="go">諮詢行程 <span aria-hidden="true">➤</span></span>
   </RouterLink>
 </template>

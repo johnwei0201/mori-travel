@@ -79,14 +79,14 @@ function scrollToResults() {
     <div class="hero-copy">
       <div class="eyebrow light">PLAN YOUR TRIP</div>
       <h1>開始找旅行</h1>
-      <p>還沒決定去哪裡也沒關係,三個步驟,幫你找到剛剛好的那一趟。</p>
+      <p>還沒決定去哪裡也沒關係,三個步驟,幫您找到剛剛好的那一趟。</p>
     </div>
   </section>
 
   <div class="wrap">
     <div class="panel">
       <div class="panel-head">
-        <h2>告訴我們你的旅行輪廓</h2>
+        <h2>告訴我們您的旅行輪廓</h2>
         <span class="hint">全部選填,填越多找得越準</span>
       </div>
 
@@ -142,8 +142,8 @@ function scrollToResults() {
       <div class="step-num">01</div>
       <div class="step-title">
         <div class="eyebrow">TRAVEL STYLE</div>
-        <h2>你想要什麼樣的旅行?</h2>
-        <p>先從感覺開始挑。選一個最貼近你這趟想要的氛圍,再點一次可以取消選取。</p>
+        <h2>您想要什麼樣的旅行?</h2>
+        <p>先從感覺開始挑。選一個最貼近您這趟想要的氛圍,再點一次可以取消選取。</p>
       </div>
     </div>
 
@@ -172,7 +172,7 @@ function scrollToResults() {
       <div class="step-title">
         <div class="eyebrow">WHEN TO GO</div>
         <h2>什麼時候出發?</h2>
-        <p>每個月都有它最好看的地方。看過整年的當季景色,再決定哪一段時間最適合你。</p>
+        <p>每個月都有它最好看的地方。看過整年的當季景色,再決定哪一段時間最適合您。</p>
       </div>
     </div>
 
@@ -255,7 +255,7 @@ function scrollToResults() {
 
     <div v-else class="no-result">
       <p class="no-result-lead">目前沒有行程同時符合這些條件。</p>
-      <p class="no-result-hint">可以移除其中一兩個條件再看看,或直接讓顧問幫你找。</p>
+      <p class="no-result-hint">可以移除其中一兩個條件再看看,或直接讓顧問幫您找。</p>
       <div class="no-result-actions">
         <button class="reset-btn" @click="clearAll">清除全部條件</button>
         <RouterLink to="/consult" class="ask-link">
@@ -287,8 +287,8 @@ function scrollToResults() {
   <section class="cta">
     <div class="wrap">
       <div class="eyebrow light">TALK TO US</div>
-      <h2>還在猶豫哪一趟?我們陪你想</h2>
-      <p>留下你的旅行想像,專屬顧問會在一個工作天內回覆,替你比對最適合的出發日期與行程安排。</p>
+      <h2>還在猶豫哪一趟?我們陪您想</h2>
+      <p>留下您的旅行想像,專屬顧問會在一個工作天內回覆,替您比對最適合的出發日期與行程安排。</p>
       <RouterLink to="/consult" class="cta-btn">預約免費諮詢</RouterLink>
     </div>
   </section>

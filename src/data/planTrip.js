@@ -34,7 +34,7 @@ export const hotSearches = ['東京賞楓', '北海道雪祭', '義大利十日'
 export const consultPath = {
   icon: 'message',
   title: '交給顧問安排',
-  text: '把想法直接說給我們聽,由專屬顧問替你比對行程、回覆建議。',
+  text: '把想法直接說給我們聽,由專屬顧問替您比對行程、回覆建議。',
   action: '聯絡旅遊顧問',
   to: '/consult',
 }

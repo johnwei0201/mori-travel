@@ -159,7 +159,7 @@ const gridColumns = computed(() =>
 )
 
 /**
- * 你可能也會喜歡:從沒出現在結果裡的行程挑三筆。
+ * 您可能也會喜歡:從沒出現在結果裡的行程挑三筆。
  * 同地區最相關,其次是月份相近、天數接近的。
  */
 const recommended = computed(() => {
@@ -272,7 +272,7 @@ const recommended = computed(() => {
         <circle cx="12" cy="7.4" r="1.15" fill="currentColor" />
       </svg>
       <div class="relax-body">
-        <h2>沒有完全符合的行程,已經幫你放寬條件</h2>
+        <h2>沒有完全符合的行程,已經幫您放寬條件</h2>
         <p>
           {{ relaxNotice.reason }}以下是放寬「{{ relaxNotice.relaxedText }}」之後的結果。
         </p>
@@ -308,7 +308,7 @@ const recommended = computed(() => {
         站上目前沒有{{ keyword.trim() ? `${keyword.trim()}的` : '符合的' }}行程。
       </p>
       <p class="no-result-hint">
-        我們有 {{ regions.length }} 個地區的路線。要不要讓顧問依你的假期與預算,直接幫你排一趟?
+        我們有 {{ regions.length }} 個地區的路線。要不要讓顧問依您的假期與預算,直接幫您排一趟?
       </p>
       <div class="no-result-actions">
         <RouterLink to="/consult" class="ask-link">
@@ -323,8 +323,8 @@ const recommended = computed(() => {
   <!-- 站上其他真的存在的行程。標題與說明都寫清楚這不是搜尋結果 -->
   <section v-if="recommended.length" class="recommend wrap">
     <div class="section-label">YOU MAY ALSO LIKE</div>
-    <h2>你可能也會喜歡</h2>
-    <p class="recommend-note">這些不是上面的搜尋結果,是站上其他你可能有興趣的路線。</p>
+    <h2>您可能也會喜歡</h2>
+    <p class="recommend-note">這些不是上面的搜尋結果,是站上其他您可能有興趣的路線。</p>
     <div class="trip-grid">
       <TripResultCard v-for="trip in recommended" :key="trip.id" :trip="trip" />
     </div>
@@ -670,7 +670,7 @@ const recommended = computed(() => {
   gap: clamp(14px, 1.8vw, 24px);
 }
 
-/* 你可能也會喜歡 */
+/* 您可能也會喜歡 */
 .recommend {
   padding-bottom: clamp(40px, 5vw, 64px);
 }

@@ -97,7 +97,7 @@ export const destinations = {
     introEyebrow: 'ABOUT JAPAN',
     introHeading: '四季分明,剛剛好的旅行節奏',
     introText:
-      '從富士山下的湖畔倒影,到京都街巷裡的百年町屋,日本用四季分明的節奏,把每一趟旅程都安排得恰到好處。無論是東京的繁華街景、北海道的粉雪山林,還是大阪的庶民美食,總有一段旅程,剛好適合現在的你。從台灣出發,東京、大阪都在三小時上下,是說走就走的距離。春天的櫻花與秋天的紅葉是兩個高峰,機位與住宿往往提前半年就開始緊繃;想避開人潮,五月的新綠與十一月底的初冬反而更從容。鐵路系統綿密,即使不自駕也能把行程接得很順。',
+      '從富士山下的湖畔倒影,到京都街巷裡的百年町屋,日本用四季分明的節奏,把每一趟旅程都安排得恰到好處。無論是東京的繁華街景、北海道的粉雪山林,還是大阪的庶民美食,總有一段旅程,剛好適合現在的您。從台灣出發,東京、大阪都在三小時上下,是說走就走的距離。春天的櫻花與秋天的紅葉是兩個高峰,機位與住宿往往提前半年就開始緊繃;想避開人潮,五月的新綠與十一月底的初冬反而更從容。鐵路系統綿密,即使不自駕也能把行程接得很順。',
     highlights: [
       { name: '富士山', desc: '湖畔倒影與四季更迭,日本最具代表性的風景。', img: spotFuji },
       { name: '京都', desc: '百年古寺與町屋交織而成的千年古都風景。', img: spotKyoto },
@@ -105,7 +105,7 @@ export const destinations = {
       { name: '大阪', desc: '庶民美食與不夜城交織的活力街景。', img: spotOsaka },
     ],
     ctaHeading: '準備好前往日本了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的日本旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的日本旅程。',
   },
   korea: {
     name: '韓國',
@@ -131,7 +131,7 @@ export const destinations = {
       { name: '南怡島', desc: '韓劇取景地,四季皆美的水杉步道', img: spotNami },
     ],
     ctaHeading: '準備好前往韓國了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的韓國旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的韓國旅程。',
   },
   oceania: {
     name: '紐澳',
@@ -157,7 +157,7 @@ export const destinations = {
       { name: '墨爾本', desc: '咖啡文化與塗鴉藝術交織的城市', img: spotMelbourne },
     ],
     ctaHeading: '準備好前往紐澳了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的紐澳旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的紐澳旅程。',
   },
   'southeast-asia': {
     name: '東南亞',
@@ -173,7 +173,7 @@ export const destinations = {
       { icon: 'wallet', label: '當地貨幣', value: '依國家而定' },
     ],
     introEyebrow: 'ABOUT SOUTHEAST ASIA',
-    introHeading: '把時間調慢,讓海浪替你數日子',
+    introHeading: '把時間調慢,讓海浪替您數日子',
     introText:
       '長尾船划過翡翠色海水,夕陽把整片天空染成橘紅色——東南亞的美,從來不急著被看完。無論是泰國的市集煙火氣、峇里島的靜謐海灘,還是越南的百年老城,這裡總有一種讓人放慢腳步的魔力。飛行時間多在三到五小時,物價相對友善,是最容易成行的長假選擇。乾季與雨季的差別比溫度更值得注意,同一個目的地在不同月份可以完全不同。海島行程建議把移動日與活動日分開排,留一點空白給那些突然想多待一會兒的下午。',
     highlights: [
@@ -183,7 +183,7 @@ export const destinations = {
       { name: '普吉島', desc: '東南亞最經典的白沙海岸線', img: spotPhuket },
     ],
     ctaHeading: '準備好前往東南亞了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的東南亞旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的東南亞旅程。',
   },
   europe: {
     name: '歐洲',
@@ -211,7 +211,7 @@ export const destinations = {
       { name: '少女峰', desc: '瑞士阿爾卑斯山的雪白絕景', img: spotJungfrau },
     ],
     ctaHeading: '準備好前往歐洲了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的歐洲旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的歐洲旅程。',
   },
   america: {
     name: '美加',
@@ -231,7 +231,7 @@ export const destinations = {
     introEyebrow: 'ABOUT AMERICA',
     introHeading: '從摩天大樓到壯闊國家公園',
     introText:
-      '紐約的摩天大樓與自由女神,大峽谷的壯闊地貌,洛磯山脈的湖泊倒影——美加用它的遼闊,裝下了城市的繁華與自然的野性。無論想感受都市脈動,還是逃進山林湖泊,這裡都能找到屬於你的自由。美加幅員遼闊,一趟行程建議專注在一個區域——東岸的城市線、西岸的國家公園線,或加拿大洛磯山脈,不要混在一起排。國內段航班與自駕通常都少不了。入境前需要先申請電子旅行許可,美國的 ESTA 與加拿大的 eTA 是兩套不同的系統,別弄混了。',
+      '紐約的摩天大樓與自由女神,大峽谷的壯闊地貌,洛磯山脈的湖泊倒影——美加用它的遼闊,裝下了城市的繁華與自然的野性。無論想感受都市脈動,還是逃進山林湖泊,這裡都能找到屬於您的自由。美加幅員遼闊,一趟行程建議專注在一個區域——東岸的城市線、西岸的國家公園線,或加拿大洛磯山脈,不要混在一起排。國內段航班與自駕通常都少不了。入境前需要先申請電子旅行許可,美國的 ESTA 與加拿大的 eTA 是兩套不同的系統,別弄混了。',
     highlights: [
       { name: '自由女神像', desc: '紐約港的自由象徵與城市天際線', img: spotLiberty },
       { name: '大峽谷', desc: '億萬年地質雕刻出的壯闊奇景', img: spotGrandCanyon },
@@ -239,7 +239,7 @@ export const destinations = {
       { name: '拉斯維加斯', desc: '沙漠中永不熄燈的不夜城', img: spotVegas },
     ],
     ctaHeading: '準備好前往美加了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的美加旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的美加旅程。',
   },
 
   // ───────── 國內旅遊 ─────────
@@ -269,7 +269,7 @@ export const destinations = {
       { name: '淡水漁人碼頭', desc: '情人橋與河口日落的經典畫面。', img: spotTamsui },
     ],
     ctaHeading: '準備好走一趟台北了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的北台灣旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的北台灣旅程。',
   },
 
   'yilan-hualien': {
@@ -296,7 +296,7 @@ export const destinations = {
       { name: '礁溪溫泉', desc: '平原上的碳酸氫鈉泉,泡湯首選。', img: spotJiaoxi },
     ],
     ctaHeading: '準備好走一趟東海岸了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的宜花旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的宜花旅程。',
   },
 
   'taichung-nantou': {
@@ -323,7 +323,7 @@ export const destinations = {
       { name: '高美濕地', desc: '木棧道盡頭的潮間帶落日。', img: spotGaomei },
     ],
     ctaHeading: '準備好走一趟中台灣了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的中台灣旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的中台灣旅程。',
   },
 
   'tainan-kaohsiung': {
@@ -350,7 +350,7 @@ export const destinations = {
       { name: '駁二藝術特區', desc: '港邊倉庫改造的藝文與市集場域。', img: spotPier2 },
     ],
     ctaHeading: '準備好走一趟南台灣了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的南台灣旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的南台灣旅程。',
   },
 
   kenting: {
@@ -377,7 +377,7 @@ export const destinations = {
       { name: '小琉球', desc: '船程半小時可達的珊瑚礁離島。', img: spotXiaoliuqiu },
     ],
     ctaHeading: '準備好走一趟墾丁了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的恆春半島旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的恆春半島旅程。',
   },
 
   penghu: {
@@ -404,6 +404,6 @@ export const destinations = {
       { name: '澎湖跨海大橋', desc: '連接白沙與西嶼的經典地標。', img: spotPenghuBridge },
     ],
     ctaHeading: '準備好跳島去澎湖了嗎?',
-    ctaText: '專屬旅遊顧問一對一協助,為你規劃剛剛好的離島旅程。',
+    ctaText: '專屬旅遊顧問一對一協助,為您規劃剛剛好的離島旅程。',
   },
 }
