@@ -474,15 +474,21 @@ function reset() {
   display: flex;
   gap: 10px;
 }
-.radio {
+/* 必須寫成 .field .radio 而不是 .radio:上面的 .field label 也命中這些
+   選項(它們本身就是 label),而且權重比單一個 .radio 高。之前 display
+   被蓋成 block,導致 gap 與 align-items 完全失效 —— 圓鈕緊貼著文字、
+   還多出 7px 的下外距。 */
+.field .radio {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 8px;
   border: 1px solid #e7e0d6;
   background: #fff;
   border-radius: 8px;
   padding: 9px 16px;
   font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   margin: 0;
   transition:
@@ -504,17 +510,20 @@ function reset() {
 .chip-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
-.chip {
+/* 同上,要用 .field .chip 才蓋得過 .field label */
+.field .chip {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 8px;
   border: 1px solid #e7e0d6;
   background: #fff;
   border-radius: 999px;
-  padding: 7px 15px;
+  padding: 8px 16px;
   font-size: 13.5px;
+  font-weight: 400;
   cursor: pointer;
   margin: 0;
   transition:
