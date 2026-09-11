@@ -267,17 +267,11 @@ const activeTab = ref('flight')
   display: block;
   text-decoration: none;
   color: inherit;
-  transition:
-    box-shadow 0.2s ease,
-    outline-color 0.2s ease;
-  /* 與國內/國外旅遊的區域卡片同一套 hover:外框變橘色。
-     用 outline 不用 border,才不會佔版面把內容推位。 */
-  outline: 2.5px solid transparent;
-  outline-offset: -2.5px;
+  transition: box-shadow 0.2s ease;
 }
+/* hover 只加深陰影,不加外框 */
 .stay-card:hover {
   box-shadow: 0 12px 26px rgba(43, 36, 32, 0.16);
-  outline-color: var(--color-accent);
 }
 .stay-card img {
   height: 150px;
