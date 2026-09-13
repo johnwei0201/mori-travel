@@ -1212,11 +1212,14 @@ const checklist = [
   display: block;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
-/* hover 只加深陰影,不加外框 */
+/* hover 與全站圖片卡片一致:上浮並加深陰影,不加外框 */
 .article-card:hover {
-  box-shadow: 0 14px 34px rgba(43, 36, 32, 0.16);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
 }
 .article-card img {
   width: 100%;

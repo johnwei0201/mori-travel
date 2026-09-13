@@ -202,12 +202,13 @@ const whyItems = [
   height: 200px;
   color: inherit;
   text-decoration: none;
-  transition: box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .region-card:hover {
-  box-shadow: 0 12px 26px rgba(43, 36, 32, 0.2);
-  outline: 2.5px solid var(--color-accent);
-  outline-offset: -2.5px;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
 }
 .region-card img {
   width: 100%;

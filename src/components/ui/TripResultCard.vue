@@ -50,7 +50,7 @@ const money = (n) => `NT$${n.toLocaleString()}`
 }
 .trip:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 30px rgba(43, 36, 32, 0.16);
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
 }
 .trip-media {
   position: relative;

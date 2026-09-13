@@ -42,12 +42,12 @@ defineProps({
   border-radius: 14px;
   background: #fffdfa;
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .consult-card:hover {
-  border-color: var(--color-accent);
-  background: #fdf1e0;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
 }
 
 .mark {
