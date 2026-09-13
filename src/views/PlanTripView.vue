@@ -4,7 +4,13 @@ import { RouterLink } from 'vue-router'
 import heroKyoto from '../assets/images_縮小/Featured-Attractions---Kyoto.jpg'
 import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
-import { durationOptions, budgetOptions, filterTrips, sortTrips } from '../data/tripCatalog.js'
+import {
+  durationOptions,
+  budgetOptions,
+  filterTrips,
+  sortTrips,
+  regions,
+} from '../data/tripCatalog.js'
 
 // 篩選條件:全部都是空字串 / null = 不限
 const keyword = ref('')
@@ -12,6 +18,14 @@ const selectedMonth = ref(null)
 const selectedDuration = ref('')
 const selectedBudget = ref('')
 const selectedStyle = ref(null)
+
+/** 目的地選項只列站上有的地區;熱門搜尋帶進來的字不在清單裡時,補到最前面 */
+const destOptions = computed(() => {
+  const list = [...regions]
+  const q = keyword.value.trim()
+  if (q && !list.includes(q)) list.unshift(q)
+  return list
+})
 
 const styleName = computed(
   () => travelStyles.find((s) => s.id === selectedStyle.value)?.name ?? '不限風格',
@@ -93,12 +107,10 @@ function scrollToResults() {
       <form class="fields" @submit.prevent="scrollToResults">
         <div class="field">
           <label for="f-keyword">DESTINATION</label>
-          <input
-            id="f-keyword"
-            v-model="keyword"
-            type="search"
-            placeholder="輸入國家、城市或景點"
-          />
+          <select id="f-keyword" v-model="keyword">
+            <option value="">不限目的地</option>
+            <option v-for="d in destOptions" :key="d" :value="d">{{ d }}</option>
+          </select>
         </div>
         <div class="field">
           <label for="f-month">DEPARTURE MONTH</label>
