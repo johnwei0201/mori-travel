@@ -556,7 +556,9 @@ function scrollToResults() {
   font-size: clamp(38px, 5vw, 58px);
   font-weight: 300;
   line-height: 0.82;
-  color: #f8dccd;
+  /* 原本 #f8dccd 在底色上對比只有 1.22:1,幾乎看不見;字重又是細體 300,
+     改成同色系但飽和一點的橘(約 2:1),仍比標題淡,維持「裝飾編號」的層級 */
+  color: #eea07a;
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
 }
