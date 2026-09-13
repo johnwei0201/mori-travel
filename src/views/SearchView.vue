@@ -3,18 +3,19 @@ import { computed, watch, ref } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { months } from '../data/planTrip.js'
 import {
-  tripCatalog,
   searchTrips,
   sortTrips,
-  keywordFacts,
+  explainRelaxation,
   alternativeRegions,
-  FILTER_LABELS,
+  recommendTrips,
   durationOptions,
   sortOptions,
   regions,
 } from '../data/tripCatalog.js'
 import TripResultCard from '../components/ui/TripResultCard.vue'
 import ConsultCard from '../components/ui/ConsultCard.vue'
+import RelaxNotice from '../components/ui/RelaxNotice.vue'
+import AltRegions from '../components/ui/AltRegions.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -82,38 +83,8 @@ const activeFilters = computed(() => {
   return list.map((f) => ({ ...f, relaxed: relaxedKeys.value.includes(f.key) }))
 })
 
-/**
- * 提示條的說明文字。「歐洲最短 10 天」這種話是從資料算出來的,
- * 不是寫死的 —— 之後行程增加了,說明會自己跟著變。
- */
-const relaxNotice = computed(() => {
-  const keys = relaxedKeys.value
-  if (!keys.length || search.value.exhausted) return null
-
-  const names = keys.map((k) => FILTER_LABELS[k])
-  const kw = keyword.value.trim()
-  const facts = keywordFacts(kw)
-
-  // 連目的地都放寬了,而且那個字在站上根本查不到 —— 要講清楚,
-  // 否則使用者只會看到一堆不相干的行程,不知道發生什麼事
-  if (keys.includes('keyword') && !facts) {
-    return {
-      reason: kw ? `站上目前沒有「${kw}」的行程。` : '',
-      relaxedText: names.join('」與「'),
-    }
-  }
-
-  const reasons = []
-  if (facts) {
-    if (keys.includes('duration')) reasons.push(`最短 ${facts.minDays} 天`)
-    if (keys.includes('month')) reasons.push(`出發月份集中在 ${facts.months.join('、')} 月`)
-  }
-
-  return {
-    reason: reasons.length ? `${kw}的行程${reasons.join(',')}。` : '',
-    relaxedText: names.join('」與「'),
-  }
-})
+/** 提示條的說明文字,與「開始找旅行」共用 tripCatalog.js 的同一份邏輯 */
+const relaxNotice = computed(() => explainRelaxation(currentFilters.value, search.value))
 
 /** 「堅持某個條件的話,哪些地區有?」 */
 const alternatives = computed(() =>
@@ -158,29 +129,8 @@ const gridColumns = computed(() =>
   Math.min(results.value.length + (showConsultCard.value ? 1 : 0), 3),
 )
 
-/**
- * 您可能也會喜歡:從沒出現在結果裡的行程挑三筆。
- * 同地區最相關,其次是月份相近、天數接近的。
- */
-const recommended = computed(() => {
-  const shown = new Set(results.value.map((t) => t.id))
-  const pool = tripCatalog.filter((t) => !shown.has(t.id))
-  if (!pool.length) return []
-
-  const kw = keyword.value.trim()
-  const days = results.value[0]?.days
-  const score = (t) => {
-    let s = 0
-    if (kw && t.region === kw) s += 10
-    if (month.value && Math.abs(t.month - month.value) <= 1) s += 4
-    if (days && Math.abs(t.days - days) <= 2) s += 2
-    return s
-  }
-  // 分數相同時用出發日期排,結果才不會每次重繪都跳來跳去
-  return [...pool]
-    .sort((a, b) => score(b) - score(a) || a.date.localeCompare(b.date))
-    .slice(0, 3)
-})
+/** 您可能也會喜歡:從沒出現在結果裡的行程挑三筆,挑選規則在 tripCatalog.js */
+const recommended = computed(() => recommendTrips(results.value, currentFilters.value))
 </script>
 
 <template>
@@ -265,20 +215,7 @@ const recommended = computed(() => {
     </div>
 
     <!-- 沒有完全符合時,說明放寬了什麼、為什麼 -->
-    <div v-if="relaxNotice" class="relax-notice">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6" />
-        <path d="M12 10.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-        <circle cx="12" cy="7.4" r="1.15" fill="currentColor" />
-      </svg>
-      <div class="relax-body">
-        <h2>沒有完全符合的行程,已經幫您放寬條件</h2>
-        <p>
-          {{ relaxNotice.reason }}以下是放寬「{{ relaxNotice.relaxedText }}」之後的結果。
-        </p>
-        <button class="relax-btn" @click="dropRelaxed">移除這些條件</button>
-      </div>
-    </div>
+    <RelaxNotice v-if="relaxNotice" :notice="relaxNotice" @drop="dropRelaxed" />
 
     <div
       v-if="results.length"
@@ -290,17 +227,7 @@ const recommended = computed(() => {
     </div>
 
     <!-- 放寬之後仍然有結果時,給一條「堅持原條件」也能走的路 -->
-    <div v-if="alternatives" class="alt-row">
-      <span class="alt-lead">堅持「{{ alternatives.text }}」的話,這些地區有:</span>
-      <button
-        v-for="a in alternatives.regions"
-        :key="a.region"
-        class="alt-pill"
-        @click="useRegion(a.region)"
-      >
-        {{ a.region }} <b>{{ a.count }}</b>
-      </button>
-    </div>
+    <AltRegions v-if="alternatives" :alternatives="alternatives" @pick="useRegion" />
 
     <!-- 放寬到底仍然沒有,才是真正的空結果 -->
     <div v-if="!results.length" class="no-result">
@@ -548,87 +475,8 @@ const recommended = computed(() => {
   cursor: pointer;
 }
 
-/* 放寬說明條 */
-.relax-notice {
-  display: flex;
-  gap: 14px;
-  background: #fdf1e0;
-  border-left: 3px solid var(--color-accent);
-  border-radius: 4px 12px 12px 4px;
-  padding: 16px 18px;
-  margin-bottom: 24px;
-  color: var(--color-accent);
-}
-.relax-notice svg {
-  flex-shrink: 0;
-  margin-top: 3px;
-}
-.relax-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-  min-width: 0;
-}
-.relax-body h2 {
-  margin: 0;
-  font-size: 15px;
-  color: var(--color-primary);
-}
-.relax-body p {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.75;
-  color: #7a5a41;
-}
-.relax-btn {
-  margin-top: 7px;
-  font: inherit;
-  font-size: 13px;
-  padding: 7px 14px;
-  border-radius: 7px;
-  border: 1px solid #e2c4ac;
-  background: #fff;
-  color: var(--color-primary);
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-.relax-btn:hover {
-  border-color: var(--color-accent);
-}
-
-/* 「堅持原條件的話,哪些地區有」 */
-.alt-row {
-  margin-top: 26px;
-  padding-top: 18px;
-  border-top: 1px solid #e7e0d6;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.alt-lead {
-  font-size: 13px;
-  color: #6b6259;
-}
-.alt-pill {
-  font: inherit;
-  font-size: 13px;
-  padding: 6px 13px;
-  border-radius: 999px;
-  border: 1px solid #e7e0d6;
-  background: #fff;
-  color: var(--color-primary);
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-.alt-pill:hover {
-  border-color: var(--color-accent);
-}
-.alt-pill b {
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-}
+/* 放寬說明條與「堅持原條件的話,哪些地區有」的樣式,
+   跟著元件搬到 components/ui/RelaxNotice.vue、AltRegions.vue */
 .clear-all:hover {
   color: var(--color-accent);
 }

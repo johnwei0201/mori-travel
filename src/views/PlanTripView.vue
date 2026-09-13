@@ -4,11 +4,18 @@ import { RouterLink } from 'vue-router'
 import heroKyoto from '../assets/images_縮小/Featured-Attractions---Kyoto.jpg'
 import { travelStyles, months, hotSearches, consultPath } from '../data/planTrip.js'
 import AppIcon from '../components/ui/AppIcon.vue'
+import RelaxNotice from '../components/ui/RelaxNotice.vue'
+import AltRegions from '../components/ui/AltRegions.vue'
+import TripResultCard from '../components/ui/TripResultCard.vue'
+import ConsultCard from '../components/ui/ConsultCard.vue'
 import {
   durationOptions,
   budgetOptions,
-  filterTrips,
+  searchTrips,
   sortTrips,
+  explainRelaxation,
+  alternativeRegions,
+  recommendTrips,
   regions,
 } from '../data/tripCatalog.js'
 
@@ -19,43 +26,81 @@ const selectedDuration = ref('')
 const selectedBudget = ref('')
 const selectedStyle = ref(null)
 
-/** 目的地選項只列站上有的地區;熱門搜尋帶進來的字不在清單裡時,補到最前面 */
-const destOptions = computed(() => {
-  const list = [...regions]
-  const q = keyword.value.trim()
-  if (q && !list.includes(q)) list.unshift(q)
-  return list
-})
-
 const styleName = computed(
   () => travelStyles.find((s) => s.id === selectedStyle.value)?.name ?? '不限風格',
 )
 const monthName = computed(() => (selectedMonth.value ? `${selectedMonth.value} 月` : '不限月份'))
 
-// 已套用的條件,用來顯示標籤列與判斷要不要顯示「清除」
+const filters = computed(() => ({
+  keyword: keyword.value,
+  month: selectedMonth.value,
+  duration: selectedDuration.value,
+  budget: selectedBudget.value,
+  style: selectedStyle.value,
+}))
+
+/**
+ * 和搜尋結果頁同一套:全中就給全中的,沒有的話自動放寬。
+ * 以前這頁用 filterTrips 要求全部符合,四個下拉全填時只有 1.3% 的組合有結果。
+ */
+const search = computed(() => searchTrips(filters.value))
+const relaxedKeys = computed(() => search.value.relaxed)
+
+// 依出發日期由近至遠
+const sortedResults = computed(() => sortTrips(search.value.trips, 'date'))
+
+// 已套用的條件,用來顯示標籤列與判斷要不要顯示「清除」;被放寬的另外標示
 const activeFilters = computed(() => {
   const list = []
-  if (keyword.value.trim()) list.push({ key: 'keyword', text: `關鍵字:${keyword.value.trim()}` })
+  if (keyword.value) list.push({ key: 'keyword', text: `目的地:${keyword.value}` })
   if (selectedStyle.value) list.push({ key: 'style', text: styleName.value })
   if (selectedMonth.value) list.push({ key: 'month', text: `${selectedMonth.value} 月出發` })
   if (selectedDuration.value) list.push({ key: 'duration', text: selectedDuration.value })
   if (selectedBudget.value) list.push({ key: 'budget', text: selectedBudget.value })
-  return list
+  return list.map((f) => ({ ...f, relaxed: relaxedKeys.value.includes(f.key) }))
 })
 
-// 篩選與排序都用 tripCatalog.js 的共用函式,和首頁搜尋、搜尋結果頁同一套規則
-const results = computed(() =>
-  filterTrips({
-    keyword: keyword.value,
-    month: selectedMonth.value,
-    duration: selectedDuration.value,
-    budget: selectedBudget.value,
-    style: selectedStyle.value,
-  }),
+const relaxNotice = computed(() => explainRelaxation(filters.value, search.value))
+
+/** 「堅持某個條件的話,哪些地區有?」 */
+const alternatives = computed(() =>
+  relaxNotice.value ? alternativeRegions(filters.value, relaxedKeys.value, keyword.value) : null,
 )
 
-// 依出發日期由近至遠
-const sortedResults = computed(() => sortTrips(results.value, 'date'))
+/* ── 版面補滿:與搜尋結果頁同一套 ──────────────────────────
+   結果常常只有一兩筆,三欄網格會空掉一大半。補的是真東西:
+   一張通往諮詢的卡片,以及站上其他真的存在的行程,不生成假行程。 */
+
+/** 只在結果填不滿一整排時補顧問卡,剛好整排就不補 */
+const showConsultCard = computed(() => sortedResults.value.length % 3 !== 0)
+
+/** 網格欄數跟著實際張數走,只有一兩張時就不要撐成三欄留空格 */
+const gridColumns = computed(() =>
+  Math.min(sortedResults.value.length + (showConsultCard.value ? 1 : 0), 3),
+)
+
+/** 這頁條件多、結果常常只有一筆,推薦給兩排(6 筆),比搜尋結果頁多一排 */
+const recommended = computed(() => recommendTrips(sortedResults.value, filters.value, 6))
+
+/** 一次移除被放寬的條件,讓標籤與實際結果一致。先複製一份,移除過程中 relaxedKeys 會跟著變 */
+function dropRelaxed() {
+  for (const k of [...relaxedKeys.value]) removeFilter(k)
+}
+
+/** 從建議列直接換一個地區,其餘條件保留 */
+function useRegion(region) {
+  keyword.value = region
+}
+
+/** 熱門搜尋:整組條件換掉,沒寫到的欄位回到不限,再捲到結果讓使用者看到變化 */
+function applyHotSearch({ filters: f }) {
+  keyword.value = f.keyword ?? ''
+  selectedMonth.value = f.month ?? null
+  selectedDuration.value = f.duration ?? ''
+  selectedBudget.value = f.budget ?? ''
+  selectedStyle.value = f.style ?? null
+  scrollToResults()
+}
 
 function removeFilter(key) {
   if (key === 'keyword') keyword.value = ''
@@ -101,7 +146,8 @@ function scrollToResults() {
     <div class="panel">
       <div class="panel-head">
         <h2>告訴我們您的旅行輪廓</h2>
-        <span class="hint">全部選填,填越多找得越準</span>
+        <!-- 原本寫「填越多找得越準」,但條件越多其實越難完全符合,改成不給錯誤期待的說法 -->
+        <span class="hint">全部選填,不確定的留白就好</span>
       </div>
 
       <form class="fields" @submit.prevent="scrollToResults">
@@ -109,7 +155,7 @@ function scrollToResults() {
           <label for="f-keyword">DESTINATION</label>
           <select id="f-keyword" v-model="keyword">
             <option value="">不限目的地</option>
-            <option v-for="d in destOptions" :key="d" :value="d">{{ d }}</option>
+            <option v-for="d in regions" :key="d" :value="d">{{ d }}</option>
           </select>
         </div>
         <div class="field">
@@ -142,8 +188,8 @@ function scrollToResults() {
 
       <div class="quick">
         <span>熱門搜尋</span>
-        <button v-for="q in hotSearches" :key="q" type="button" @click="keyword = q">
-          {{ q }}
+        <button v-for="h in hotSearches" :key="h.label" type="button" @click="applyHotSearch(h)">
+          {{ h.label }}
         </button>
       </div>
     </div>
@@ -218,51 +264,39 @@ function scrollToResults() {
     </div>
 
     <div class="result-bar">
-      <span
-        >符合條件的行程 <b>{{ sortedResults.length }}</b> 筆</span
-      >
+      <!-- 有條件被放寬時,不能再說這些結果「符合」條件 -->
+      <span v-if="relaxedKeys.length">
+        沒有完全符合的行程,以下是 <b>{{ sortedResults.length }}</b> 筆最接近的
+      </span>
+      <span v-else>符合條件的行程 <b>{{ sortedResults.length }}</b> 筆</span>
       <div v-if="activeFilters.length" class="filter-tags">
         <button
           v-for="f in activeFilters"
           :key="f.key"
           class="filter-tag"
+          :class="{ relaxed: f.relaxed }"
           @click="removeFilter(f.key)"
         >
-          {{ f.text }} <span aria-hidden="true">×</span>
-          <span class="sr-only">移除此條件</span>
+          <span class="tag-text">{{ f.text }}</span>
+          <span v-if="f.relaxed" class="tag-flag">已放寬</span>
+          <span v-else aria-hidden="true">×</span>
+          <span class="sr-only">{{ f.relaxed ? '這個條件已被放寬,點擊移除' : '移除此條件' }}</span>
         </button>
         <button class="clear-all" @click="clearAll">清除全部</button>
       </div>
       <span v-else class="sort">排序:出發日期由近至遠</span>
     </div>
 
-    <div v-if="sortedResults.length" class="trips">
-      <article v-for="trip in sortedResults" :key="trip.id" class="trip">
-        <div class="trip-media">
-          <img v-if="trip.img" :src="trip.img" :alt="trip.title" />
-          <div v-else class="trip-placeholder">圖片待補</div>
-          <span class="trip-tag">{{ trip.tag }}</span>
-        </div>
-        <div class="trip-body">
-          <h3>{{ trip.title }}</h3>
-          <div class="trip-meta">
-            <span><AppIcon name="calendar" :size="14" /> {{ trip.date }} 出發</span>
-            <span><AppIcon name="sun" :size="14" /> {{ trip.duration }}</span>
-          </div>
-          <div class="trip-chips">
-            <span v-for="f in trip.features" :key="f">{{ f }}</span>
-          </div>
-          <div class="trip-foot">
-            <span class="price">NT${{ trip.price.toLocaleString() }}<small>/人</small></span>
-            <RouterLink v-if="trip.detailSlug" :to="`/trips/${trip.detailSlug}`">
-              查看行程
-            </RouterLink>
-            <RouterLink v-else :to="{ path: '/consult', query: { topic: trip.region } }">
-              諮詢這條路線
-            </RouterLink>
-          </div>
-        </div>
-      </article>
+    <RelaxNotice v-if="relaxNotice" :notice="relaxNotice" @drop="dropRelaxed" />
+
+    <!-- 欄數用 CSS 變數傳,不能直接 inline 設 grid-template-columns,會蓋掉手機版的單欄 -->
+    <div
+      v-if="sortedResults.length"
+      class="trips"
+      :style="{ '--cols': gridColumns, '--cols-md': Math.min(gridColumns, 2) }"
+    >
+      <TripResultCard v-for="trip in sortedResults" :key="trip.id" :trip="trip" />
+      <ConsultCard v-if="showConsultCard" :topic="keyword" />
     </div>
 
     <div v-else class="no-result">
@@ -275,6 +309,19 @@ function scrollToResults() {
           <span class="go-arrow" aria-hidden="true">➤</span>
         </RouterLink>
       </div>
+    </div>
+
+    <!-- 放在 v-if / v-else 那組後面,插在中間會打斷 v-else -->
+    <AltRegions v-if="alternatives" :alternatives="alternatives" @pick="useRegion" />
+  </section>
+
+  <!-- 站上其他真的存在的行程。標題與說明都寫清楚這不是搜尋結果 -->
+  <section v-if="recommended.length" class="step wrap tight">
+    <div class="eyebrow">YOU MAY ALSO LIKE</div>
+    <h2 class="recommend-title">您可能也會喜歡</h2>
+    <p class="recommend-note">這些不是上面的搜尋結果,是站上其他您可能有興趣的路線。</p>
+    <div class="trips">
+      <TripResultCard v-for="trip in recommended" :key="trip.id" :trip="trip" />
     </div>
   </section>
 
@@ -721,6 +768,29 @@ function scrollToResults() {
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
+/* 被系統暫時放寬的條件:虛線、劃掉,並標一個橘色的「已放寬」,與搜尋結果頁同一種標示。
+   不直接讓標籤消失,使用者才知道系統動了什麼手腳。 */
+.filter-tag.relaxed {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-style: dashed;
+  border-color: #d8cfc2;
+  background: transparent;
+  color: #6b6259;
+}
+.filter-tag.relaxed .tag-text {
+  text-decoration: line-through;
+  text-decoration-color: #bfb5a8;
+}
+/* 結果列本身是淺橘底,旗標改用白底才看得出來 */
+.tag-flag {
+  font-size: 11px;
+  color: var(--color-accent);
+  background: #fff;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
 .clear-all {
   border: none;
   background: none;
@@ -740,18 +810,6 @@ function scrollToResults() {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-
-.trip-placeholder {
-  width: 100%;
-  height: clamp(150px, 17vw, 194px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: #a89c8e;
-  background: repeating-linear-gradient(45deg, #f3ece1, #f3ece1 14px, #efe6d8 14px, #efe6d8 28px);
 }
 
 .no-result {
@@ -819,111 +877,26 @@ function scrollToResults() {
   transform: translateX(3px);
 }
 
+/* 行程卡本身的樣式在 components/ui/TripResultCard.vue。
+   欄數由 CSS 變數傳進來;推薦區沒傳變數,就用這裡的預設值。 */
 .trips {
+  --cols: 3;
+  --cols-md: 2;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--cols), 1fr);
   gap: clamp(14px, 1.8vw, 24px);
 }
-.trip {
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(43, 36, 32, 0.08);
-  display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+
+/* 您可能也會喜歡 */
+.recommend-title {
+  font-size: clamp(22px, 2.7vw, 31px);
+  color: var(--color-primary);
+  margin-top: 8px;
 }
-.trip:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 26px rgba(43, 36, 32, 0.16);
-}
-.trip-media {
-  position: relative;
-}
-.trip-media img {
-  width: 100%;
-  height: clamp(150px, 17vw, 194px);
-  object-fit: cover;
-  display: block;
-}
-.trip-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: var(--color-accent);
-  color: #fff;
+.recommend-note {
   font-size: 14px;
-  padding: 4px 11px;
-  border-radius: 6px;
-}
-.trip-body {
-  padding: 16px 18px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-.trip-body h3 {
-  font-size: 17.5px;
-  color: var(--color-primary);
-}
-.trip-meta {
-  font-size: 12.5px;
   color: #6b6259;
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.trip-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.trip-chips {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.trip-chips span {
-  background: #fdf1e0;
-  color: var(--color-primary);
-  font-size: 14px;
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-.trip-foot {
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid #e7e0d6;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-}
-.price {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-}
-.price small {
-  font-size: 12px;
-  color: #6b6259;
-  font-weight: 400;
-  margin-left: 3px;
-}
-.trip-foot a {
-  font-size: 13.5px;
-  color: var(--color-primary);
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
-  transition: color 0.15s ease;
-}
-.trip-foot a:hover {
-  color: var(--color-accent);
+  margin: 6px 0 clamp(20px, 2.4vw, 28px);
 }
 
 /* other paths */
@@ -1065,7 +1038,7 @@ function scrollToResults() {
     grid-template-columns: repeat(4, 1fr);
   }
   .trips {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(var(--cols-md), 1fr);
   }
 }
 

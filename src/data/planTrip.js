@@ -5,13 +5,17 @@ import styleCity from '../assets/images_縮小/destination-europe.jpg'
 import styleFood from '../assets/images_縮小/destination-korea.jpg'
 import styleHoneymoon from '../assets/images_縮小/trip-italy-classic.jpg'
 
+/*
+ * note 的月份與地點要跟 tripCatalog.js 裡真的有的行程對得上 ——
+ * 寫了「加拿大」卻點不出加拿大的行程,等於在說明文字裡說謊。
+ */
 export const travelStyles = [
-  { id: 'autumn', name: '賞楓紅葉', note: '10–12 月・日本、韓國、加拿大', img: styleAutumn },
-  { id: 'snow', name: '雪季溫泉', note: '12–2 月・北海道、首爾', img: styleSnow },
-  { id: 'island', name: '海島度假', note: '全年・峇里島、普吉島、沖繩', img: styleIsland },
+  { id: 'autumn', name: '賞楓紅葉', note: '10–11 月・東京、釜山', img: styleAutumn },
+  { id: 'snow', name: '雪季溫泉', note: '2 月・北海道', img: styleSnow },
+  { id: 'island', name: '海島度假', note: '5–12 月・峇里島、普吉島、沖繩', img: styleIsland },
   { id: 'city', name: '古城藝術', note: '4–10 月・義大利、法國、捷克', img: styleCity },
-  { id: 'food', name: '美食購物', note: '全年・首爾、大阪、香港', img: styleFood },
-  { id: 'honeymoon', name: '浪漫蜜月', note: '全年・義大利、紐西蘭、大溪地', img: styleHoneymoon },
+  { id: 'food', name: '美食購物', note: '3–12 月・首爾、大阪、峴港', img: styleFood },
+  { id: 'honeymoon', name: '浪漫蜜月', note: '5–11 月・義大利、紐西蘭、峇里島', img: styleHoneymoon },
 ]
 
 export const months = [
@@ -29,7 +33,18 @@ export const months = [
   { m: 12, season: '耶誕市集', where: '德國・奧地利' },
 ]
 
-export const hotSearches = ['東京賞楓', '北海道雪祭', '義大利十日', '首爾自由行', '峇里島海島度假']
+/**
+ * 熱門搜尋:按下去直接帶入一組條件,而不是把按鈕上的字塞進目的地欄位。
+ * 以前用文字比對,「義大利十日」對不上標題「義大利經典 10 日」,一按就是 0 筆。
+ * keyword 必須是 tripCatalog 的 region,duration 必須是 durationOptions 的 label。
+ */
+export const hotSearches = [
+  { label: '東京賞楓', filters: { keyword: '日本', month: 11, style: 'autumn' } },
+  { label: '北海道雪祭', filters: { keyword: '日本', month: 2, style: 'snow' } },
+  { label: '義大利十日', filters: { keyword: '歐洲', month: 10, duration: '9 天以上' } },
+  { label: '首爾自由行', filters: { keyword: '韓國', month: 3, style: 'food' } },
+  { label: '峇里島海島度假', filters: { keyword: '東南亞', month: 7, style: 'island' } },
+]
 
 export const consultPath = {
   icon: 'message',

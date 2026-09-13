@@ -365,8 +365,11 @@ export function sortTrips(list, by = 'date') {
    條件全中才給結果的話,多數組合都會是 0 筆。改成找不到時依序拿掉條件,
    再把「拿掉了什麼」與「為什麼」一起交給畫面說明。 */
 
-/** 放寬順序:預算最不影響「想去哪」,目的地最在意,留到最後才放 */
-const RELAX_ORDER = ['budget', 'month', 'duration', 'keyword']
+/**
+ * 放寬順序:預算最不影響「想去哪」,目的地最在意,留到最後才放。
+ * 風格只是一種感覺,比出發月份(通常綁著假期)容易妥協,排在月份前面。
+ */
+const RELAX_ORDER = ['budget', 'style', 'month', 'duration', 'keyword']
 
 /** 各條件在畫面上的名稱 */
 export const FILTER_LABELS = {
@@ -374,6 +377,7 @@ export const FILTER_LABELS = {
   month: '出發月份',
   duration: '旅遊天數',
   budget: '每人預算',
+  style: '旅行風格',
 }
 
 /** 空字串、0、null 都算沒有設定 */
@@ -382,28 +386,67 @@ const isSet = (v) => v !== '' && v !== null && v !== undefined
 /** 把指定的條件清成「不限」 */
 function without(filters, keys) {
   const next = { ...filters }
-  for (const k of keys) next[k] = k === 'month' ? null : ''
+  for (const k of keys) next[k] = k === 'month' || k === 'style' ? null : ''
   return next
 }
 
 /**
- * 先試完全符合;沒有的話,依 RELAX_ORDER 一次多放寬一個,直到有結果。
+ * 先試完全符合;沒有的話,先試「只拿掉一個條件」,都不行才依 RELAX_ORDER 累加放寬。
+ *
+ * 為什麼要先試單一條件:直接累加的話,「日本 × 1 月 × 雪季」會先把風格丟掉,
+ * 但真正卡住的是 1 月(全站沒有 1 月出發)。先單獨試過每一個,
+ * 才能只放掉真正擋路的那一個,保留使用者其他的選擇。
+ *
  * @returns {{trips: Array, relaxed: string[], exhausted: boolean}}
- *   relaxed   被放寬的條件(依序累加)
+ *   relaxed   被放寬的條件
  *   exhausted 全部放寬完仍然沒有結果
  */
 export function searchTrips(filters = {}) {
   const exact = filterTrips(filters)
   if (exact.length) return { trips: exact, relaxed: [], exhausted: false }
 
+  const setKeys = RELAX_ORDER.filter((k) => isSet(filters[k]))
+
+  for (const key of setKeys) {
+    const trips = filterTrips(without(filters, [key]))
+    if (trips.length) return { trips, relaxed: [key], exhausted: false }
+  }
+
   const relaxed = []
-  for (const key of RELAX_ORDER) {
-    if (!isSet(filters[key])) continue
+  for (const key of setKeys) {
     relaxed.push(key)
     const trips = filterTrips(without(filters, relaxed))
     if (trips.length) return { trips, relaxed: [...relaxed], exhausted: false }
   }
   return { trips: [], relaxed, exhausted: true }
+}
+
+/**
+ * 放寬提示條的說明文字。「歐洲最短 10 天」這種話是從資料算出來的,
+ * 不是寫死的 —— 之後行程增加了,說明會自己跟著變。
+ * @param filters 使用者原本的條件
+ * @param result  searchTrips 的回傳值
+ * @returns {{reason: string, relaxedText: string} | null} 沒有放寬就回傳 null
+ */
+export function explainRelaxation(filters, { relaxed, exhausted }) {
+  if (!relaxed.length || exhausted) return null
+
+  const relaxedText = relaxed.map((k) => FILTER_LABELS[k]).join('」與「')
+  const kw = (filters.keyword ?? '').trim()
+  const facts = keywordFacts(kw)
+
+  // 連目的地都放寬了,而且那個字在站上根本查不到 —— 要講清楚,
+  // 否則使用者只會看到一堆不相干的行程,不知道發生什麼事
+  if (relaxed.includes('keyword') && !facts) {
+    return { reason: kw ? `站上目前沒有「${kw}」的行程。` : '', relaxedText }
+  }
+
+  const reasons = []
+  if (facts) {
+    if (relaxed.includes('duration')) reasons.push(`最短 ${facts.minDays} 天`)
+    if (relaxed.includes('month')) reasons.push(`出發月份集中在 ${facts.months.join('、')} 月`)
+  }
+  return { reason: reasons.length ? `${kw}的行程${reasons.join(',')}。` : '', relaxedText }
 }
 
 /**
@@ -424,6 +467,32 @@ export function keywordFacts(keyword = '') {
     maxDays: Math.max(...list.map((t) => t.days)),
     minPrice: Math.min(...list.map((t) => t.price)),
   }
+}
+
+/**
+ * 您可能也會喜歡:從沒出現在結果裡的行程挑幾筆,搜尋結果頁與開始找旅行共用。
+ * 同地區最相關,其次是月份相近、風格相同、天數接近的。
+ * @param shown   已經顯示在結果裡的行程
+ * @param filters 使用者的條件(用到 keyword / month / style)
+ * @param count   要挑幾筆
+ */
+export function recommendTrips(shown, filters = {}, count = 3) {
+  const shownIds = new Set(shown.map((t) => t.id))
+  const kw = (filters.keyword ?? '').trim()
+  const days = shown[0]?.days
+  const score = (t) => {
+    let s = 0
+    if (kw && t.region === kw) s += 10
+    if (filters.month && Math.abs(t.month - filters.month) <= 1) s += 4
+    if (filters.style && t.styles.includes(filters.style)) s += 3
+    if (days && Math.abs(t.days - days) <= 2) s += 2
+    return s
+  }
+  // 分數相同時用出發日期排,結果才不會每次重繪都跳來跳去
+  return tripCatalog
+    .filter((t) => !shownIds.has(t.id))
+    .sort((a, b) => score(b) - score(a) || a.date.localeCompare(b.date))
+    .slice(0, count)
 }
 
 /**
