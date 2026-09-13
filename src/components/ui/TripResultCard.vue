@@ -1,20 +1,31 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   trip: { type: Object, required: true },
 })
 
 const money = (n) => `NT$${n.toLocaleString()}`
+
+/** 圖片與右下角連結去同一個地方:有內頁就進內頁,沒有就去諮詢這條路線 */
+const target = computed(() =>
+  props.trip.detailSlug
+    ? `/trips/${props.trip.detailSlug}`
+    : { path: '/consult', query: { topic: props.trip.region } },
+)
 </script>
 
 <template>
   <article class="trip">
-    <div class="trip-media">
+    <!-- 圖片也可以點。右下角已經有一個同目的地的連結,
+         這裡用 tabindex="-1" + aria-hidden,鍵盤與螢幕閱讀器才不會重複經過兩次 -->
+    <RouterLink :to="target" class="trip-media" tabindex="-1" aria-hidden="true">
       <img v-if="trip.img" :src="trip.img" :alt="trip.title" />
       <div v-else class="trip-placeholder">圖片待補</div>
       <span class="trip-tag">{{ trip.tag }}</span>
-    </div>
+    </RouterLink>
     <div class="trip-body">
       <span class="trip-region">{{ trip.region }}</span>
       <h3>{{ trip.title }}</h3>
@@ -27,10 +38,7 @@ const money = (n) => `NT$${n.toLocaleString()}`
       </div>
       <div class="trip-foot">
         <span class="price">{{ money(trip.price) }}<small>/人</small></span>
-        <RouterLink v-if="trip.detailSlug" :to="`/trips/${trip.detailSlug}`">查看行程</RouterLink>
-        <RouterLink v-else :to="{ path: '/consult', query: { topic: trip.region } }">
-          諮詢這條路線
-        </RouterLink>
+        <RouterLink :to="target">{{ trip.detailSlug ? '查看行程' : '諮詢這條路線' }}</RouterLink>
       </div>
     </div>
   </article>
@@ -54,6 +62,7 @@ const money = (n) => `NT$${n.toLocaleString()}`
 }
 .trip-media {
   position: relative;
+  display: block;
 }
 .trip-media img {
   width: 100%;
